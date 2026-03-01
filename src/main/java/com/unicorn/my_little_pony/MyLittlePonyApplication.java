@@ -1,5 +1,7 @@
 package com.unicorn.my_little_pony;
 
+import com.unicorn.my_little_pony.domain.models.Unicorn;
+import com.unicorn.my_little_pony.util.IdGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
