@@ -8,6 +8,7 @@ import com.unicorn.my_little_pony.domain.pricing.policies.pricing.StandardPricin
 // Tydzień 2, Wzorzec Abstract factory
 // Konkretna implementacja danego planu cenowego
 public class StandardPricingFactory implements PricingFactory {
+
     @Override
     public PricingPolicy creaetPricingPolicy() {
         return new StandardPricingPolicy();

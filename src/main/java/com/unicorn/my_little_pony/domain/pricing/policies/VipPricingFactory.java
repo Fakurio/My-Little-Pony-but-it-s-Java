@@ -8,6 +8,7 @@ import com.unicorn.my_little_pony.domain.pricing.policies.pricing.VipPricingPoli
 // Tydzień 2, Wzorzec Abstract factory
 // Konkretna implementacja danego planu cenowego
 public class VipPricingFactory implements PricingFactory {
+
     @Override
     public PricingPolicy creaetPricingPolicy() {
         return new VipPricingPolicy();
