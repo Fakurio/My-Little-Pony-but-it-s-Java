@@ -1,12 +1,19 @@
-package com.unicorn.my_little_pony.domain.models;
+package com.unicorn.my_little_pony.domain.models.unicorn.types;
 
 import com.unicorn.my_little_pony.enums.UnicornStatus;
+import lombok.Getter;
+import lombok.Setter;
 
-public class Unicorn {
+// Tydzień 2, Wzorzec Factory method
+// Klasa abstrakcyjna która definiuje wspólny interfejs dla wszystkich
+// jednorożców w systemie
+@Getter
+@Setter
+public abstract class Unicorn {
     private final String id;
-    private String name;
-    private String color;
-    private int powerLevel;
+    private final String name;
+    private final String color;
+    private final int powerLevel;
     private UnicornStatus status;
 
     public Unicorn(String id, String name, String color, int powerLevel) {
@@ -17,15 +24,7 @@ public class Unicorn {
         this.status = UnicornStatus.AVAILABLE;
     }
 
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getColor() { return color; }
-    public int getPowerLevel() { return powerLevel; }
-    public UnicornStatus getStatus() { return status; }
-
-    public void setStatus(UnicornStatus status) {
-        this.status = status;
-    }
+    public abstract void useSpecialAbility();
 
     @Override
     public String toString() {
@@ -38,3 +37,4 @@ public class Unicorn {
                 '}';
     }
 }
+// Koniec, Tydzień 2, Wzorzec Factory method

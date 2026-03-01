@@ -1,6 +1,6 @@
 package com.unicorn.my_little_pony.domain.store;
 
-import com.unicorn.my_little_pony.domain.models.Unicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 
 import java.util.List;
 import java.util.Map;
