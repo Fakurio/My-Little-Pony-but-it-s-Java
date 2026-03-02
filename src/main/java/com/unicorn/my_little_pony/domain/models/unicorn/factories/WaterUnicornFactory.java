@@ -12,4 +12,4 @@ public class WaterUnicornFactory extends UnicornFactory {
         return new WaterUnicorn(id, name, color, 10);
     }
 }
-// Koniec, Tydzień 2, Wzorzec Factory method
+// Koniec, Tydzień 2, Wzorzec  Factory method
