@@ -1,13 +1,15 @@
 package com.unicorn.my_little_pony.domain.models.rental;
 
+import com.unicorn.my_little_pony.domain.models.rental.builders.RentalBuilder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+// Tydzień 2, Wzorzec Prototype
+// Klasa implementuje interfejs Cloneable, co pozwala na tworzenie kopii istniejących obiektów.
+
 @Getter
-@Setter
-public class Rental {
+public class Rental implements Cloneable{
     private final String id;
     private final String unicornId;
     private final String customerId;
@@ -44,5 +46,17 @@ public class Rental {
                 ", finalPrice=" + finalPrice +
                 ", termsAccepted=" + termsAccepted +
                 '}';
+    }
+    @Override
+    public Rental clone() {
+        return new RentalBuilder()
+                .unicornId(this.unicornId)
+                .customerId(this.customerId)
+                .start(this.start)
+                .end(this.end)
+                .basePrice(this.basePrice)
+                .finalPrice(this.finalPrice)
+                .termsAccepted(this.termsAccepted)
+                .build();
     }
 }

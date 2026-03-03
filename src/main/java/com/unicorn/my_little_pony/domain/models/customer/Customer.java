@@ -1,11 +1,13 @@
 package com.unicorn.my_little_pony.domain.models.customer;
 
+import com.unicorn.my_little_pony.domain.models.customer.builders.CustomerBuilder;
 import lombok.Getter;
-import lombok.Setter;
+
+// Tydzień 2, Wzorzec Prototype
+// Klasa implementuje interfejs Cloneable, co pozwala na tworzenie kopii istniejących obiektów.
 
 @Getter
-@Setter
-public class Customer {
+public class Customer implements Cloneable{
     private final String id;
     private final String name;
     private final String email;
@@ -29,5 +31,15 @@ public class Customer {
                 ", phone='" + phone + '\'' +
                 ", isVip=" + isVip +
                 '}';
+    }
+
+    @Override
+    public Customer clone() {
+        return new CustomerBuilder()
+                .name(this.name)
+                .email(this.email)
+                .phone(this.phone)
+                .vip(this.isVip)
+                .build();
     }
 }

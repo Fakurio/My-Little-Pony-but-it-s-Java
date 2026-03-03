@@ -9,7 +9,7 @@ import lombok.Setter;
 // jednorożców w systemie
 @Getter
 @Setter
-public abstract class Unicorn {
+public abstract class Unicorn implements Cloneable{
     private final String id;
     private final String name;
     private final String color;
@@ -36,5 +36,9 @@ public abstract class Unicorn {
                 ", status=" + status +
                 '}';
     }
+    //Tydzień 2, Wzorzec Prototype
+    // Metoda abstrakcyjna do klonowania obiektow
+    public abstract Unicorn clone();
+    // Koniec, Tydzień 2, Wzorzec Prototype
 }
 // Koniec, Tydzień 2, Wzorzec Factory method
