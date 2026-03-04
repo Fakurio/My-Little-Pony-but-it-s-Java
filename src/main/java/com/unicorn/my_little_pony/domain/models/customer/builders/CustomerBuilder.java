@@ -3,7 +3,7 @@ package com.unicorn.my_little_pony.domain.models.customer.builders;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.util.IdGenerator;
 
-// Tydzień 2, Wzorzec Builder
+// Tydzień 2, Wzorzec Builder, Zastosowanie 1
 // Builder dla obiektów Customer.
 public class CustomerBuilder {
 
@@ -47,4 +47,4 @@ public class CustomerBuilder {
         return customer;
     }
 }
-// Koniec, Tydzień 2, Wzorzec Builder
+// Koniec, Tydzień 2, Wzorzec Builder, Zastosowanie 1

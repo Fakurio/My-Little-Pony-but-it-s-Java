@@ -4,7 +4,7 @@ import com.unicorn.my_little_pony.domain.models.unicorn.factories.UnicornFactory
 import com.unicorn.my_little_pony.domain.models.unicorn.factories.WaterUnicornFactory;
 import com.unicorn.my_little_pony.util.IdGenerator;
 
-// Tydzień 2, Wzorzec Factory method
+// Tydzień 2, Wzorzec Factory method, Zastosowanie 2
 // Konkretna klasa jednorożca implementująca umiejętność specjalną
 public class WaterUnicorn extends Unicorn {
 
@@ -17,7 +17,7 @@ public class WaterUnicorn extends Unicorn {
         System.out.println(getName() + " can walk on water!");
     }
 
-    //Tydzień 2, Wzorzec Prototype
+    //Tydzień 2, Wzorzec Prototype, Zastosowanie 3
     @Override
     public WaterUnicorn clone() {
         UnicornFactory factory = new WaterUnicornFactory();
@@ -31,6 +31,6 @@ public class WaterUnicorn extends Unicorn {
         cloned.setStatus(this.getStatus());
         return (WaterUnicorn) cloned;
     }
-    // Koniec, Tydzień 2, Wzorzec Prototype
+    // Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 3
 }
-// Koniec, Tydzień 2, Wzorzec Factory method
+// Koniec, Tydzień 2, Wzorzec Factory method, Zastosowanie 2

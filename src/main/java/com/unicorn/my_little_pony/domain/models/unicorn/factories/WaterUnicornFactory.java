@@ -3,7 +3,7 @@ package com.unicorn.my_little_pony.domain.models.unicorn.factories;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.WaterUnicorn;
 
-// Tydzień 2, Wzorzec Factory method
+// Tydzień 2, Wzorzec Factory method, Zastosowanie 2
 // Konkretna implementacja fabryki tworzącej dany typ jednorożca
 public class WaterUnicornFactory extends UnicornFactory {
 
@@ -12,4 +12,4 @@ public class WaterUnicornFactory extends UnicornFactory {
         return new WaterUnicorn(id, name, color, 10);
     }
 }
-// Koniec, Tydzień 2, Wzorzec  Factory method
+// Koniec, Tydzień 2, Wzorzec Factory method, Zastosowanie 2

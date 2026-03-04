@@ -5,7 +5,7 @@ import com.unicorn.my_little_pony.util.IdGenerator;
 
 import java.time.LocalDateTime;
 
-// Tydzień 2, Wzorzec Builder
+// Tydzień 2, Wzorzec Builder, Zastosowanie 2
 //Builder dla obiektów Rental
 
 public class RentalBuilder {
@@ -71,4 +71,4 @@ public class RentalBuilder {
     }
 }
 
-// Koniec Tydzień 2, Wzorzec Builder
+// Koniec, Tydzień 2, Wzorzec Builder, Zastosowanie 2

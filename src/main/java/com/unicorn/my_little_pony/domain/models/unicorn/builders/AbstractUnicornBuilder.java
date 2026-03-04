@@ -3,7 +3,7 @@ import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 import com.unicorn.my_little_pony.util.IdGenerator;
 
-// Tydzień 2, Wzorzec Builder
+// Tydzień 2, Wzorzec Builder, Zastosowanie 3
 //Abstrakcyjna klasa buildera dla jednorożców. Definiuje wspólne pola i metody dla wszystkich konkretnych builderów
 // W odróżnieniu od Factory, Builder umożliwia większą kontrolę nad wszystkimi polami obiektu.
 
@@ -40,4 +40,4 @@ public abstract class AbstractUnicornBuilder<T extends Unicorn> {
 
     public abstract T build();
 }
-// Koniec, Tydzień 2, Wzorzec Builder
+// Koniec, Tydzień 2, Wzorzec Builder, Zastosowanie 3

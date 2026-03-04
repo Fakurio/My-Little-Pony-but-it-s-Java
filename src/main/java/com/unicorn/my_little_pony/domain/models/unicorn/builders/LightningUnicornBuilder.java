@@ -2,7 +2,7 @@ package com.unicorn.my_little_pony.domain.models.unicorn.builders;
 
 import com.unicorn.my_little_pony.domain.models.unicorn.types.LightningUnicorn;
 
-// Tydzień 2, Wzorzec Builder
+// Tydzień 2, Wzorzec Builder, Zastosowanie 3
 // Konkretna implementacja buildera dla LightningUnicorn.
 public class LightningUnicornBuilder extends AbstractUnicornBuilder<LightningUnicorn> {
 
@@ -23,4 +23,4 @@ public class LightningUnicornBuilder extends AbstractUnicornBuilder<LightningUni
         return unicorn;
     }
 }
-// Koniec Tydzień 2, Wzorzec Builder
+// Koniec, Tydzień 2, Wzorzec Builder, Zastosowanie 3

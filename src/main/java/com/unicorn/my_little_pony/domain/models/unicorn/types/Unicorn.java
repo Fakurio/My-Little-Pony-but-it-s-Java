@@ -4,7 +4,7 @@ import com.unicorn.my_little_pony.enums.UnicornStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-// Tydzień 2, Wzorzec Factory method
+// Tydzień 2, Wzorzec Factory method, Zastosowanie 2
 // Klasa abstrakcyjna która definiuje wspólny interfejs dla wszystkich
 // jednorożców w systemie
 @Getter
@@ -36,9 +36,9 @@ public abstract class Unicorn implements Cloneable{
                 ", status=" + status +
                 '}';
     }
-    //Tydzień 2, Wzorzec Prototype
+    //Tydzień 2, Wzorzec Prototype, Zastosowanie 3
     // Metoda abstrakcyjna do klonowania obiektow
     public abstract Unicorn clone();
-    // Koniec, Tydzień 2, Wzorzec Prototype
+    // Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 3
 }
-// Koniec, Tydzień 2, Wzorzec Factory method
+// Koniec, Tydzień 2, Wzorzec Factory method, Zastosowanie 2

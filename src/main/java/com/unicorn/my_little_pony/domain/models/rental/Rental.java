@@ -5,7 +5,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-// Tydzień 2, Wzorzec Prototype
+// Tydzień 2, Wzorzec Prototype, Zastosowanie 2
 // Klasa implementuje interfejs Cloneable, co pozwala na tworzenie kopii istniejących obiektów.
 
 @Getter
@@ -60,3 +60,4 @@ public class Rental implements Cloneable{
                 .build();
     }
 }
+// Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 2

@@ -17,7 +17,7 @@ public class FireUnicorn extends Unicorn {
         System.out.println(getName() + " breathes a stream of fire!");
     }
 
-    //Tydzień 2, Wzorzec Prototype
+    //Tydzień 2, Wzorzec Prototype, Zastosowanie 3
     @Override
     public FireUnicorn clone() {
         UnicornFactory factory = new FireUnicornFactory();
@@ -31,6 +31,6 @@ public class FireUnicorn extends Unicorn {
         cloned.setStatus(this.getStatus());
         return (FireUnicorn) cloned;
     }
-    // Koniec, Tydzień 2, Wzorzec Prototype
+    // Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 3
 }
 // Koniec, Tydzień 2, Wzorzec Factory method

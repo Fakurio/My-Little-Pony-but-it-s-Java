@@ -6,7 +6,7 @@ import com.unicorn.my_little_pony.domain.models.notification.types.Notification;
 import com.unicorn.my_little_pony.domain.models.notification.types.SmsNotification;
 import com.unicorn.my_little_pony.enums.NotificationType;
 
-// Tydzień 2, Wzorzec Simple factory
+// Tydzień 2, Wzorzec Simple factory, Zastosowanie 1
 // Fabryka powiadomień z jedną metodą która zwraca obiekty o wspólnym interfejsie
 public class NotificationFactory {
 
@@ -19,4 +19,4 @@ public class NotificationFactory {
         };
     }
 }
-// Koniec, Tydzień 2, Wzorzec Simple factory
+// Koniec, Tydzień 2, Wzorzec Simple factory, Zastosowanie 1

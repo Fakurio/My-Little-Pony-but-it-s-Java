@@ -5,7 +5,7 @@ import com.unicorn.my_little_pony.domain.pricing.policies.cancellation.FlexibleC
 import com.unicorn.my_little_pony.domain.pricing.policies.pricing.PricingPolicy;
 import com.unicorn.my_little_pony.domain.pricing.policies.pricing.VipPricingPolicy;
 
-// Tydzień 2, Wzorzec Abstract factory
+// Tydzień 2, Wzorzec Abstract factory, Zastosowanie 3
 // Konkretna implementacja danego planu cenowego
 public class VipPricingFactory implements PricingFactory {
 
@@ -19,4 +19,4 @@ public class VipPricingFactory implements PricingFactory {
         return new FlexibleCancellationPolicy();
     }
 }
-// Koniec, Tydzień 2, Wzorzec Abstract factory
+// Koniec, Tydzień 2, Wzorzec Abstract factory, Zastosowanie 3

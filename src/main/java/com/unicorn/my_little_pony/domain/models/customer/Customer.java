@@ -3,7 +3,7 @@ package com.unicorn.my_little_pony.domain.models.customer;
 import com.unicorn.my_little_pony.domain.models.customer.builders.CustomerBuilder;
 import lombok.Getter;
 
-// Tydzień 2, Wzorzec Prototype
+// Tydzień 2, Wzorzec Prototype, Zastosowanie 1
 // Klasa implementuje interfejs Cloneable, co pozwala na tworzenie kopii istniejących obiektów.
 
 @Getter
@@ -43,3 +43,4 @@ public class Customer implements Cloneable{
                 .build();
     }
 }
+// Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 1
