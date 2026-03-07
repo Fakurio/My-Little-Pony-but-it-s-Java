@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class DemoRunner implements CommandLineRunner {
+public class DemoWeek2Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
