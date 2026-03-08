@@ -24,3 +24,28 @@ Wzorzec metoda fabrykująca został użyty do tworzenia obiektów konkretnych ty
 
 * **Klasy fabryk:** `domain.models.unicorn.factories`
 * **Klasy konkretnych jednorożców:** `domain.models.unicorn.types`
+
+
+## 📅 Tydzień 3
+
+---
+
+## Bridge Design Pattern
+
+### Bridge - Ekwipunek Jednorożca
+Wzorzec projektowy Most został użyty do oddzielenia klas jednorożców (abstrakcja) od ich wyposażenia (implementacja). 
+
+* **Klasy abstrakcji (Jednorożce):** `domain.models.unicorn.types`
+* **Klasy implementacji (Rodzaje Ekwipunku):** `domain.models.unicorn.equipment`
+
+### Bridge - Plany Cenowe
+Wzorzec ten został również zastosowany do oddzielenia logiki planów zniżkowych (np. Standard, VIP) od silników obliczających bazowy koszt czasu wypożyczenia (np. godzinowy, dzienny).
+
+* **Klasy abstrakcji (Plany Cenowe):** `domain.pricing.plans`
+* **Klasy implementacji (Silniki Obliczeniowe):** `domain.pricing.engines`
+
+### Bridge - Powiadomienia
+Trzecie zastosowanie wzorca Bridge oddziela rodzaj powiadomienia (np. potwierdzenie rezerwacji, potwierdzenie płatności) od kanału jej dostarczenia (np. Facebook, Instragram).
+
+* **Klasy abstrakcji (Typy Powiadomień):** `domain.models.notification.notifiers`
+* **Klasy implementacji (Kanały Social media):** `domain.models.notification.channels`
