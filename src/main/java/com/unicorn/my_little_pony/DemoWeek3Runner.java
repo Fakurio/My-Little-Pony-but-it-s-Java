@@ -8,8 +8,25 @@ import com.unicorn.my_little_pony.domain.decorators.unicornAddOns.WingPolishDeco
 import com.unicorn.my_little_pony.domain.decorators.unicornAddOns.RainbowManeDecorator;
 
 import com.unicorn.my_little_pony.domain.decorators.unicornAddOns.UnicornRental;
+import com.unicorn.my_little_pony.domain.models.notification.channels.FacebookChannel;
+import com.unicorn.my_little_pony.domain.models.notification.channels.InstagramChannel;
+import com.unicorn.my_little_pony.domain.models.notification.channels.SocialChannel;
+import com.unicorn.my_little_pony.domain.models.notification.notifiers.BookingNotifier;
+import com.unicorn.my_little_pony.domain.models.notification.notifiers.PaymentNotifier;
+import com.unicorn.my_little_pony.domain.models.notification.notifiers.SocialNotifier;
 import com.unicorn.my_little_pony.domain.models.unicorn.builders.IceUnicornBuilder;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.RainbowSaddle;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.TitaniumArmor;
+import com.unicorn.my_little_pony.domain.models.unicorn.factories.FireUnicornFactory;
+import com.unicorn.my_little_pony.domain.models.unicorn.factories.UnicornFactory;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
+import com.unicorn.my_little_pony.domain.pricing.engines.DailyPricingEngine;
+import com.unicorn.my_little_pony.domain.pricing.engines.HourlyPricingEngine;
+import com.unicorn.my_little_pony.domain.pricing.engines.PricingEngine;
+import com.unicorn.my_little_pony.domain.pricing.plans.PricingPlan;
+import com.unicorn.my_little_pony.domain.pricing.plans.StandardPricingPlan;
+import com.unicorn.my_little_pony.domain.pricing.plans.VipPricingPlan;
 import com.unicorn.my_little_pony.domain.store.UnicornStore;
 import com.unicorn.my_little_pony.integration.inventory.StoreAvailabilityAdapter;
 import com.unicorn.my_little_pony.integration.inventory.UnicornAvailabilityService;
@@ -17,6 +34,7 @@ import com.unicorn.my_little_pony.integration.payment.PaymentAdapter;
 import com.unicorn.my_little_pony.integration.payment.PaymentService;
 import com.unicorn.my_little_pony.integration.transport.TransportAdapter;
 import com.unicorn.my_little_pony.integration.transport.UnicornTransportService;
+import com.unicorn.my_little_pony.util.IdGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -107,14 +125,58 @@ public class DemoWeek3Runner implements CommandLineRunner {
         System.out.println("=========================");
         System.out.println("BRIDGE");
         System.out.println("=========================");
-        System.out.println("Zastosowanie 1: ");
+        System.out.println("Zastosowanie 1: Pricing engine + pricing plan");
+
+        PricingEngine hourlyEngine = new HourlyPricingEngine();
+        PricingPlan standardHourly = new StandardPricingPlan(hourlyEngine);
+        System.out.println("Standard Hourly (5 hrs): $" + standardHourly.calculateFinalPrice(5));
+
+        PricingEngine dailyEngine = new DailyPricingEngine();
+        PricingPlan vipDaily = new VipPricingPlan(dailyEngine);
+        System.out.println("VIP Daily (3 days): $" + vipDaily.calculateFinalPrice(3));
+
+        PricingPlan vipHourly = new VipPricingPlan(hourlyEngine);
+        PricingPlan standardDaily = new StandardPricingPlan(dailyEngine);
+        System.out.println("VIP Hourly (5 hrs): $" + vipHourly.calculateFinalPrice(5));
+        System.out.println("Standard Daily (3 days): $" + standardDaily.calculateFinalPrice(3));
 
         System.out.println("-------------------------");
-        System.out.println("Zastosowanie 2: ");
+        System.out.println("Zastosowanie 2: Social media channel + event notifier");
+
+        SocialChannel facebookChannel = new FacebookChannel();
+        SocialChannel instagramChannel = new InstagramChannel();
+
+        SocialNotifier bookingFacebookNotifier = new BookingNotifier(facebookChannel);
+        SocialNotifier paymentInstagramNotifier = new PaymentNotifier(instagramChannel);
+
+        bookingFacebookNotifier.notifyUser("1", "Happy riding");
+        paymentInstagramNotifier.notifyUser("1", "$777");
 
         System.out.println("-------------------------");
-        System.out.println("Zastosowanie 3: ");
+        System.out.println("Zastosowanie 3: Unicorn + it's equipment");
 
+        UnicornFactory factory = new FireUnicornFactory();
+        Unicorn blaze = factory.createUnicorn(
+                IdGenerator.getInstance().nextUnicornId(),
+                "Blaze",
+                "Black"
+        );
+
+        System.out.println("Fresh unicorn spawned: " + blaze.getName());
+        System.out.println("Base Power (No Equipment): " + blaze.getTotalPower());
+        System.out.println();
+
+        Equipment saddle = new RainbowSaddle();
+        blaze.setEquipment(saddle);
+        System.out.println("Equipped: " + saddle.getDescription());
+        System.out.println("Power boost applied. New Total Power: " + blaze.getTotalPower());
+        System.out.println();
+
+        Equipment armor = new TitaniumArmor();
+        blaze.setEquipment(armor);
+        System.out.println("Swapped Equipment to: " + armor.getDescription());
+        System.out.println("Power level updated. New Total Power: " + blaze.getTotalPower());
+        System.out.println();
     }
 
     private void demoDecorator() {
