@@ -31,19 +31,19 @@ public class DemoWeek2Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("\n");
-        System.out.println("===========================================================");
-        System.out.println("  DEMO TYDZIEŃ 2: Singleton + Factory + Builder + Prototype");
-        System.out.println("===========================================================");
-        System.out.println();
-
-        demoSingleton();
-        demoFactory();
-        demoBuilder();
-        demoPrototype();
-
-        System.out.println();
-        System.out.println("===========================================================");
+//        System.out.println("\n");
+//        System.out.println("===========================================================");
+//        System.out.println("  DEMO TYDZIEŃ 2: Singleton + Factory + Builder + Prototype");
+//        System.out.println("===========================================================");
+//        System.out.println();
+//
+//        demoSingleton();
+//        demoFactory();
+//        demoBuilder();
+//        demoPrototype();
+//
+//        System.out.println();
+//        System.out.println("===========================================================");
     }
 
     private void demoSingleton() {
