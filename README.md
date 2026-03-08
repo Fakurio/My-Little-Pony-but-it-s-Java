@@ -26,6 +26,22 @@ Wzorzec metoda fabrykująca został użyty do tworzenia obiektów konkretnych ty
 * **Klasy konkretnych jednorożców:** `domain.models.unicorn.types`
 
 
+## Singleton Design Pattern
+
+### Eager Initialization
+Konfiguracja cen globalna dla całego systemu. Nie ma sensu tworzyć wielu instancji konfiguracji, bo wartości powinny być jednolite w całej aplikacji.
+* **Klasa:** `domain.pricing.PricingConfig`
+
+### Thread-safe synchronized
+Identyfikatory obiektów (Unicorn, Customer, Rental) muszą być unikalne w obrębie całej aplikacji. Zapewnia istnienie jednego, wspólnego źródła generowania ID, co eliminuje niespójności danych
+* **Klasa:** `util.IdGenetaror`
+
+### William Pugh
+Magazyn jednorożców musi być jeden. Gdyby powstały dwie instancje, część systemu widziałaby inne jednorożce niż reszta.
+* **Klasa:** `domain.store.UnicornStore`
+
+
+
 ## 📅 Tydzień 3
 
 ---
