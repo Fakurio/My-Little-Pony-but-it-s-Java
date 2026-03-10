@@ -14,7 +14,12 @@ import com.unicorn.my_little_pony.domain.models.notification.channels.SocialChan
 import com.unicorn.my_little_pony.domain.models.notification.notifiers.BookingNotifier;
 import com.unicorn.my_little_pony.domain.models.notification.notifiers.PaymentNotifier;
 import com.unicorn.my_little_pony.domain.models.notification.notifiers.SocialNotifier;
+import com.unicorn.my_little_pony.domain.models.service.composite.ServiceBundle;
+import com.unicorn.my_little_pony.domain.models.service.composite.ServiceItem;
 import com.unicorn.my_little_pony.domain.models.unicorn.builders.IceUnicornBuilder;
+import com.unicorn.my_little_pony.domain.models.unicorn.builders.LightningUnicornBuilder;
+import com.unicorn.my_little_pony.domain.models.unicorn.composite.Herd;
+import com.unicorn.my_little_pony.domain.models.unicorn.composite.SingleUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.RainbowSaddle;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.TitaniumArmor;
@@ -27,6 +32,7 @@ import com.unicorn.my_little_pony.domain.pricing.engines.PricingEngine;
 import com.unicorn.my_little_pony.domain.pricing.plans.PricingPlan;
 import com.unicorn.my_little_pony.domain.pricing.plans.StandardPricingPlan;
 import com.unicorn.my_little_pony.domain.pricing.plans.VipPricingPlan;
+import com.unicorn.my_little_pony.domain.rules.composite.*;
 import com.unicorn.my_little_pony.domain.store.UnicornStore;
 import com.unicorn.my_little_pony.integration.inventory.StoreAvailabilityAdapter;
 import com.unicorn.my_little_pony.integration.inventory.UnicornAvailabilityService;
@@ -111,13 +117,82 @@ public class DemoWeek3Runner implements CommandLineRunner {
         System.out.println("=========================");
         System.out.println("COMPOSITE");
         System.out.println("=========================");
-        System.out.println("Zastosowanie 1: ");
+        System.out.println("Zastosowanie 1: ServiceBundle + pricing");
+
+        ServiceItem unicorn = new ServiceItem("Unicorn rental", 200);
+        ServiceItem decoration = new ServiceItem("Decoration", 100);
+        ServiceItem trainer = new ServiceItem("Trainer", 150);
+        ServiceItem transport = new ServiceItem("Transport", 80);
+        ServiceItem birthdayCake = new ServiceItem("Birthday Cake", 220);
+        ServiceBundle wedding = new ServiceBundle("Wedding Premium");
+
+        wedding.add(unicorn);
+        wedding.add(decoration);
+        wedding.add(trainer);
+        wedding.add(transport);
+
+        System.out.println(" - Price: " + wedding.getPrice() + " PLN");
+        System.out.println(" - Wedding bundle description: " + wedding.getDescription());
+
+        ServiceBundle birthdayParty = new ServiceBundle("Birthday Party");
+
+        birthdayParty.add(unicorn);
+        birthdayParty.add(decoration);
+        birthdayParty.add(birthdayCake);
+        birthdayParty.add(transport);
+
+        System.out.println(" - Price: " + birthdayParty.getPrice() + " PLN");
+        System.out.println(" - Bundle description: " + birthdayParty.getDescription());
 
         System.out.println("-------------------------");
-        System.out.println("Zastosowanie 2: ");
+        System.out.println("Zastosowanie 2: Unicorn fleet management");
+        System.out.println("Checking if a herd contains enough unicorns for an event reservation");
 
+        Herd herd = new Herd();
+
+        Unicorn unicorn1 = new IceUnicornBuilder()
+                .name("Frosty")
+                .color("Ice Blue")
+                .powerLevel(20)
+                .build();
+
+        Unicorn unicorn2 = new LightningUnicornBuilder()
+                .name("Thunder")
+                .color("Electric Yellow")
+                .powerLevel(40)
+                .build();
+
+        Unicorn unicorn3 = new LightningUnicornBuilder()
+                .name("Lighting")
+                .color("Blue")
+                .powerLevel(30)
+                .build();
+
+        herd.add(new SingleUnicorn(unicorn1));
+        herd.add(new SingleUnicorn(unicorn2));
+        herd.add(new SingleUnicorn(unicorn3));
+
+        int available = herd.getAvailableCount();
+
+        if (available >= 3) {
+            System.out.println("Reservation possible - enough unicorns available");
+        }
         System.out.println("-------------------------");
-        System.out.println("Zastosowanie 3: ");
+        System.out.println("Zastosowanie 3: Rental validation rules");
+        System.out.println("Rentals are only permitted after all rules are met");
+        Rule ageRule = new AgeRule(20);
+        Rule licenseRule = new LicenseRule(true);
+        Rule weatherRule = new WeatherRule(false);
+
+        OrRule rentalRules = new OrRule();
+
+        rentalRules.add(ageRule);
+        rentalRules.add(licenseRule);
+        rentalRules.add(weatherRule);
+
+        boolean allowed = rentalRules.check();
+
+        System.out.println("Rental allowed: " + allowed);
 
     }
 
