@@ -1,5 +1,7 @@
 package com.unicorn.my_little_pony.domain.models.unicorn.types;
 
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.NoEquipment;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,10 @@ public abstract class Unicorn implements Cloneable{
     private final String color;
     private final int powerLevel;
     private UnicornStatus status;
+    // Tydzień 3, Wzorzec Bridge, Zastosowanie 3
+    // Część abstrakcyjna wzorca bridge która oddelegowuje użycie konkretnego ekwipunku do obiektu equipment
+    private Equipment equipment;
+    // Koniec, Tydzień 3, Wzorzec Bridge, Zastosowanie 3
 
     public Unicorn(String id, String name, String color, int powerLevel) {
         this.id = id;
@@ -22,9 +28,18 @@ public abstract class Unicorn implements Cloneable{
         this.color = color;
         this.powerLevel = powerLevel;
         this.status = UnicornStatus.AVAILABLE;
+        this.equipment = new NoEquipment();
     }
 
     public abstract void useSpecialAbility();
+
+    // Tydzień 3, Wzorzec Bridge, Zastosowanie 3
+    // Wspólna logika obliczania powerLevel dla jednorożców z oddelegowaniem logiki obliczania bonusu ekwipunku
+    // do konkretnego obiektu ekwipunku
+    public int getTotalPower() {
+        return powerLevel + equipment.getPowerBonus();
+    }
+    // Koniec, Tydzień 3, Wzorzec Bridge, Zastosowanie 3
 
     @Override
     public String toString() {
