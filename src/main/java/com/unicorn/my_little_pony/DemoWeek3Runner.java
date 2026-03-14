@@ -48,17 +48,17 @@ import org.springframework.stereotype.Component;
 public class DemoWeek3Runner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("\n");
-        System.out.println("===========================================================");
-        System.out.println("  DEMO TYDZIEŃ 3: Adapter + Composite + Dekorator + Bridge");
-        System.out.println("===========================================================");
-        System.out.println();
-        demoAdapter();
-        demoBridge();
-        demoComposite();
-        demoDecorator();
-        System.out.println();
-        System.out.println("===========================================================");
+//        System.out.println("\n");
+//        System.out.println("===========================================================");
+//        System.out.println("  DEMO TYDZIEŃ 3: Adapter + Composite + Dekorator + Bridge");
+//        System.out.println("===========================================================");
+//        System.out.println();
+//        demoAdapter();
+//        demoBridge();
+//        demoComposite();
+//        demoDecorator();
+//        System.out.println();
+//        System.out.println("===========================================================");
     }
 
     private void demoAdapter() {

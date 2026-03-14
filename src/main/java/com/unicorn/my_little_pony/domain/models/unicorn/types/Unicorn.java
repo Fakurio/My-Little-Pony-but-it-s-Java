@@ -11,7 +11,7 @@ import lombok.Setter;
 // jednorożców w systemie
 @Getter
 @Setter
-public abstract class Unicorn implements Cloneable{
+public abstract class Unicorn implements Cloneable, IUnicorn {
     private final String id;
     private final String name;
     private final String color;

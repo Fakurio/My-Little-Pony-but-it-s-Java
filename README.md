@@ -65,3 +65,30 @@ Trzecie zastosowanie wzorca Bridge oddziela rodzaj powiadomienia (np. potwierdze
 
 * **Klasy abstrakcji (Typy Powiadomień):** `domain.models.notification.notifiers`
 * **Klasy implementacji (Kanały Social media):** `domain.models.notification.channels`
+
+
+
+## 📅 Tydzień 4
+
+---
+
+## Proxy Design Pattern
+
+### Protection Proxy
+Wzorzec został użyty do zabezpieczenia dostępu do specjalnych umiejętności jednorożca. 
+Proxy sprawdza czy klient jest Vipem przed przekazaniem wywołania do rzeczywistego obiektu jednorożca.
+
+* **Interfejs i Klasy rzeczywiste:** `domain.models.unicorn.types`
+* **Klasa Proxy:** `domain.models.unicorn.proxies.ProtectedUnicornProxy`
+
+### Logging Proxy
+Zastosowano do monitorowania procesu płatności. Proxy owija adapter płatności, dodając logi audytowe (rozpoczęcie transakcji, czas trwania, sukces, błąd) bez modyfikowania oryginalnej logiki przetwarzania płatności w klasie adaptera.
+
+* **Interfejs usług płatności:** `integration.payment.PaymentService`
+* **Klasa Proxy:** `integration.payment.PaymentLoggingProxy`
+
+### Caching Proxy
+Użyto w celu optymalizacji pobierania historii wypożyczeń jednorożca z bazy danych. Proxy przechowuje w pamięci (cache) pobraną już listę obiektów `Rental`, co skraca czas kolejnych zapytań o tego samego jednorożca.
+
+* **Interfejs historii wypożyczeń:** `database.RentingHistoryService`
+* **Klasa Proxy:** `domain.models.unicorn.proxies.CachingRentingHistoryProxy`
