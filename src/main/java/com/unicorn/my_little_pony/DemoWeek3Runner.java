@@ -1,13 +1,12 @@
 package com.unicorn.my_little_pony;
 
-import com.unicorn.my_little_pony.domain.decorators.insurance.*;
-import com.unicorn.my_little_pony.domain.decorators.support.*;
-import com.unicorn.my_little_pony.domain.decorators.unicornAddOns.BasicUnicornRental;
-import com.unicorn.my_little_pony.domain.decorators.unicornAddOns.GlitterDecorator;
-import com.unicorn.my_little_pony.domain.decorators.unicornAddOns.WingPolishDecorator;
-import com.unicorn.my_little_pony.domain.decorators.unicornAddOns.RainbowManeDecorator;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.BasicUnicornRental;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.GlitterDecorator;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.WingPolishDecorator;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.RainbowManeDecorator;
 
-import com.unicorn.my_little_pony.domain.decorators.unicornAddOns.UnicornRental;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.UnicornRental;
+import com.unicorn.my_little_pony.domain.models.insurance.*;
 import com.unicorn.my_little_pony.domain.models.notification.channels.FacebookChannel;
 import com.unicorn.my_little_pony.domain.models.notification.channels.InstagramChannel;
 import com.unicorn.my_little_pony.domain.models.notification.channels.SocialChannel;
@@ -16,6 +15,7 @@ import com.unicorn.my_little_pony.domain.models.notification.notifiers.PaymentNo
 import com.unicorn.my_little_pony.domain.models.notification.notifiers.SocialNotifier;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceBundle;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceItem;
+import com.unicorn.my_little_pony.domain.models.support.*;
 import com.unicorn.my_little_pony.domain.models.unicorn.builders.IceUnicornBuilder;
 import com.unicorn.my_little_pony.domain.models.unicorn.builders.LightningUnicornBuilder;
 import com.unicorn.my_little_pony.domain.models.unicorn.composite.Herd;

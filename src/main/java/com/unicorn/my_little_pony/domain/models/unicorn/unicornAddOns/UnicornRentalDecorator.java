@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.unicornAddOns;
+package com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 1
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 1
 // Abstrakcyjna klasa dekoratora - przechowuje referencję do komponentu i deleguje wywołania
 
 public abstract class UnicornRentalDecorator implements UnicornRental {
@@ -20,4 +20,4 @@ public abstract class UnicornRentalDecorator implements UnicornRental {
         return rental.getDescription();
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 1
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 1

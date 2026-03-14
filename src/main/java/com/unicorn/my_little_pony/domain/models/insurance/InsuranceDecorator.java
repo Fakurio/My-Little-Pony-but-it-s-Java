@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.decorators.insurance;
+package com.unicorn.my_little_pony.domain.models.insurance;
 
 // Tydzień 3, Wzorzec Decorator, Zastosowanie 2
 // Abstrakcyjna klasa dekoratora - przechowuje referencję do komponentu ubezpieczenia

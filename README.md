@@ -66,6 +66,46 @@ Trzecie zastosowanie wzorca Bridge oddziela rodzaj powiadomienia (np. potwierdze
 * **Klasy abstrakcji (Typy Powiadomień):** `domain.models.notification.notifiers`
 * **Klasy implementacji (Kanały Social media):** `domain.models.notification.channels`
 
+## Decorator Design Pattern
+### Decorator - Ulepszenia do wypożyczenia jednorożca
+Wzorzec dekorator został użyty do dynamicznego dodawania nowych właściwości jednorożców.
+* **Interfejs komponentu:** `domain.models.unicorn.unicornAddOns.UnicornRental`
+* **Konkretny komponent bez dekoratora:** `domain.models.unicorn.unicornAddOns.BasicUnicornRental`
+* **Abstrakcyjna klasa dekoratora:** `domain.models.unicorn.unicornAddOns.UnicornRentalDecorator`
+* **Konkretne dekoratory:** `domain.models.unicorn.unicornAddOns.WingPolishDecorator`, `domain.decorators.unicornAddOns.RainbowManeDecorator`, `domain.decorators.unicornAddOns.GlitterDecorator`
+
+### Decorator - Poziomy wsparcia klienta
+Zastosowano do dodawania dodatkowych usług do wsparcia klienta.
+* **Interfejs komponentu:** `domain.models.support.CustomerSupport`
+* **Konkretny komponent bez dekoratora:** `domain.models.support.NoSupport`
+* **Abstrakcyjna klasa dekoratora:** `domain.models.support.SupportDecorator`
+* **Konkretne dekoratory:** `domain.models.support.StandardSupport`, `domain.decorators.support.PrioritySupport`, `domain.decorators.support.TwentyFourHourCaretaker`
+
+### Decorator - Poziomy ubecpieczenia
+Wzorzec ten został użyty do dodawania kolejnych warstw ochrony do polisy ubezpieczeniowej, np. od kradzieży, od warunków pogodowych itp.
+* **Interfejs komponentu:** `domain.models.insurance.RentalInsurance`
+* **Konkretny komponent bez dekoratora:** `domain.models.insurance.NoInsurance`
+* **Abstrakcyjna klasa dekoratora:** `domain.models.insurance.InsuranceDecorator`
+* **Konkretne dekoratory:** `domain.models.insurance.BasicInsurance`, `domain.decorators.insurance.ExtendedInsurance`, `domain.decorators.insurance.ExtremeWeatherCoverage`
+
+## Adapter Design Pattern
+### Adapter - Integracja z systemem płatności
+Wzorzec adapter został użyty do integracji z zewnętrznym systemem płatności. Adapter tłumaczy interfejs oczekiwany przez naszą aplikację na format wymagany przez zewnętrzną usługę płatności.
+* **Interfejs oczekiwany przez aplikację:** `integration.payment.PaymentService`
+* **Interfejs zewnętrznej usługi płatności:** `integration.payment.ExternalPaymentGateway`
+* **Klasa Adaptera:** `integration.payment.PaymentAdapter`
+
+### Adapter - Integracja z systemem do przewozu jednorożców
+Wzorzec adapter został również zastosowany do integracji z zewnętrznym systemem logistycznym, który zajmuje się transportem jednorożców do klientów. 
+* **Interfejs oczekiwany przez aplikację:** `integration.transport.UnicornTransportService`
+* **Interfejs zewnętrznej usługi transportowej:** `integration.transport.ExternalTransportProvider`
+* **Klasa Adaptera:** `integration.transport.TransportAdapter`
+
+### Adapter - Integracja z systemem inwentaryzowania jednorożców
+Wzorzec został użyty do integracji z systemem sprawdzania dostępności jednorożców, ktory wymaga innego formatu, niż ten, który dostarczono dotychczas w aplikacji.
+* **Interfejs oczekiwany przez aplikację:** `integration.inventory.UnicornInventoryService`
+* **Interfejs usługi inwentaryzacyjnej:** `domain.store.UnicornStore`
+* **Klasa Adaptera:** `integration.inventory.StoreAvailabilityAdapter`
 
 
 ## 📅 Tydzień 4

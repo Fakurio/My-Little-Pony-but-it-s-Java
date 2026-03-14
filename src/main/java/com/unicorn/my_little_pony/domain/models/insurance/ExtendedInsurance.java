@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.insurance;
+package com.unicorn.my_little_pony.domain.models.insurance;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 2
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 2
 // Konkretny dekorator - rozszerzone ubezpieczenie
 
 public class ExtendedInsurance extends InsuranceDecorator {
@@ -20,4 +20,4 @@ public class ExtendedInsurance extends InsuranceDecorator {
         return super.getCoverage() + " -> Extended insurance (UC {Unicorn Casco} + liability + theft)";
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 2
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 2
