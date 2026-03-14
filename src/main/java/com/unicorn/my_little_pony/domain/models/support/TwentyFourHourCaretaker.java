@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.support;
+package com.unicorn.my_little_pony.domain.models.support;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 3
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 3
 // Konkretny dekorator - wsparcie 24/7 z opiekunem
 
 public class TwentyFourHourCaretaker extends SupportDecorator {
@@ -20,4 +20,4 @@ public class TwentyFourHourCaretaker extends SupportDecorator {
         return super.getDescription() + " -> 24/7 support with caretaker";
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 3
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 3

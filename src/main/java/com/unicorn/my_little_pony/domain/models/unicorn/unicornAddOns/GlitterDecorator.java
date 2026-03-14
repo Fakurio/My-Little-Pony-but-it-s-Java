@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.decorators.unicornAddOns;
+package com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns;
 
 // Tydzień 3, Wzorzec Decorator, Zastosowanie 1
 // Konkretny dekorator - dodaje brokat do jednorożca

@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.insurance;
+package com.unicorn.my_little_pony.domain.models.insurance;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 2
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 2
 // Konkretny dekorator - ubezpieczenie od ekstremalnych warunków pogodowych
 
 public class ExtremeWeatherCoverage extends InsuranceDecorator {
@@ -20,4 +20,4 @@ public class ExtremeWeatherCoverage extends InsuranceDecorator {
         return super.getCoverage() + " -> Extreme weather coverage (storms, heatvave, etc.)";
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 2
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 2

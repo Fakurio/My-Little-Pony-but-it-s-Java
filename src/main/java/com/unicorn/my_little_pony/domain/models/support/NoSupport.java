@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.support;
+package com.unicorn.my_little_pony.domain.models.support;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 3
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 3
 // Konkretny komponent - brak wsparcia technicznego (podstawa)
 
 public class NoSupport implements CustomerSupport {
@@ -15,4 +15,4 @@ public class NoSupport implements CustomerSupport {
         return "No support";
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 3
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 3

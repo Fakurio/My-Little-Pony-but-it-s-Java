@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.insurance;
+package com.unicorn.my_little_pony.domain.models.insurance;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 2
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 2
 // Konkretny komponent - brak ubezpieczenia (podstawa)
 
 public class NoInsurance implements RentalInsurance {
@@ -15,4 +15,4 @@ public class NoInsurance implements RentalInsurance {
         return "No insurance coverage";
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 2
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 2

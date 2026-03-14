@@ -1,6 +1,6 @@
 package com.unicorn.my_little_pony.integration.inventory;
 
-//Tydzień 3, Wzorzec Adapter 3 (przez dziedziczenie)
+//Tydzień 3, Wzorzec Adapter 3 (przez kompozycję)
 //Interfejs, który jest znany przez system, ale nie jest
 // kompatybilny z klasą, którą chcemy użyć (UnicornStore).
 public interface UnicornAvailabilityService {

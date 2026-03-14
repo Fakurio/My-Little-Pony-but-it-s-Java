@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.unicornAddOns;
+package com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 1
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 1
 // Konkretny komponent - podstawowe wypożyczenie jednorożca bez żadnych dodatków
 
 public class BasicUnicornRental implements UnicornRental {
@@ -20,4 +20,4 @@ public class BasicUnicornRental implements UnicornRental {
         return "Basic unicorn rental";
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 1
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 1

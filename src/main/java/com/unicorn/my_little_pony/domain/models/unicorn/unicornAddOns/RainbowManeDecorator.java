@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.unicornAddOns;
+package com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 1
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 1
 // Konkretny dekorator - dodaje tęczową grzywę
 
 public class RainbowManeDecorator extends UnicornRentalDecorator {
@@ -20,4 +20,4 @@ public class RainbowManeDecorator extends UnicornRentalDecorator {
         return super.getDescription() + ", rainbow mane 🌈";
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 1
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 1

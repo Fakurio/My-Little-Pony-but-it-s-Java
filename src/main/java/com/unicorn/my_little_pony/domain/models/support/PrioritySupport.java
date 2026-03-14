@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.decorators.support;
+package com.unicorn.my_little_pony.domain.models.support;
 
-// Tydzień 4, Wzorzec Decorator, Zastosowanie 3
+// Tydzień 3, Wzorzec Decorator, Zastosowanie 3
 // Konkretny dekorator - priorytetowe wsparcie
 
 public class PrioritySupport extends SupportDecorator {
@@ -20,4 +20,4 @@ public class PrioritySupport extends SupportDecorator {
         return super.getDescription() + " -> Priority support (8am-8pm)";
     }
 }
-// Koniec, Tydzień 4, Wzorzec Decorator, Zastosowanie 3
+// Koniec, Tydzień 3, Wzorzec Decorator, Zastosowanie 3
