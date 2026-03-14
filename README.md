@@ -132,3 +132,27 @@ Użyto w celu optymalizacji pobierania historii wypożyczeń jednorożca z bazy 
 
 * **Interfejs historii wypożyczeń:** `database.RentingHistoryService`
 * **Klasa Proxy:** `domain.models.unicorn.proxies.CachingRentingHistoryProxy`
+
+## Flyweight Design Pattern
+### Flyweight - wiele rodzajów jednorożców
+Wzorzec Flyweight został użyty do zarządzania dużą liczbą obiektów jednorożców, które mają wspólne cechy (np. kolor, typ) ale różnią się unikalnymi właściwościami (imię, lokalizacja przechowywania). Dzięki temu można zaoszczędzić pamięć, przechowując wspólne dane w jednym obiekcie flyweight, a unikalne dane w osobnych obiektach.
+
+* **Interfejs Flyweight:** `domain.models.unicorn.flyweight.UnicornVariantFlyweight`
+* **Klasa flyweight:** `domain.models.unicorn.flyweight.UnicornVariant`
+* **Klasa fabryki flyweight:** `domain.models.unicorn.flyweight.UnicornVariantFactory`
+* **Klasa konkretnych jednorożców:** `domain.models.unicorn.flyweight.Unicorn`
+
+### Flyweight - wiele rodzajów wyposażenia
+Wzorzec wykorzystany do zarządzania zestawami wyposażenia różnego typu.
+* **Interfejs Flyweight:** `domain.models.unicorn.equipment.flyweight.EquipmentFlyweight`
+* **Klasa flyweight:** `domain.models.unicorn.equipment.flyweight.BasicEquipmentPackage`, `domain.models.unicorn.equipment.flyweight.PremiumEquipmentPackage`
+* **Klasa fabryki flyweight:** `domain.models.unicorn.equipment.flyweight.EquipmentFlyweightFactory`
+* **Klasa konkretnych zestawów wyposażenia:** `domain.models.unicorn.equipment.flyweight.RentalEquipmentAssignment`
+
+### Flyweight - wiele rodzajów tras
+Wzorzec został użyty do zarządzania różnymi trasami, na które można wypożyczyć jednorożca. Trasy mogą mieć wspólne cechy (np. długość, poziom trudności) ale różnią się unikalnymi właściwościami (np. nazwa trasy, lokalizacja). Dzięki temu można zaoszczędzić pamięć, przechowując wspólne dane w jednym obiekcie flyweight, a unikalne dane w osobnych obiektach.
+
+* **Interfejs Flyweight:** `domain.models.route.RideRouteFlyweight`
+* **Klasa flyweight:** `domain.models.route.flyweight.ShortRideRoute`, `domain.models.route.flyweight.AdventureRideRoute`
+* **Klasa fabryki flyweight:** `domain.models.route.flyweight.RideRouteFlyweightFactory`
+* **Klasa konkretnych tras:** `domain.models.route.flyweight.RidePlan`
