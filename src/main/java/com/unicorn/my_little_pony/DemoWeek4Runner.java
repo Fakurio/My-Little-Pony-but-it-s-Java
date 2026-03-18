@@ -2,11 +2,16 @@ package com.unicorn.my_little_pony;
 
 import com.unicorn.my_little_pony.database.DatabaseRentingHistoryLoader;
 import com.unicorn.my_little_pony.database.RentingHistoryLoader;
+import com.unicorn.my_little_pony.domain.facades.booking.CustomerBookingFacade;
+import com.unicorn.my_little_pony.domain.facades.rental.UnicornRentalFacade;
+import com.unicorn.my_little_pony.domain.facades.returnprocess.UnicornReturnFacade;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
 import com.unicorn.my_little_pony.domain.models.route.RidePlan;
 import com.unicorn.my_little_pony.domain.models.route.RideRouteFlyweight;
 import com.unicorn.my_little_pony.domain.models.route.RideRouteFlyweightFactory;
+import com.unicorn.my_little_pony.domain.models.unicorn.builders.IceUnicornBuilder;
+import com.unicorn.my_little_pony.domain.models.unicorn.builders.LightningUnicornBuilder;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentFlyweight;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentFlyweightFactory;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.RentalEquipmentAssignment;
@@ -33,12 +38,11 @@ public class DemoWeek4Runner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("\n");
         System.out.println("===========================================================");
-        System.out.println("  DEMO TYDZIEŃ 4: Proxy + Flyweight + Facade");
+        System.out.println("  DEMO TYDZIEŃ 4: Proxy + Flyweight ");
         System.out.println("===========================================================");
         System.out.println();
         demoProxy();
         demoFlyweight();
-        demoFacade();
         System.out.println();
         System.out.println("===========================================================");
     }
@@ -248,5 +252,4 @@ public class DemoWeek4Runner implements CommandLineRunner {
 
     }
 
-    private void demoFacade() {}
 }
