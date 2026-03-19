@@ -194,6 +194,10 @@ public class DemoWeek4Runner implements CommandLineRunner {
         System.out.println(a1.getInfo());
         System.out.println(a2.getInfo());
         System.out.println(a3.getInfo());
+        System.out.println("basic1 package tier: " + basic1.getPackageTier());
+        System.out.println("premium1 package tier: " + premium1.getPackageTier());
+        System.out.println("basic1 equipment: " + basic1.getEquipment());
+        System.out.println("premium1 equipment: " + premium1.getEquipment());
 
         System.out.println("Equipment flyweights created: "
                 + EquipmentFlyweightFactory.getFlyweightCount());
@@ -242,6 +246,10 @@ public class DemoWeek4Runner implements CommandLineRunner {
         System.out.println(p1.getInfo());
         System.out.println(p2.getInfo());
         System.out.println(p3.getInfo());
+        System.out.println("shortRoute1 route type: " + shortRoute1.getRouteTypeLabel());
+        System.out.println("adventureRoute route type: " + adventureRoute.getRouteTypeLabel());
+        System.out.println("shortRoute1 profile: " + shortRoute1.getRouteProfile());
+        System.out.println("adventureRoute profile: " + adventureRoute.getRouteProfile());
 
         System.out.println("Ride route flyweights created: "
                 + RideRouteFlyweightFactory.getFlyweightCount());

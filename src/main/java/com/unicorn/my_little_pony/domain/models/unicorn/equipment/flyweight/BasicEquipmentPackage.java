@@ -7,55 +7,41 @@ public class BasicEquipmentPackage implements EquipmentFlyweight {
     private final String packageName;
     private final String saddleType;
     private final String harnessType;
-    private final String decorationStyle;
-    private final String safetyLevel;
 
     public BasicEquipmentPackage(
             String packageName,
             String saddleType,
-            String harnessType,
-            String decorationStyle,
-            String safetyLevel) {
+            String harnessType) {
         this.packageName = packageName;
         this.saddleType = saddleType;
         this.harnessType = harnessType;
-        this.decorationStyle = decorationStyle;
-        this.safetyLevel = safetyLevel;
     }
 
     @Override
-    public String getPackageName() {
-        return packageName;
+    public String getPackageTier() {
+        return "BASIC";
     }
 
-    @Override
     public String getSaddleType() {
         return saddleType;
     }
 
-    @Override
     public String getHarnessType() {
         return harnessType;
     }
 
     @Override
-    public String getDecorationStyle() {
-        return decorationStyle;
-    }
-
-    @Override
-    public String getSafetyLevel() {
-        return safetyLevel;
+    public String getEquipment() {
+        return "saddle=" + saddleType + ", harness=" + harnessType;
     }
 
     @Override
     public String describe() {
         return "BasicEquipmentPackage{" +
-                "packageName='" + packageName + '\'' +
+                "packageTier='" + getPackageTier() + '\'' +
+                ", packageName='" + packageName + '\'' +
                 ", saddleType='" + saddleType + '\'' +
                 ", harnessType='" + harnessType + '\'' +
-                ", decorationStyle='" + decorationStyle + '\'' +
-                ", safetyLevel='" + safetyLevel + '\'' +
                 '}';
     }
 }

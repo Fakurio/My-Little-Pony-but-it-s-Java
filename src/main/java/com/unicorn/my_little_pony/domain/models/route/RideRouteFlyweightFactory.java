@@ -16,33 +16,41 @@ public class RideRouteFlyweightFactory {
             int defaultDurationMinutes,
             String terrainType) {
 
-        String key = routeType + "_" + routeName + "_" + difficultyLevel + "_"
-                + defaultDurationMinutes + "_" + terrainType;
+        String normalizedType = routeType.toUpperCase();
+        String key;
 
-        if (!routeMap.containsKey(key)) {
-            if ("SHORT".equalsIgnoreCase(routeType)) {
+        if ("SHORT".equalsIgnoreCase(normalizedType)) {
+            key = normalizedType + "_" + routeName + "_" + defaultDurationMinutes + "_" + terrainType;
+            if (!routeMap.containsKey(key)) {
                 routeMap.put(
                         key,
                         new ShortRideRoute(
                                 routeName,
-                                difficultyLevel,
                                 defaultDurationMinutes,
                                 terrainType
                         )
                 );
-            } else if ("ADVENTURE".equalsIgnoreCase(routeType)) {
+            }
+        } else if ("ADVENTURE".equalsIgnoreCase(normalizedType)) {
+            boolean requiresGuide = "HARD".equalsIgnoreCase(difficultyLevel)
+                    || "EXTREME".equalsIgnoreCase(difficultyLevel)
+                    || defaultDurationMinutes >= 45;
+            key = normalizedType + "_" + routeName + "_" + difficultyLevel + "_"
+                    + defaultDurationMinutes + "_" + terrainType + "_" + requiresGuide;
+            if (!routeMap.containsKey(key)) {
                 routeMap.put(
                         key,
                         new AdventureRideRoute(
                                 routeName,
-                                difficultyLevel,
                                 defaultDurationMinutes,
-                                terrainType
+                                terrainType,
+                                difficultyLevel,
+                                requiresGuide
                         )
                 );
-            } else {
-                throw new IllegalArgumentException("Unknown route type: " + routeType);
             }
+        } else {
+            throw new IllegalArgumentException("Unknown route type: " + routeType);
         }
 
         return routeMap.get(key);

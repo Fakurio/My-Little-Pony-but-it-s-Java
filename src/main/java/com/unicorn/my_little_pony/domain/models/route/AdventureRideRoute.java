@@ -5,43 +5,62 @@ package com.unicorn.my_little_pony.domain.models.route;
 public class AdventureRideRoute implements RideRouteFlyweight {
 
     private final String routeName;
-    private final String difficultyLevel;
     private final int defaultDurationMinutes;
     private final String terrainType;
+    private final String riskLevel;
+    private final boolean requiresGuide;
 
     public AdventureRideRoute(
             String routeName,
-            String difficultyLevel,
             int defaultDurationMinutes,
-            String terrainType) {
+            String terrainType,
+            String riskLevel,
+            boolean requiresGuide) {
         this.routeName = routeName;
-        this.difficultyLevel = difficultyLevel;
         this.defaultDurationMinutes = defaultDurationMinutes;
         this.terrainType = terrainType;
+        this.riskLevel = riskLevel;
+        this.requiresGuide = requiresGuide;
     }
 
     @Override
-    public String getDifficultyLevel() {
-        return difficultyLevel;
+    public String getRouteTypeLabel() {
+        return "ADVENTURE";
     }
 
-    @Override
     public int getDefaultDurationMinutes() {
         return defaultDurationMinutes;
     }
 
-    @Override
     public String getTerrainType() {
         return terrainType;
+    }
+
+    public String getRiskLevel() {
+        return riskLevel;
+    }
+
+    public boolean isGuideRequired() {
+        return requiresGuide;
+    }
+
+    @Override
+    public String getRouteProfile() {
+        return "duration=" + defaultDurationMinutes
+                + " min, terrain=" + terrainType
+                + ", risk=" + riskLevel
+                + ", guideRequired=" + requiresGuide;
     }
 
     @Override
     public String describe() {
         return "AdventureRideRoute{" +
-                "routeName='" + routeName + '\'' +
-                ", difficultyLevel='" + difficultyLevel + '\'' +
+                "routeType='" + getRouteTypeLabel() + '\'' +
+                ", routeName='" + routeName + '\'' +
                 ", defaultDurationMinutes=" + defaultDurationMinutes +
                 ", terrainType='" + terrainType + '\'' +
+                ", riskLevel='" + riskLevel + '\'' +
+                ", requiresGuide=" + requiresGuide +
                 '}';
     }
 }

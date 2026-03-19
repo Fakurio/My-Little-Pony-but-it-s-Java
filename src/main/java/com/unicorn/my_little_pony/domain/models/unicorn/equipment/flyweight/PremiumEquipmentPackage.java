@@ -24,34 +24,39 @@ public class PremiumEquipmentPackage implements EquipmentFlyweight {
     }
 
     @Override
-    public String getPackageName() {
-        return packageName;
+    public String getPackageTier() {
+        return "PREMIUM";
     }
 
-    @Override
     public String getSaddleType() {
         return saddleType;
     }
 
-    @Override
     public String getHarnessType() {
         return harnessType;
     }
 
-    @Override
     public String getDecorationStyle() {
         return decorationStyle;
     }
 
-    @Override
     public String getSafetyLevel() {
         return safetyLevel;
     }
 
     @Override
+    public String getEquipment() {
+        return "saddle=" + saddleType
+                + ", harness=" + harnessType
+                + ", decoration=" + decorationStyle
+                + ", safety=" + safetyLevel;
+    }
+
+    @Override
     public String describe() {
         return "PremiumEquipmentPackage{" +
-                "packageName='" + packageName + '\'' +
+                "packageTier='" + getPackageTier() + '\'' +
+                ", packageName='" + packageName + '\'' +
                 ", saddleType='" + saddleType + '\'' +
                 ", harnessType='" + harnessType + '\'' +
                 ", decorationStyle='" + decorationStyle + '\'' +

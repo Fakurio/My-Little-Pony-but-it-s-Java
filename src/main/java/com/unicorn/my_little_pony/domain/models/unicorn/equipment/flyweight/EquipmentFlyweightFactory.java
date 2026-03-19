@@ -17,22 +17,25 @@ public class EquipmentFlyweightFactory {
             String decorationStyle,
             String safetyLevel) {
 
-        String key = packageType + "_" + packageName + "_" + saddleType + "_"
-                + harnessType + "_" + decorationStyle + "_" + safetyLevel;
+        String normalizedType = packageType.toUpperCase();
+        String key;
 
-        if (!equipmentMap.containsKey(key)) {
-            if ("BASIC".equalsIgnoreCase(packageType)) {
+        if ("BASIC".equalsIgnoreCase(normalizedType)) {
+            key = normalizedType + "_" + packageName + "_" + saddleType + "_" + harnessType;
+            if (!equipmentMap.containsKey(key)) {
                 equipmentMap.put(
                         key,
                         new BasicEquipmentPackage(
                                 packageName,
                                 saddleType,
-                                harnessType,
-                                decorationStyle,
-                                safetyLevel
+                                harnessType
                         )
                 );
-            } else if ("PREMIUM".equalsIgnoreCase(packageType)) {
+            }
+        } else if ("PREMIUM".equalsIgnoreCase(normalizedType)) {
+            key = normalizedType + "_" + packageName + "_" + saddleType + "_"
+                    + harnessType + "_" + decorationStyle + "_" + safetyLevel;
+            if (!equipmentMap.containsKey(key)) {
                 equipmentMap.put(
                         key,
                         new PremiumEquipmentPackage(
@@ -43,9 +46,9 @@ public class EquipmentFlyweightFactory {
                                 safetyLevel
                         )
                 );
-            } else {
-                throw new IllegalArgumentException("Unknown equipment package type: " + packageType);
             }
+        } else {
+            throw new IllegalArgumentException("Unknown equipment package type: " + packageType);
         }
 
         return equipmentMap.get(key);
