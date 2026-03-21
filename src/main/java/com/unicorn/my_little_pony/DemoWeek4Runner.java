@@ -36,15 +36,15 @@ public class DemoWeek4Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("\n");
-        System.out.println("===========================================================");
-        System.out.println("  DEMO TYDZIEŃ 4: Proxy + Flyweight ");
-        System.out.println("===========================================================");
-        System.out.println();
-        demoProxy();
-        demoFlyweight();
-        System.out.println();
-        System.out.println("===========================================================");
+//        System.out.println("\n");
+//        System.out.println("===========================================================");
+//        System.out.println("  DEMO TYDZIEŃ 4: Proxy + Flyweight ");
+//        System.out.println("===========================================================");
+//        System.out.println();
+//        demoProxy();
+//        demoFlyweight();
+//        System.out.println();
+//        System.out.println("===========================================================");
     }
 
     private void demoProxy() {
