@@ -181,3 +181,25 @@ Zastosowano w celu zabezpieczenia złożonego procesu wypożyczenia. Krytyczne a
 
 * **Makro i Komendy Stanu:** `domain.models.unicorn.commands.TransactionMacro`, `domain.models.unicorn.commands.ChangeStatusCommand`
 * **Klient:** `domain.facades.rental.UnicornRentalFacade`
+
+## Memento Design Pattern
+
+### Ulubione Konfiguracje
+Wzorzec Memento został użyty do zapisywania konfiguracji ekwipunku jednorożca. Obiekt jednorożca potrafi utworzyć pamiątkę ze swoim obecnym ekwipunkiem, która następnie jest przechowywana przez menedżera. Pozwala to klientom na zapisywanie i natychmiastowe przywracanie ich ulubionych "zestawów" bez konieczności ponownego, ręcznego uzbrajania jednorożca.
+
+* **Originator:** `domain.models.unicorn.types.Unicorn`
+* **Memento:** `domain.models.unicorn.types.Unicorn.UnicornMemento`
+* **Caretaker:** `domain.models.unicorn.memento.LoadoutManager`
+
+### Szkice Wypożyczeń
+Zastosowany w celu poprawy doświadczenia użytkownika podczas wypełniania złożonego formularza wypożyczenia. System na bieżąco generuje zrzut stanu niedokończonej aplikacji i zapisuje go w pamięci sesji przeglądarki. W przypadku awarii lub przypadkowego odświeżenia strony, formularz natychmiast odtwarza utracone dane.
+
+* **Originator:** `domain.models.rental.mementos.RentalApplication`
+* **Memento:** `domain.models.rental.mementos.RentalApplication.RentalDraftMemento`
+* **Caretaker:** `domain.models.rental.mementos.SessionCache`
+
+### Przywracanie Konfiguracji Cen
+Użyto do zabezpieczenia kluczowego dla systemu Singletona (`PricingConfig`) przed błędami ludzkimi. Zanim administrator wprowadzi nowe stawki cenowe, system generuje obiekt Memento z poprzednimi wartościami pozwalając na bezpieczne cofnięcie zmian.
+
+* **Originator:** `domain.pricing.PricingConfig`
+* **Memento:** `domain.pricing.PricingConfig.PricingConfigMemento`
