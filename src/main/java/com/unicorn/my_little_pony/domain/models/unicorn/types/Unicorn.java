@@ -55,5 +55,26 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     // Metoda abstrakcyjna do klonowania obiektow
     public abstract Unicorn clone();
     // Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 3
+
+    //Tydzień 5, Wzorzec Memento, Zastosowanie 1
+    // Klasa wew. i metody to zapisania i przywrócenia stanu ekwipunktu jednorożca
+    public static class UnicornMemento {
+        private final Equipment savedEquipment;
+
+        public UnicornMemento(Equipment savedEquipment) {
+            this.savedEquipment = savedEquipment;
+        }
+    }
+
+    public UnicornMemento saveLoadout() {
+        System.out.println("Saving current equipment: " + equipment.getDescription());
+        return new UnicornMemento(this.equipment);
+    }
+
+    public void restoreLoadout(UnicornMemento memento) {
+        this.equipment = memento.savedEquipment;
+        System.out.println("Equipment restored: " + equipment.getDescription());
+    }
+    // Koniec, Tydzień 5, Wzorzec Memento
 }
 // Koniec, Tydzień 2, Wzorzec Factory method, Zastosowanie 2

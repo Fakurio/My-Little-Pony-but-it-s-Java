@@ -2,15 +2,18 @@ package com.unicorn.my_little_pony;
 
 import com.unicorn.my_little_pony.domain.facades.rental.UnicornRentalFacade;
 import com.unicorn.my_little_pony.domain.facades.returnprocess.MaintenanceQueue;
-import com.unicorn.my_little_pony.domain.facades.returnprocess.UnicornReturnFacade;
+import com.unicorn.my_little_pony.domain.models.rental.mementos.RentalApplication;
+import com.unicorn.my_little_pony.domain.models.rental.mementos.SessionCache;
 import com.unicorn.my_little_pony.domain.models.unicorn.commands.*;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.RainbowSaddle;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.TitaniumArmor;
+import com.unicorn.my_little_pony.domain.models.unicorn.memento.LoadoutManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.LightningUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.WaterUnicorn;
+import com.unicorn.my_little_pony.domain.pricing.PricingConfig;
 import com.unicorn.my_little_pony.domain.store.UnicornCart;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 import com.unicorn.my_little_pony.util.IdGenerator;
@@ -107,5 +110,67 @@ public class DemoWeek5Runner implements CommandLineRunner {
 
     private void demoMediator() {}
 
-    private void demoMemento() {}
+    private void demoMemento() {
+        System.out.println("=========================");
+        System.out.println("Memento");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: Unicorn equipment loadout");
+
+        Unicorn blaze = new FireUnicorn("1", "Blaze", "Red", 100);
+        LoadoutManager loadoutManager = new LoadoutManager();
+
+        System.out.println("Client prepare future battle build");
+        blaze.setEquipment(new TitaniumArmor());
+        Unicorn.UnicornMemento battleBuild = blaze.saveLoadout();
+        loadoutManager.saveFavorite("MyBattleBuild", battleBuild);
+
+        System.out.println("\nClient is going for peaceful walk");
+        blaze.setEquipment(new RainbowSaddle());
+        System.out.println("Current equipment: " + blaze.getEquipment().getDescription());
+
+        System.out.println("\nSudden battle breaks out. Client loads previously saved battle build");
+        blaze.restoreLoadout(loadoutManager.getFavorite("MyBattleBuild"));
+        System.out.println("Current equipment: " + blaze.getEquipment().getDescription());
+
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Rental application draft");
+
+        System.out.println("Client start filling rental application form...");
+        RentalApplication app = new RentalApplication();
+        SessionCache sessionCache = new SessionCache();
+        app.setUnicornId(IdGenerator.getInstance().nextUnicornId());
+        app.setCustomerId(IdGenerator.getInstance().nextCustomerId());
+        System.out.println("Form state: " + app);
+
+        System.out.println("\nUser closes browser by accident. Form draft is saved in background...");
+        sessionCache.save(app.saveDraft());
+
+        app = new RentalApplication();
+        System.out.println("Fresh form after opening browser: " + app);
+        System.out.println("\nForm draft found in cache. Restoring...");
+
+        app.restoreDraft(sessionCache.getDraft());
+        System.out.println("Form state: " + app);
+
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Price config backup");
+
+        PricingConfig config = PricingConfig.getInstance();
+        System.out.println("Price config state: ");
+        config.printConfig();
+
+        System.out.println("\nAdmin creates restoration point...");
+        PricingConfig.PricingConfigMemento backup = config.saveState();
+
+        System.out.println("\nAdmin sets wrong data...");
+        config.setBasePricePerHour(0);
+        config.setRainbowPriceRaise(-1);
+        config.printConfig();
+
+        System.out.println("\nAdmin clicks restore data...");
+        config.restoreState(backup);
+        config.printConfig();
+    }
 }
