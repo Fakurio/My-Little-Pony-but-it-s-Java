@@ -1,5 +1,6 @@
 package com.unicorn.my_little_pony;
 
+import com.unicorn.my_little_pony.domain.employees.*;
 import com.unicorn.my_little_pony.domain.facades.rental.UnicornRentalFacade;
 import com.unicorn.my_little_pony.domain.facades.returnprocess.MaintenanceQueue;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
@@ -19,6 +20,8 @@ import com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status.UnicornI
 import com.unicorn.my_little_pony.domain.models.unicorn.memento.LoadoutManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.*;
 import com.unicorn.my_little_pony.domain.pricing.PricingConfig;
+import com.unicorn.my_little_pony.domain.rentalSystem.*;
+import com.unicorn.my_little_pony.domain.rentalservices.*;
 import com.unicorn.my_little_pony.domain.store.UnicornCart;
 import com.unicorn.my_little_pony.enums.PowerLevelCategory;
 import com.unicorn.my_little_pony.enums.RentalStatus;
@@ -252,7 +255,75 @@ public class DemoWeek5Runner implements CommandLineRunner {
         }
     }
 
-    private void demoMediator() {}
+    private void demoMediator() {
+        System.out.println("=========================");
+        System.out.println("Mediator");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: RentalSystem");
+        SystemMediator mediator = new RentalSystemMediator();
+
+        SystemModule bookingModule = new BookingModule(mediator);
+        SystemModule paymentModule = new PaymentModule(mediator);
+        SystemModule notificationModule = new NotificationModule(mediator);
+        SystemModule availabilityModule = new AvailabilityModule(mediator);
+
+        mediator.addModule(bookingModule);
+        mediator.addModule(paymentModule);
+        mediator.addModule(notificationModule);
+        mediator.addModule(availabilityModule);
+
+        bookingModule.send("New unicorn rental created for customer C-101.");
+        System.out.println();
+
+        paymentModule.send("Payment for rental R-202 has been confirmed.");
+        System.out.println();
+
+        availabilityModule.send("Unicorn U-15 marked as unavailable.");
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Stable workers");
+        StableMediator mediatorStable = new UnicornStableMediator();
+
+        StableWorker caretaker = new Caretaker(mediatorStable);
+        StableWorker veterinarian = new Veterinarian(mediatorStable);
+        StableWorker cleaner = new Cleaner(mediatorStable);
+        StableWorker manager = new StableManager(mediatorStable);
+
+        mediatorStable.addWorker(caretaker);
+        mediatorStable.addWorker(veterinarian);
+        mediatorStable.addWorker(cleaner);
+        mediatorStable.addWorker(manager);
+
+        caretaker.send("Unicorn Moonlight seems tired and needs examination.");
+        System.out.println();
+
+        cleaner.send("Box 3 has been cleaned and is ready.");
+        System.out.println();
+
+        manager.send("Royal unicorn area will be inspected this afternoon.");
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Rental services");
+
+        ServiceMediator mediator3 = new UnicornRentalServiceMediator();
+
+        RentalService pricingService = new PricingService(mediator3);
+        RentalService discountService = new DiscountService(mediator3);
+        RentalService insuranceService = new InsuranceService(mediator3);
+
+        mediator3.addService(pricingService);
+        mediator3.addService(discountService);
+        mediator3.addService(insuranceService);
+
+        pricingService.send("Base price for rental R-301 has been calculated.");
+        System.out.println();
+
+        discountService.send("Loyalty discount has been applied to rental R-301.");
+        System.out.println();
+
+        insuranceService.send("Extended magical insurance added to rental R-301.");
+        System.out.println();
+    }
 
     private void demoMemento() {
         System.out.println("=========================");

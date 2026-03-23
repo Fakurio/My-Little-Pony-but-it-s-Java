@@ -223,8 +223,41 @@ Wzorzec został użyty do umożliwienia iterowania po wypożyczeniach o określo
 
 ### Iteracja po poziomach mocy jednorożców
 Wzorzec został użyty do umożliwienia iterowania po jednorożcach o określonym poziomie mocy.
-* **Typ wyliczeniowy do poziomów mocy:** `enums.UnicornStatus`
+* **Typ wyliczeniowy do poziomów mocy:** `enums.PowerLevelCategory`
 * **Klasa jednorożca:** `domain.models.unicorn.types.Unicorn`
 * **Interfejs iteratora:** `domain.models.unicorn.iterator.PowerLevel.PowerLevelUnicornIterator`
 * **Interfejs kolekcji jednorożców:** `domain.models.unicorn.iterator.PowerLevel.PowerLevelUnicornCollection`
 * **Konkretna kolekcja jednorożców z klasą wewnętrzną iteratora dla poziomów mocy:** `domain.models.unicorn.iterator.PowerLevel.UnicornPowerBook`
+
+## Mediator Design Pattern
+### Mediator - Koordynacja procesu wypożyczenia
+Wzorzec został użyty do centralizacji komunikacji pomiędzy modułami systemu wypożyczalni. Poszczególne moduły nie komunikują się bezpośrednio ze sobą, lecz przesyłają komunikaty przez wspólnego mediatora.
+* **Interfejs mediatora:** `domain.rentalsystem.SystemMediator`
+* **Interfejs współpracownika:** `domain.rentalsystem.SystemModule`
+* **Konkretny mediator:** `domain.rentalsystem.RentalSystemMediator`
+* **Abstrakcyjna klasa współpracownika ze wspólną logiką wysyłania komunikatów:** `domain.rentalsystem.AbstractSystemModule`
+* **Konkretny współpracownik – moduł rezerwacji:** `domain.rentalsystem.BookingModule`
+* **Konkretny współpracownik – moduł płatności:** `domain.rentalsystem.PaymentModule`
+* **Konkretny współpracownik – moduł powiadomień:** `domain.rentalsystem.NotificationModule`
+* **Konkretny współpracownik – moduł dostępności:** `domain.rentalsystem.AvailabilityModule`
+
+### Mediator - koordynacja działań pracowników
+Wzorzec został użyty do centralizacji komunikacji pomiędzy pracownikami stajni. Pracownicy nie komunikują się bezpośrednio między sobą, lecz przekazują informacje przez mediatora.
+* **Interfejs mediatora:** `domain.employees.StableMediator`
+* **Interfejs współpracownika:** `domain.employees.StableWorker`
+* **Konkretny mediator:** `domain.employees.UnicornStableMediator`
+* **Abstrakcyjna klasa współpracownika ze wspólną logiką wysyłania komunikatów:** `domain.employees.AbstractStableWorker`
+* **Konkretny współpracownik – opiekun jednorożców:** `domain.employees.Caretaker`
+* **Konkretny współpracownik – weterynarz:** `domain.employees.Veterinarian`
+* **Konkretny współpracownik – pracownik sprzątający:** `domain.employees.Cleaner`
+* **Konkretny współpracownik – manager stajni:** `domain.employees.StableManager`
+
+### Mediator - koordynacja modułów powiązanych z wypożyczeniem
+Wzorzec został użyty do centralizacji komunikacji pomiędzy usługami odpowiedzialnymi za obsługę wypożyczenia. Poszczególne usługi nie są połączone bezpośrednio, lecz wymieniają komunikaty przez mediatora.
+* **Interfejs mediatora:** `domain.rentalservices.ServiceMediator`
+* **Interfejs współpracownika:** b`domain.rentalservices.RentalService`
+* **Konkretny mediator:** `domain.rentalservices.UnicornRentalServiceMediator`
+* **Abstrakcyjna klasa współpracownika ze wspólną logiką wysyłania komunikatów:** `domain.rentalservices.AbstractRentalService`
+* **Konkretny współpracownik – usługa wyliczania ceny:** `domain.rentalservices.PricingService`
+* **Konkretny współpracownik – usługa rabatów:** `domain.rentalservices.DiscountService`
+* **Konkretny współpracownik – usługa ubezpieczeń:** `domain.rentalservices.InsuranceService`
