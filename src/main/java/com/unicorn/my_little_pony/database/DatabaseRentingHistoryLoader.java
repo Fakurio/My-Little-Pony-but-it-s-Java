@@ -1,6 +1,7 @@
 package com.unicorn.my_little_pony.database;
 
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
+import com.unicorn.my_little_pony.enums.RentalStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,12 +24,12 @@ public class DatabaseRentingHistoryLoader implements RentingHistoryLoader {
         history.add(new Rental(
                 "R-1001", unicornId, "CUST-99",
                 LocalDateTime.now().minusDays(10), LocalDateTime.now().minusDays(8),
-                200.0, 180.0, true
+                200.0, 180.0, true, RentalStatus.NEW
         ));
         history.add(new Rental(
                 "R-1002", unicornId, "CUST-42",
                 LocalDateTime.now().minusDays(5), LocalDateTime.now().minusDays(2),
-                300.0, 300.0, true
+                300.0, 300.0, true, RentalStatus.NEW
         ));
 
         return history;

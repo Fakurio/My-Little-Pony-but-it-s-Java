@@ -2,23 +2,32 @@ package com.unicorn.my_little_pony;
 
 import com.unicorn.my_little_pony.domain.facades.rental.UnicornRentalFacade;
 import com.unicorn.my_little_pony.domain.facades.returnprocess.MaintenanceQueue;
+import com.unicorn.my_little_pony.domain.models.rental.Rental;
+import com.unicorn.my_little_pony.domain.models.rental.builders.RentalBuilder;
+import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalBook;
+import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalIterator;
 import com.unicorn.my_little_pony.domain.models.rental.mementos.RentalApplication;
 import com.unicorn.my_little_pony.domain.models.rental.mementos.SessionCache;
 import com.unicorn.my_little_pony.domain.models.unicorn.commands.*;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.RainbowSaddle;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.TitaniumArmor;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel.PowerLevelUnicornIterator;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel.UnicornPowerBook;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status.StableUnicornCollection;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status.UnicornIterator;
 import com.unicorn.my_little_pony.domain.models.unicorn.memento.LoadoutManager;
-import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
-import com.unicorn.my_little_pony.domain.models.unicorn.types.LightningUnicorn;
-import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
-import com.unicorn.my_little_pony.domain.models.unicorn.types.WaterUnicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.*;
 import com.unicorn.my_little_pony.domain.pricing.PricingConfig;
 import com.unicorn.my_little_pony.domain.store.UnicornCart;
+import com.unicorn.my_little_pony.enums.PowerLevelCategory;
+import com.unicorn.my_little_pony.enums.RentalStatus;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 import com.unicorn.my_little_pony.util.IdGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class DemoWeek5Runner implements CommandLineRunner {
@@ -106,7 +115,142 @@ public class DemoWeek5Runner implements CommandLineRunner {
 
     private void demoInterpreter() {}
 
-    private void demoIterator() {}
+    private void demoIterator() {
+        System.out.println("=========================");
+        System.out.println("Iterator");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: Unicorn status iterator");
+
+        StableUnicornCollection stable = new StableUnicornCollection();
+
+        Unicorn u1 = new WaterUnicorn("1", "Watery Sparkle", "Blue", 80);
+        Unicorn u2 = new FireUnicorn("2", "Red Moonlight", "Orange", 90);
+        Unicorn u3 = new IceUnicorn("3", "Blue Aurora", "White", 100);
+        Unicorn u4 = new LightningUnicorn("4", "Comet", "Silver", 70);
+
+        u2.setStatus(UnicornStatus.RENTED);
+        u3.setStatus(UnicornStatus.MAINTENANCE);
+
+        stable.addUnicorn(u1);
+        stable.addUnicorn(u2);
+        stable.addUnicorn(u3);
+        stable.addUnicorn(u4);
+
+        System.out.println("AVAILABLE unicorns:");
+        UnicornIterator availableIterator = stable.createIterator(UnicornStatus.AVAILABLE);
+
+        while (availableIterator.hasNext()) {
+            System.out.println(availableIterator.next());
+        }
+
+        System.out.println("\nRENTED unicorns:");
+        UnicornIterator busyIterator = stable.createIterator(UnicornStatus.RENTED);
+
+        while (busyIterator.hasNext()) {
+            System.out.println(busyIterator.next());
+        }
+
+        System.out.println("\nUnicorns in MAINTENANCE:");
+        UnicornIterator maintenanceIterator = stable.createIterator(UnicornStatus.MAINTENANCE);
+
+        while (maintenanceIterator.hasNext()) {
+            System.out.println(maintenanceIterator.next());
+        }
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Rental status iterator");
+
+        RentalBook rentalBook = new RentalBook();
+        IdGenerator idGen = IdGenerator.getInstance();
+        Rental rental1 = new RentalBuilder()
+                .unicornId(idGen.nextUnicornId())
+                .customerId(idGen.nextCustomerId())
+                .start(LocalDateTime.of(2026, 3, 20, 10, 0))
+                .end(LocalDateTime.of(2026, 3, 20, 12, 0))
+                .basePrice(100.0)
+                .finalPrice(120.0)
+                .termsAccepted(true)
+                .status(RentalStatus.NEW)
+                .build();
+
+        Rental rental2 = new RentalBuilder()
+                .unicornId(idGen.nextUnicornId())
+                .customerId(idGen.nextCustomerId())
+                .start(LocalDateTime.of(2026, 3, 21, 9, 0))
+                .end(LocalDateTime.of(2026, 3, 21, 11, 0))
+                .basePrice(150.0)
+                .finalPrice(180.0)
+                .termsAccepted(true)
+                .status(RentalStatus.ACTIVE)
+                .build();
+
+        Rental rental3 = new RentalBuilder()
+                .unicornId(idGen.nextUnicornId())
+                .customerId(idGen.nextCustomerId())
+                .start(LocalDateTime.of(2026, 3, 18, 14, 0))
+                .end(LocalDateTime.of(2026, 3, 18, 16, 0))
+                .basePrice(120.0)
+                .finalPrice(120.0)
+                .termsAccepted(true)
+                .status(RentalStatus.COMPLETED)
+                .build();
+
+        Rental rental4 = new RentalBuilder()
+                .unicornId(idGen.nextUnicornId())
+                .customerId(idGen.nextCustomerId())
+                .start(LocalDateTime.of(2026, 3, 22, 15, 0))
+                .end(LocalDateTime.of(2026, 3, 22, 17, 0))
+                .basePrice(130.0)
+                .finalPrice(130.0)
+                .termsAccepted(false)
+                .status(RentalStatus.CANCELLED)
+                .build();
+
+        rentalBook.addRental(rental1);
+        rentalBook.addRental(rental2);
+        rentalBook.addRental(rental3);
+        rentalBook.addRental(rental4);
+
+        System.out.println("ACTIVE rentals:");
+        RentalIterator activeIterator = rentalBook.createIterator(RentalStatus.ACTIVE);
+        while (activeIterator.hasNext()) {
+            System.out.println(activeIterator.next());
+        }
+
+        System.out.println("\nCOMPLETED rentals:");
+        RentalIterator completedIterator = rentalBook.createIterator(RentalStatus.COMPLETED);
+        while (completedIterator.hasNext()) {
+            System.out.println(completedIterator.next());
+        }
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Unicorn Power lvl iterator");
+
+        UnicornPowerBook unicornBook = new UnicornPowerBook();
+
+        unicornBook.addUnicorn(u1);
+        unicornBook.addUnicorn(u2);
+        unicornBook.addUnicorn(u3);
+        unicornBook.addUnicorn(u4);
+
+        System.out.println("AVERAGE PONY power unicorns:");
+        PowerLevelUnicornIterator avgIterator = unicornBook.createIterator(PowerLevelCategory.AVERAGE_PONY);
+        while (avgIterator.hasNext()) {
+            System.out.println(avgIterator.next());
+        }
+
+        System.out.println("\nSTRONG power unicorns:");
+        PowerLevelUnicornIterator strongIterator = unicornBook.createIterator(PowerLevelCategory.STRONG);
+        while (strongIterator.hasNext()) {
+            System.out.println(strongIterator.next());
+        }
+
+        System.out.println("\nLEGENDARY power unicorns:");
+        PowerLevelUnicornIterator highIterator = unicornBook.createIterator(PowerLevelCategory.LEGENDARY);
+        while (highIterator.hasNext()) {
+            System.out.println(highIterator.next());
+        }
+    }
 
     private void demoMediator() {}
 

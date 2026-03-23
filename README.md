@@ -203,3 +203,28 @@ Użyto do zabezpieczenia kluczowego dla systemu Singletona (`PricingConfig`) prz
 
 * **Originator:** `domain.pricing.PricingConfig`
 * **Memento:** `domain.pricing.PricingConfig.PricingConfigMemento`
+
+## Iterator Design Pattern
+### Iteracja po statusach jednorożców
+Wzorzec został użyty do umożliwienia iterowania po jednorożcach o określonym statusie.
+* **Typ wyliczeniowy do statusów:** `enums.UnicornStatus`
+* **Klasa jednorożca:** `domain.models.unicorn.types.Unicorn`
+* **Interfejs iteratora:** `domain.models.unicorn.iterator.status.UnicornIterator`
+* **Interfejs kolekcji jednorożców:** `domain.models.unicorn.iterator.status.UnicornCollection`
+* **Konkretna kolekcja jednorożców z klasą wewnętrzną iteratora dla statusów:** `domain.models.unicorn.iterator.status.StableUnicornCollection`
+
+### Iteracja po statusach wypożyczeń
+Wzorzec został użyty do umożliwienia iterowania po wypożyczeniach o określonym statusie.
+* **Typ wyliczeniowy do statusów:** `enums.RentalStatus`
+* **Klasa wypożuczenia:** `domain.models.rental.Rental`
+* **Interfejs iteratora:** `domain.models.rental.iterator.RentalIterator`
+* **Interfejs kolekcji wypożyczeń:** `domain.models.rental.iterator.RentalCollection`
+* **Konkretna kolekcja wypożyczeń z klasą wewnętrzną iteratora dla statusów:** `domain.models.rental.RentalBook`
+
+### Iteracja po poziomach mocy jednorożców
+Wzorzec został użyty do umożliwienia iterowania po jednorożcach o określonym poziomie mocy.
+* **Typ wyliczeniowy do poziomów mocy:** `enums.UnicornStatus`
+* **Klasa jednorożca:** `domain.models.unicorn.types.Unicorn`
+* **Interfejs iteratora:** `domain.models.unicorn.iterator.PowerLevel.PowerLevelUnicornIterator`
+* **Interfejs kolekcji jednorożców:** `domain.models.unicorn.iterator.PowerLevel.PowerLevelUnicornCollection`
+* **Konkretna kolekcja jednorożców z klasą wewnętrzną iteratora dla poziomów mocy:** `domain.models.unicorn.iterator.PowerLevel.UnicornPowerBook`
