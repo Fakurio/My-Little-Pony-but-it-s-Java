@@ -1,7 +1,7 @@
 package com.unicorn.my_little_pony.domain.models.route;
 // Tydzień 4, Wzorzec Flyweight, Zastosowanie 3
 // Klasa RidePlan - reprezentuje plan przejażdżki, zawiera dane specyficzne dla
-// konkretnej przejażdżki oraz odniesienie do wspólnego obiektu trasy (Flyweight)
+// ktory konkretnej przejażdżki oraz odniesienie do wspólnego obiektu trasy (Flyweight)
 public class RidePlan {
 
     private final String rideId;

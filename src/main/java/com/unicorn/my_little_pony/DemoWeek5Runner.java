@@ -1,0 +1,504 @@
+package com.unicorn.my_little_pony;
+
+import com.unicorn.my_little_pony.domain.employees.*;
+import com.unicorn.my_little_pony.domain.facades.rental.UnicornRentalFacade;
+import com.unicorn.my_little_pony.domain.facades.returnprocess.MaintenanceQueue;
+import com.unicorn.my_little_pony.domain.models.customer.Customer;
+import com.unicorn.my_little_pony.domain.models.customer.builders.CustomerBuilder;
+import com.unicorn.my_little_pony.domain.models.customer.interpreter.*;
+import com.unicorn.my_little_pony.domain.models.rental.Rental;
+import com.unicorn.my_little_pony.domain.models.rental.builders.RentalBuilder;
+import com.unicorn.my_little_pony.domain.models.rental.interpreter.ActiveRentalExpression;
+import com.unicorn.my_little_pony.domain.models.rental.interpreter.RentalExpression;
+import com.unicorn.my_little_pony.domain.models.rental.interpreter.AndRentalExpression;
+import com.unicorn.my_little_pony.domain.models.rental.interpreter.TermsAcceptedExpression;
+import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalBook;
+import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalIterator;
+import com.unicorn.my_little_pony.domain.models.rental.mementos.RentalApplication;
+import com.unicorn.my_little_pony.domain.models.rental.mementos.SessionCache;
+import com.unicorn.my_little_pony.domain.models.unicorn.builders.IceUnicornBuilder;
+import com.unicorn.my_little_pony.domain.models.unicorn.builders.LightningUnicornBuilder;
+import com.unicorn.my_little_pony.domain.models.unicorn.commands.*;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.RainbowSaddle;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.TitaniumArmor;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.AndExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.ColorExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.PowerExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.UnicornExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel.PowerLevelUnicornIterator;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel.UnicornPowerBook;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status.StableUnicornCollection;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status.UnicornIterator;
+import com.unicorn.my_little_pony.domain.models.unicorn.memento.LoadoutManager;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.*;
+import com.unicorn.my_little_pony.domain.pricing.PricingConfig;
+import com.unicorn.my_little_pony.domain.rentalSystem.*;
+import com.unicorn.my_little_pony.domain.rentalservices.*;
+import com.unicorn.my_little_pony.domain.store.UnicornCart;
+import com.unicorn.my_little_pony.enums.PowerLevelCategory;
+import com.unicorn.my_little_pony.enums.RentalStatus;
+import com.unicorn.my_little_pony.enums.UnicornStatus;
+import com.unicorn.my_little_pony.util.IdGenerator;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import java.sql.SQLOutput;
+import java.time.LocalDateTime;
+
+@Component
+public class DemoWeek5Runner implements CommandLineRunner {
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("\n");
+        System.out.println("===========================================================");
+        System.out.println("  DEMO TYDZIEŃ 5: Command + Interpreter + Iterator + Mediator + Memento ");
+        System.out.println("===========================================================");
+        System.out.println();
+        demoCommand();
+        demoInterpreter();
+        demoIterator();
+        demoMediator();
+        demoMemento();
+        System.out.println();
+        System.out.println("===========================================================");
+    }
+
+    private void demoCommand() {
+        System.out.println("=========================");
+        System.out.println("Command");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: Equipment command");
+
+        Unicorn blaze = new FireUnicorn("1", "Blaze", "Red", 100);
+        UnicornCart cart = new UnicornCart();
+
+        Equipment saddle = new RainbowSaddle();
+        Equipment armor = new TitaniumArmor();
+
+        System.out.println("Client add saddle to cart ...");
+        cart.addEquipment(new EquipCommand(blaze, saddle));
+
+        System.out.println("Client add armor to cart ...");
+        cart.addEquipment(new EquipCommand(blaze, armor));
+
+        System.out.println("Current equipment: " + blaze.getEquipment().getDescription());
+        System.out.println("\nClient clicks 'Undo'...");
+        cart.undoLastAction();
+        System.out.println("Current equipment: " + blaze.getEquipment().getDescription());
+        System.out.println("\nClient clicks 'Undo'...");
+        cart.undoLastAction();
+        System.out.println("Current equipment: " + blaze.getEquipment().getDescription());
+
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Maintenance command queue");
+
+        UnicornRentalFacade rentalFacade = new UnicornRentalFacade();
+        Unicorn splash = new WaterUnicorn(IdGenerator.getInstance().nextUnicornId(), "Splash", "Blue", 80);
+        rentalFacade.rentUnicorn(splash, IdGenerator.getInstance().nextCustomerId());
+        MaintenanceQueue queue = new MaintenanceQueue();
+
+        System.out.println("Client returns water unicorn: " + splash);
+        System.out.println("UnicornReturnFacade delegate commands to background queue...");
+        queue.addJob(new FeedCommand(splash));
+        queue.addJob(new BrushCommand(splash));
+        queue.processAll();
+
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Transaction command");
+
+        Unicorn starlight = new LightningUnicorn(IdGenerator.getInstance().nextUnicornId(), "Starlight", "White", 50);
+        System.out.println("Unicorn status: " + starlight.getStatus());
+        TransactionMacro transaction = new TransactionMacro();
+
+        try {
+            System.out.println("\nUnicorn renting process starts...");
+            Command lockCommand = new ChangeStatusCommand(starlight, UnicornStatus.RENTED);
+            transaction.executeCommand(lockCommand);
+            System.out.println("Unicorn status during transaction: " + starlight.getStatus());
+
+            System.out.println("Moving to payment step...");
+            System.out.println("CRITICAL ERROR: Payment database is dead!!!");
+            throw new RuntimeException("Database connection failed!");
+        } catch (Exception e) {
+            System.out.println("Rolling back transaction...");
+            transaction.undo();
+        }
+        System.out.println("\nUnicorn status after error: " + starlight.getStatus());
+    }
+
+    private void demoInterpreter() {
+        System.out.println("=========================");
+        System.out.println("interpreter");
+        System.out.println("=========================");
+
+        System.out.println("Zastosowanie 1: Customer eligibility");
+
+        System.out.println("Checking if customer meets conditions:");
+        Customer customer = new CustomerBuilder()
+                .name("Princess Celestia")
+                .email("celestia@gmail.com")
+                .phone("123456789")
+                .vip(true)
+                .build();
+        System.out.println("Customer: " + customer);
+        Customer customer2 = new CustomerBuilder()
+                .name("Starla Galactica")
+                .email("Starla@gmail.com")
+                .phone("123456789")
+                .vip(false)
+                .build();
+        System.out.println("Customer 2: "+ customer2);
+        CustomerExpression vip = new VipCustomerExpression();
+        CustomerExpression email = new HasEmailExpression();
+        CustomerExpression phone = new HasPhoneExpression();
+
+        CustomerExpression rule =
+                new AndCustomerExpression(vip,
+                        new AndCustomerExpression(email, phone));
+
+        boolean result = rule.interpret(customer);
+        boolean result_sc = rule.interpret(customer2);
+
+        System.out.println("Customer 1 meets conditions ( isVip, has email, has phone number): " + result);
+        System.out.println("Customer 2 meets conditions ( isVip, has email, has phone number): " + result_sc);
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Rental status");
+        System.out.println("Checking if rental meets conditions:");
+        Rental rental = new RentalBuilder()
+                .unicornId("U-1")
+                .customerId("C-1")
+                .start(LocalDateTime.now())
+                .end(LocalDateTime.now().plusDays(2))
+                .termsAccepted(true)
+                .status(RentalStatus.ACTIVE)
+                .build();
+        System.out.println("Rental: " + rental);
+        Rental rental2 = new RentalBuilder()
+                .unicornId("U-1")
+                .customerId("C-1")
+                .start(LocalDateTime.now())
+                .end(LocalDateTime.now().plusDays(2))
+                .termsAccepted(false)
+                .status(RentalStatus.ACTIVE)
+                .build();
+        System.out.println("Rental: " + rental2);
+        RentalExpression active = new ActiveRentalExpression();
+        RentalExpression terms = new TermsAcceptedExpression();
+
+        RentalExpression rule2 = new AndRentalExpression(active, terms);
+
+        boolean result2 = rule2.interpret(rental);
+        boolean result2_sc = rule2.interpret(rental2);
+        System.out.println("Rental meets conditions (is active, terms are accepted): " + result2);
+        System.out.println("Rental 2 meets conditions (is active, terms are accepted): " + result2_sc);
+
+        System.out.println("-------------------------");
+        System.out.println("zastosowanie 3: Unicorn filtering");
+        System.out.println("Checking if unicorn matches filters ( is blue, has a power 30):");
+        Unicorn unicorn1 = new IceUnicornBuilder()
+                .name("Frosty")
+                .color("Blue")
+                .powerLevel(20)
+                .build();
+
+        Unicorn unicorn2 = new LightningUnicornBuilder()
+                .name("Thunder")
+                .color("Yellow")
+                .powerLevel(40)
+                .build();
+
+        Unicorn unicorn3 = new LightningUnicornBuilder()
+                .name("Spark")
+                .color("Blue")
+                .powerLevel(50)
+                .build();
+        System.out.println("Unicor 1: "+ unicorn1);
+        System.out.println("Unicor 2: "+ unicorn2);
+        System.out.println("Unicor 3: "+ unicorn3);
+
+        UnicornExpression blueColor = new ColorExpression("Blue");
+        UnicornExpression strong = new PowerExpression(30);
+
+        UnicornExpression rule3 = new AndExpression(blueColor, strong);
+
+        System.out.println("Frosty matches: " + rule3.interpret(unicorn1)); // false
+        System.out.println("Thunder matches: " + rule3.interpret(unicorn2)); // false
+        System.out.println("Spark matches: " + rule3.interpret(unicorn3)); // true
+    }
+
+    private void demoIterator() {
+        System.out.println("=========================");
+        System.out.println("Iterator");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: Unicorn status iterator");
+
+        StableUnicornCollection stable = new StableUnicornCollection();
+
+        Unicorn u1 = new WaterUnicorn("1", "Watery Sparkle", "Blue", 80);
+        Unicorn u2 = new FireUnicorn("2", "Red Moonlight", "Orange", 90);
+        Unicorn u3 = new IceUnicorn("3", "Blue Aurora", "White", 100);
+        Unicorn u4 = new LightningUnicorn("4", "Comet", "Silver", 70);
+
+        u2.setStatus(UnicornStatus.RENTED);
+        u3.setStatus(UnicornStatus.MAINTENANCE);
+
+        stable.addUnicorn(u1);
+        stable.addUnicorn(u2);
+        stable.addUnicorn(u3);
+        stable.addUnicorn(u4);
+
+        System.out.println("AVAILABLE unicorns:");
+        UnicornIterator availableIterator = stable.createIterator(UnicornStatus.AVAILABLE);
+
+        while (availableIterator.hasNext()) {
+            System.out.println(availableIterator.next());
+        }
+
+        System.out.println("\nRENTED unicorns:");
+        UnicornIterator busyIterator = stable.createIterator(UnicornStatus.RENTED);
+
+        while (busyIterator.hasNext()) {
+            System.out.println(busyIterator.next());
+        }
+
+        System.out.println("\nUnicorns in MAINTENANCE:");
+        UnicornIterator maintenanceIterator = stable.createIterator(UnicornStatus.MAINTENANCE);
+
+        while (maintenanceIterator.hasNext()) {
+            System.out.println(maintenanceIterator.next());
+        }
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Rental status iterator");
+
+        RentalBook rentalBook = new RentalBook();
+        IdGenerator idGen = IdGenerator.getInstance();
+        Rental rental1 = new RentalBuilder()
+                .unicornId(idGen.nextUnicornId())
+                .customerId(idGen.nextCustomerId())
+                .start(LocalDateTime.of(2026, 3, 20, 10, 0))
+                .end(LocalDateTime.of(2026, 3, 20, 12, 0))
+                .basePrice(100.0)
+                .finalPrice(120.0)
+                .termsAccepted(true)
+                .status(RentalStatus.NEW)
+                .build();
+
+        Rental rental2 = new RentalBuilder()
+                .unicornId(idGen.nextUnicornId())
+                .customerId(idGen.nextCustomerId())
+                .start(LocalDateTime.of(2026, 3, 21, 9, 0))
+                .end(LocalDateTime.of(2026, 3, 21, 11, 0))
+                .basePrice(150.0)
+                .finalPrice(180.0)
+                .termsAccepted(true)
+                .status(RentalStatus.ACTIVE)
+                .build();
+
+        Rental rental3 = new RentalBuilder()
+                .unicornId(idGen.nextUnicornId())
+                .customerId(idGen.nextCustomerId())
+                .start(LocalDateTime.of(2026, 3, 18, 14, 0))
+                .end(LocalDateTime.of(2026, 3, 18, 16, 0))
+                .basePrice(120.0)
+                .finalPrice(120.0)
+                .termsAccepted(true)
+                .status(RentalStatus.COMPLETED)
+                .build();
+
+        Rental rental4 = new RentalBuilder()
+                .unicornId(idGen.nextUnicornId())
+                .customerId(idGen.nextCustomerId())
+                .start(LocalDateTime.of(2026, 3, 22, 15, 0))
+                .end(LocalDateTime.of(2026, 3, 22, 17, 0))
+                .basePrice(130.0)
+                .finalPrice(130.0)
+                .termsAccepted(false)
+                .status(RentalStatus.CANCELLED)
+                .build();
+
+        rentalBook.addRental(rental1);
+        rentalBook.addRental(rental2);
+        rentalBook.addRental(rental3);
+        rentalBook.addRental(rental4);
+
+        System.out.println("ACTIVE rentals:");
+        RentalIterator activeIterator = rentalBook.createIterator(RentalStatus.ACTIVE);
+        while (activeIterator.hasNext()) {
+            System.out.println(activeIterator.next());
+        }
+
+        System.out.println("\nCOMPLETED rentals:");
+        RentalIterator completedIterator = rentalBook.createIterator(RentalStatus.COMPLETED);
+        while (completedIterator.hasNext()) {
+            System.out.println(completedIterator.next());
+        }
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Unicorn Power lvl iterator");
+
+        UnicornPowerBook unicornBook = new UnicornPowerBook();
+
+        unicornBook.addUnicorn(u1);
+        unicornBook.addUnicorn(u2);
+        unicornBook.addUnicorn(u3);
+        unicornBook.addUnicorn(u4);
+
+        System.out.println("AVERAGE PONY power unicorns:");
+        PowerLevelUnicornIterator avgIterator = unicornBook.createIterator(PowerLevelCategory.AVERAGE_PONY);
+        while (avgIterator.hasNext()) {
+            System.out.println(avgIterator.next());
+        }
+
+        System.out.println("\nSTRONG power unicorns:");
+        PowerLevelUnicornIterator strongIterator = unicornBook.createIterator(PowerLevelCategory.STRONG);
+        while (strongIterator.hasNext()) {
+            System.out.println(strongIterator.next());
+        }
+
+        System.out.println("\nLEGENDARY power unicorns:");
+        PowerLevelUnicornIterator highIterator = unicornBook.createIterator(PowerLevelCategory.LEGENDARY);
+        while (highIterator.hasNext()) {
+            System.out.println(highIterator.next());
+        }
+    }
+
+    private void demoMediator() {
+        System.out.println("=========================");
+        System.out.println("Mediator");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: RentalSystem");
+        SystemMediator mediator = new RentalSystemMediator();
+
+        SystemModule bookingModule = new BookingModule(mediator);
+        SystemModule paymentModule = new PaymentModule(mediator);
+        SystemModule notificationModule = new NotificationModule(mediator);
+        SystemModule availabilityModule = new AvailabilityModule(mediator);
+
+        mediator.addModule(bookingModule);
+        mediator.addModule(paymentModule);
+        mediator.addModule(notificationModule);
+        mediator.addModule(availabilityModule);
+
+        bookingModule.send("New unicorn rental created for customer C-101.");
+        System.out.println();
+
+        paymentModule.send("Payment for rental R-202 has been confirmed.");
+        System.out.println();
+
+        availabilityModule.send("Unicorn U-15 marked as unavailable.");
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Stable workers");
+        StableMediator mediatorStable = new UnicornStableMediator();
+
+        StableWorker caretaker = new Caretaker(mediatorStable);
+        StableWorker veterinarian = new Veterinarian(mediatorStable);
+        StableWorker cleaner = new Cleaner(mediatorStable);
+        StableWorker manager = new StableManager(mediatorStable);
+
+        mediatorStable.addWorker(caretaker);
+        mediatorStable.addWorker(veterinarian);
+        mediatorStable.addWorker(cleaner);
+        mediatorStable.addWorker(manager);
+
+        caretaker.send("Unicorn Moonlight seems tired and needs examination.");
+        System.out.println();
+
+        cleaner.send("Box 3 has been cleaned and is ready.");
+        System.out.println();
+
+        manager.send("Royal unicorn area will be inspected this afternoon.");
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Rental services");
+
+        ServiceMediator mediator3 = new UnicornRentalServiceMediator();
+
+        RentalService pricingService = new PricingService(mediator3);
+        RentalService discountService = new DiscountService(mediator3);
+        RentalService insuranceService = new InsuranceService(mediator3);
+
+        mediator3.addService(pricingService);
+        mediator3.addService(discountService);
+        mediator3.addService(insuranceService);
+
+        pricingService.send("Base price for rental R-301 has been calculated.");
+        System.out.println();
+
+        discountService.send("Loyalty discount has been applied to rental R-301.");
+        System.out.println();
+
+        insuranceService.send("Extended magical insurance added to rental R-301.");
+        System.out.println();
+    }
+
+    private void demoMemento() {
+        System.out.println("=========================");
+        System.out.println("Memento");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: Unicorn equipment loadout");
+
+        Unicorn blaze = new FireUnicorn("1", "Blaze", "Red", 100);
+        LoadoutManager loadoutManager = new LoadoutManager();
+
+        System.out.println("Client prepare future battle build");
+        blaze.setEquipment(new TitaniumArmor());
+        Unicorn.UnicornMemento battleBuild = blaze.saveLoadout();
+        loadoutManager.saveFavorite("MyBattleBuild", battleBuild);
+
+        System.out.println("\nClient is going for peaceful walk");
+        blaze.setEquipment(new RainbowSaddle());
+        System.out.println("Current equipment: " + blaze.getEquipment().getDescription());
+
+        System.out.println("\nSudden battle breaks out. Client loads previously saved battle build");
+        blaze.restoreLoadout(loadoutManager.getFavorite("MyBattleBuild"));
+        System.out.println("Current equipment: " + blaze.getEquipment().getDescription());
+
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Rental application draft");
+
+        System.out.println("Client start filling rental application form...");
+        RentalApplication app = new RentalApplication();
+        SessionCache sessionCache = new SessionCache();
+        app.setUnicornId(IdGenerator.getInstance().nextUnicornId());
+        app.setCustomerId(IdGenerator.getInstance().nextCustomerId());
+        System.out.println("Form state: " + app);
+
+        System.out.println("\nUser closes browser by accident. Form draft is saved in background...");
+        sessionCache.save(app.saveDraft());
+
+        app = new RentalApplication();
+        System.out.println("Fresh form after opening browser: " + app);
+        System.out.println("\nForm draft found in cache. Restoring...");
+
+        app.restoreDraft(sessionCache.getDraft());
+        System.out.println("Form state: " + app);
+
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Price config backup");
+
+        PricingConfig config = PricingConfig.getInstance();
+        System.out.println("Price config state: ");
+        config.printConfig();
+
+        System.out.println("\nAdmin creates restoration point...");
+        PricingConfig.PricingConfigMemento backup = config.saveState();
+
+        System.out.println("\nAdmin sets wrong data...");
+        config.setBasePricePerHour(0);
+        config.setRainbowPriceRaise(-1);
+        config.printConfig();
+
+        System.out.println("\nAdmin clicks restore data...");
+        config.restoreState(backup);
+        config.printConfig();
+    }
+}

@@ -2,6 +2,7 @@ package com.unicorn.my_little_pony.domain.models.unicorn.types;
 
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.NoEquipment;
+import com.unicorn.my_little_pony.enums.PowerLevelCategory;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,10 @@ import lombok.Setter;
 // Tydzień 2, Wzorzec Factory method, Zastosowanie 2
 // Klasa abstrakcyjna która definiuje wspólny interfejs dla wszystkich
 // jednorożców w systemie
+// Tydzień 5, Wzorzec Iterator, Zastosowanie 1
+// Klasa jednorożca która posiada status dostępności, który będzie wykorzystywany przez iterator do filtrowania jednorożców
+// Tydzień 5, Wzorzec Iterator, Zastosowanie 3
+// Klasa jednorożca która posiada powerLevel, który będzie wykorzystywany przez iterator do kategoryzowania jednorożców
 @Getter
 @Setter
 public abstract class Unicorn implements Cloneable, IUnicorn {
@@ -41,6 +46,18 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     }
     // Koniec, Tydzień 3, Wzorzec Bridge, Zastosowanie 3
 
+    public PowerLevelCategory getPowerLevelCategory() {
+        int totalPower = getTotalPower();
+
+        if (totalPower < 60) {
+            return PowerLevelCategory.AVERAGE_PONY;
+        } else if (totalPower < 100) {
+            return PowerLevelCategory.STRONG;
+        } else {
+            return PowerLevelCategory.LEGENDARY;
+        }
+    }
+
     @Override
     public String toString() {
         return "Unicorn{" +
@@ -48,6 +65,7 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
                 ", name='" + name + '\'' +
                 ", color='" + color + '\'' +
                 ", powerLevel=" + powerLevel +
+                ", powerLevelCategory=" + getPowerLevelCategory() +
                 ", status=" + status +
                 '}';
     }
@@ -55,5 +73,28 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     // Metoda abstrakcyjna do klonowania obiektow
     public abstract Unicorn clone();
     // Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 3
+
+    //Tydzień 5, Wzorzec Memento, Zastosowanie 1
+    // Klasa wew. i metody to zapisania i przywrócenia stanu ekwipunktu jednorożca
+    public static class UnicornMemento {
+        private final Equipment savedEquipment;
+
+        public UnicornMemento(Equipment savedEquipment) {
+            this.savedEquipment = savedEquipment;
+        }
+    }
+
+    public UnicornMemento saveLoadout() {
+        System.out.println("Saving current equipment: " + equipment.getDescription());
+        return new UnicornMemento(this.equipment);
+    }
+
+    public void restoreLoadout(UnicornMemento memento) {
+        this.equipment = memento.savedEquipment;
+        System.out.println("Equipment restored: " + equipment.getDescription());
+    }
+    // Koniec, Tydzień 5, Wzorzec Memento
 }
+// Koniec, Tydzień 5, Wzorzec Iterator, Zastosowanie 3
+// Koniec, Tydzień 5, Wzorzec Iterator, Zastosowanie 1
 // Koniec, Tydzień 2, Wzorzec Factory method, Zastosowanie 2
