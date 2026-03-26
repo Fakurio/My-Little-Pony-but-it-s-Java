@@ -3,16 +3,29 @@ package com.unicorn.my_little_pony;
 import com.unicorn.my_little_pony.domain.employees.*;
 import com.unicorn.my_little_pony.domain.facades.rental.UnicornRentalFacade;
 import com.unicorn.my_little_pony.domain.facades.returnprocess.MaintenanceQueue;
+import com.unicorn.my_little_pony.domain.models.customer.Customer;
+import com.unicorn.my_little_pony.domain.models.customer.builders.CustomerBuilder;
+import com.unicorn.my_little_pony.domain.models.customer.interpreter.*;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
 import com.unicorn.my_little_pony.domain.models.rental.builders.RentalBuilder;
+import com.unicorn.my_little_pony.domain.models.rental.interpreter.ActiveRentalExpression;
+import com.unicorn.my_little_pony.domain.models.rental.interpreter.RentalExpression;
+import com.unicorn.my_little_pony.domain.models.rental.interpreter.AndRentalExpression;
+import com.unicorn.my_little_pony.domain.models.rental.interpreter.TermsAcceptedExpression;
 import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalBook;
 import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalIterator;
 import com.unicorn.my_little_pony.domain.models.rental.mementos.RentalApplication;
 import com.unicorn.my_little_pony.domain.models.rental.mementos.SessionCache;
+import com.unicorn.my_little_pony.domain.models.unicorn.builders.IceUnicornBuilder;
+import com.unicorn.my_little_pony.domain.models.unicorn.builders.LightningUnicornBuilder;
 import com.unicorn.my_little_pony.domain.models.unicorn.commands.*;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.RainbowSaddle;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.TitaniumArmor;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.AndExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.ColorExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.PowerExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.UnicornExpression;
 import com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel.PowerLevelUnicornIterator;
 import com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel.UnicornPowerBook;
 import com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status.StableUnicornCollection;
@@ -30,6 +43,7 @@ import com.unicorn.my_little_pony.util.IdGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 
 @Component
@@ -116,7 +130,106 @@ public class DemoWeek5Runner implements CommandLineRunner {
         System.out.println("\nUnicorn status after error: " + starlight.getStatus());
     }
 
-    private void demoInterpreter() {}
+    private void demoInterpreter() {
+        System.out.println("=========================");
+        System.out.println("interpreter");
+        System.out.println("=========================");
+
+        System.out.println("Zastosowanie 1: Customer eligibility");
+
+        System.out.println("Checking if customer meets conditions:");
+        Customer customer = new CustomerBuilder()
+                .name("Princess Celestia")
+                .email("celestia@gmail.com")
+                .phone("123456789")
+                .vip(true)
+                .build();
+        System.out.println("Customer: " + customer);
+        Customer customer2 = new CustomerBuilder()
+                .name("Starla Galactica")
+                .email("Starla@gmail.com")
+                .phone("123456789")
+                .vip(false)
+                .build();
+        System.out.println("Customer 2: "+ customer2);
+        CustomerExpression vip = new VipCustomerExpression();
+        CustomerExpression email = new HasEmailExpression();
+        CustomerExpression phone = new HasPhoneExpression();
+
+        CustomerExpression rule =
+                new AndCustomerExpression(vip,
+                        new AndCustomerExpression(email, phone));
+
+        boolean result = rule.interpret(customer);
+        boolean result_sc = rule.interpret(customer2);
+
+        System.out.println("Customer 1 meets conditions ( isVip, has email, has phone number): " + result);
+        System.out.println("Customer 2 meets conditions ( isVip, has email, has phone number): " + result_sc);
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Rental status");
+        System.out.println("Checking if rental meets conditions:");
+        Rental rental = new RentalBuilder()
+                .unicornId("U-1")
+                .customerId("C-1")
+                .start(LocalDateTime.now())
+                .end(LocalDateTime.now().plusDays(2))
+                .termsAccepted(true)
+                .status(RentalStatus.ACTIVE)
+                .build();
+        System.out.println("Rental: " + rental);
+        Rental rental2 = new RentalBuilder()
+                .unicornId("U-1")
+                .customerId("C-1")
+                .start(LocalDateTime.now())
+                .end(LocalDateTime.now().plusDays(2))
+                .termsAccepted(false)
+                .status(RentalStatus.ACTIVE)
+                .build();
+        System.out.println("Rental: " + rental2);
+        RentalExpression active = new ActiveRentalExpression();
+        RentalExpression terms = new TermsAcceptedExpression();
+
+        RentalExpression rule2 = new AndRentalExpression(active, terms);
+
+        boolean result2 = rule2.interpret(rental);
+        boolean result2_sc = rule2.interpret(rental2);
+        System.out.println("Rental meets conditions (is active, terms are accepted): " + result2);
+        System.out.println("Rental 2 meets conditions (is active, terms are accepted): " + result2_sc);
+
+        System.out.println("-------------------------");
+        System.out.println("zastosowanie 3: Unicorn filtering");
+        System.out.println("Checking if unicorn matches filters ( is blue, has a power 30):");
+        Unicorn unicorn1 = new IceUnicornBuilder()
+                .name("Frosty")
+                .color("Blue")
+                .powerLevel(20)
+                .build();
+
+        Unicorn unicorn2 = new LightningUnicornBuilder()
+                .name("Thunder")
+                .color("Yellow")
+                .powerLevel(40)
+                .build();
+
+        Unicorn unicorn3 = new LightningUnicornBuilder()
+                .name("Spark")
+                .color("Blue")
+                .powerLevel(50)
+                .build();
+        System.out.println("Unicor 1: "+ unicorn1);
+        System.out.println("Unicor 2: "+ unicorn2);
+        System.out.println("Unicor 3: "+ unicorn3);
+
+        UnicornExpression blueColor = new ColorExpression("Blue");
+        UnicornExpression strong = new PowerExpression(30);
+
+        UnicornExpression rule3 = new AndExpression(blueColor, strong);
+
+        System.out.println("Frosty matches: " + rule3.interpret(unicorn1)); // false
+        System.out.println("Thunder matches: " + rule3.interpret(unicorn2)); // false
+        System.out.println("Spark matches: " + rule3.interpret(unicorn3)); // true
+    }
 
     private void demoIterator() {
         System.out.println("=========================");
