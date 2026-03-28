@@ -1,6 +1,8 @@
 package com.unicorn.my_little_pony;
 
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
+import com.unicorn.my_little_pony.domain.models.rental.RentalOrder;
+import com.unicorn.my_little_pony.domain.models.rentedUnicorn.RentedUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.DeliveryManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.WalkingDeliveryStrategy;
@@ -9,6 +11,7 @@ import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornSelect
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornSelection.UnicornMatcher;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.WaterUnicorn;
 import com.unicorn.my_little_pony.domain.pricing.strategies.StandardPricingStrategy;
 import com.unicorn.my_little_pony.domain.pricing.strategies.WeekendPricingStrategy;
 import com.unicorn.my_little_pony.domain.store.UnicornCart;
@@ -43,6 +46,61 @@ public class DemoWeek6Runner implements CommandLineRunner {
     }
 
     private void demoState() {
+        System.out.println("=========================");
+        System.out.println("State");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: Stan dostępności jednorożca");
+
+        Unicorn twilight =  new WaterUnicorn("1", "Twilight", "Blue", 100);
+        System.out.println("Utworzono jednorożca: " + twilight.getName());
+        System.out.println("\nKlient A wypożycza jednorożca:");
+        twilight.rent();
+        System.out.println("\nKlient B próbuje wypożyczyć tego samego jednorożca:");
+        twilight.rent();
+        System.out.println("\nKlient A zwraca jednorożca:");
+        twilight.returnUnicorn();
+        System.out.println("\nKlient C próbuje wypożyczyć brudnego jednorożca:");
+        twilight.rent();
+        System.out.println("\nStajenny myje jednorożca:");
+        twilight.clean();
+        System.out.println("\nKlient C ponawia próbę wypożyczenia:");
+        twilight.rent();
+
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Stan zamówienia");
+
+        RentalOrder order = new RentalOrder();
+        System.out.println("Krok 1: Klient składa zamówienie (Szkic -> Oczekujące):");
+        order.submit();
+        System.out.println("\nKrok 2: Próba ponownego złożenia tego samego zamówienia:");
+        order.submit();
+        System.out.println("\nKrok 3: Klient opłaca zamówienie (Oczekujące -> Potwierdzone):");
+        order.pay();
+        System.out.println("\nKrok 4: Atakujący próbuje opłacić drugi raz:");
+        order.pay();
+        System.out.println("\nKrok 5: Klient rezygnuje (Potwierdzone -> Anulowane):");
+        order.cancel();
+        System.out.println("\nKrok 6: Próba zapłaty za anulowane zamówienie:");
+        order.pay();
+
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Poziom energii wypożyczonego jednorożca");
+
+        RentedUnicorn roach = new RentedUnicorn();
+        System.out.println("Akcja 1: Galop! (Stan: Pełen energii)");
+        roach.gallop();
+        System.out.println("\nAkcja 2: Galop! (Stan: Pełen energii -> Zmęczony)");
+        roach.gallop();
+        System.out.println("\nAkcja 3: Galop resztką sił! (Stan: Zmęczony -> Wyczerpany)");
+        roach.gallop();
+        System.out.println("\nAkcja 4: Zmuszanie do galopu wyczerpanego zwierzęcia:");
+        roach.gallop();
+        System.out.println("\nAkcja 5: Odpoczynek:");
+        roach.rest();
+        System.out.println("\nAkcja 6: Galop po odpoczynku:");
+        roach.gallop();
     }
 
     private void demoObserver() {

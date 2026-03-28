@@ -2,6 +2,8 @@ package com.unicorn.my_little_pony.domain.models.unicorn.types;
 
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.NoEquipment;
+import com.unicorn.my_little_pony.domain.models.unicorn.states.AvailableState;
+import com.unicorn.my_little_pony.domain.models.unicorn.states.UnicornState;
 import com.unicorn.my_little_pony.enums.PowerLevelCategory;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 import lombok.Getter;
@@ -24,6 +26,7 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     private UnicornStatus status;
     private double price;
     private double rating;
+    private UnicornState unicornState;
     // Tydzień 3, Wzorzec Bridge, Zastosowanie 3
     // Część abstrakcyjna wzorca bridge która oddelegowuje użycie konkretnego ekwipunku do obiektu equipment
     private Equipment equipment;
@@ -36,6 +39,7 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
         this.powerLevel = powerLevel;
         this.status = UnicornStatus.AVAILABLE;
         this.equipment = new NoEquipment();
+        this.unicornState = new AvailableState();
     }
 
     public abstract void useSpecialAbility();
@@ -98,6 +102,13 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
         System.out.println("Equipment restored: " + equipment.getDescription());
     }
     // Koniec, Tydzień 5, Wzorzec Memento
+
+    //Tydzień 6, Wzorzec State, Zastosowanie 1
+    //Klasa kontekstu oddelegowuje zmiane stanu do obiektu danego stanu
+    public void rent() { unicornState.rent(this); }
+    public void returnUnicorn() { unicornState.returnUnicorn(this); }
+    public void clean() { unicornState.clean(this); }
+    // Koniec, Tydzień 6, Wzorzec State
 }
 // Koniec, Tydzień 5, Wzorzec Iterator, Zastosowanie 3
 // Koniec, Tydzień 5, Wzorzec Iterator, Zastosowanie 1

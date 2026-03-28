@@ -284,3 +284,23 @@ Wzorzec pozwolił na odseparowanie logiki logistycznej od reszty systemu. Klienc
 
 * **Interfejs i Konkretne Strategie:** `domain.models.unicorn.strategies.unicornDelivery`
 * **Kontekst:** `domain.models.unicorn.strategies.unicornSelection.DeliveryManager`
+
+
+## State Design Pattern
+### Status dostępności jednorożca
+Wzorzec ten pozwolił na wdrożenie "maszyny stanów" zarządzającej logistyką w stajni. Poszczególne zachowania (wypożyczenie, zwrot, czyszczenie) wywołują różne efekty i odpowiednio odrzucają błędy w zależności od tego, czy jednorożec jest obecnie dostępny, wypożyczony czy w trakcie czyszczenia.
+
+* **Interfejs i Stany:** `domain.models.unicorn.states`
+* **Kontekst:** `domain.models.unicorn.Unicorn`
+
+### Cykl życia rezerwacji
+Wzorzec State zabezpieczył przepływ zamówień w systemie. Zapobiega to błędom logicznym, takim jak próba opłacenia już anulowanego zamówienia lub anulowania transakcji, która została już zrealizowana.
+
+* **Interfejs i Stany:** `domain.models.rental.states`
+* **Kontekst:** `domain.models.rental.RentalOrder`
+
+### Stan energii wypożyczonego jednorożca
+Zastosowany do symulacji poziomu energii podczas jazdy. W zależności od punktów kondycji (stamina) zachowanie obiektu się zmienia. Energiczny jednorożec pędzi szybko, zmęczony zwalnia, a wyczerpany odrzuca komendy galopu do czasu, aż klient wywoła metodę odpoczynku.
+
+* **Interfejs i Stany:** `domain.models.rentedUnicorn.states`
+* **Kontekst:** `domain.models.rentedUnicorn.RentedUnicorn`
