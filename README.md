@@ -261,3 +261,26 @@ Wzorzec został użyty do centralizacji komunikacji pomiędzy usługami odpowied
 * **Konkretny współpracownik – usługa wyliczania ceny:** `domain.rentalservices.PricingService`
 * **Konkretny współpracownik – usługa rabatów:** `domain.rentalservices.DiscountService`
 * **Konkretny współpracownik – usługa ubezpieczeń:** `domain.rentalservices.InsuranceService`
+
+
+## 📅 Tydzień 6
+
+---
+
+## Strategy Design Pattern
+### Obliczanie ceny
+Wzorzec ten został użyty do dynamicznego obliczania ostatecznej ceny wypożyczenia w zależności od obowiązujących reguł biznesowych (np. stawka standardowa, dopłata weekendowa). 
+* **Interfejs i Konkretne Strategie:** `domain.pricing.strategies`
+* **Kontekst:** `domain.store.UnicornCart`
+
+### Wybór jednorożca
+Zastosowano w celu hermetyzacji różnych algorytmów dopasowujących wierzchowca do klienta z puli dostępnych zwierząt.
+
+* **Interfejs i Konkretne Strategie:** `domain.models.unicorn.strategies.unicornSelection`
+* **Kontekst:** `domain.models.unicorn.strategies.unicornSelection.UnicornMatcher`
+
+### Metody dostawy
+Wzorzec pozwolił na odseparowanie logiki logistycznej od reszty systemu. Klienci mogą decydować, w jaki sposób odbiorą swojego jednorożca. Menedżer dostaw inicjuje operację, delegując całą odpowiedzialność za szczegóły transportu do wstrzykniętego w argumencie obiektu strategii.
+
+* **Interfejs i Konkretne Strategie:** `domain.models.unicorn.strategies.unicornDelivery`
+* **Kontekst:** `domain.models.unicorn.strategies.unicornSelection.DeliveryManager`
