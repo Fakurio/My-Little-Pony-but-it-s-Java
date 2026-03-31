@@ -2,7 +2,19 @@ package com.unicorn.my_little_pony;
 
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.rental.RentalOrder;
+import com.unicorn.my_little_pony.domain.models.rental.returnTemplate.DamagedReturnProcess;
+import com.unicorn.my_little_pony.domain.models.rental.returnTemplate.LateReturnProcess;
+import com.unicorn.my_little_pony.domain.models.rental.returnTemplate.StandardReturnProcess;
+import com.unicorn.my_little_pony.domain.models.rental.returnTemplate.UnicornReturnTemplate;
+import com.unicorn.my_little_pony.domain.models.rental.template.ExpressUnicornRentalProcess;
+import com.unicorn.my_little_pony.domain.models.rental.template.PremiumUnicornRentalProcess;
+import com.unicorn.my_little_pony.domain.models.rental.template.StandardUnicornRentalProcess;
+import com.unicorn.my_little_pony.domain.models.rental.template.UnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rentedUnicorn.RentedUnicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.ForestUnicornPreparation;
+import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.RainbowUnicornPreparation;
+import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.RoyalUnicornPreparation;
+import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.UnicornPreparationTemplate;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.DeliveryManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.WalkingDeliveryStrategy;
@@ -40,6 +52,50 @@ public class DemoWeek6Runner implements CommandLineRunner {
     }
 
     private void demoTemplate() {
+        System.out.println("=========================");
+        System.out.println("Template");
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 1: Wypożyczenie jednorożca");
+        UnicornRentalProcess standardRental = new StandardUnicornRentalProcess();
+        UnicornRentalProcess premiumRental = new PremiumUnicornRentalProcess();
+        UnicornRentalProcess expressRental = new ExpressUnicornRentalProcess();
+
+        standardRental.processRental();
+        System.out.println();
+
+        premiumRental.processRental();
+        System.out.println();
+
+        expressRental.processRental();
+        System.out.println();
+
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 2: Opieka nad jednorożcem przed wypożyczeniem");
+        UnicornPreparationTemplate rainbowPrep = new RainbowUnicornPreparation();
+        UnicornPreparationTemplate royalPrep = new RoyalUnicornPreparation();
+        UnicornPreparationTemplate forestPrep = new ForestUnicornPreparation();
+
+        rainbowPrep.prepareUnicorn();
+        System.out.println();
+
+        royalPrep.prepareUnicorn();
+        System.out.println();
+
+        forestPrep.prepareUnicorn();
+        System.out.println();
+        System.out.println("-------------------------");
+        System.out.println("Zastosowanie 3: Zwrot jednorożca");
+        UnicornReturnTemplate standardReturn = new StandardReturnProcess();
+        UnicornReturnTemplate lateReturn = new LateReturnProcess();
+        UnicornReturnTemplate damagedReturn = new DamagedReturnProcess();
+
+        standardReturn.processReturn();
+        System.out.println();
+
+        lateReturn.processReturn();
+        System.out.println();
+
+        damagedReturn.processReturn();
     }
 
     private void demoVisitor() {
