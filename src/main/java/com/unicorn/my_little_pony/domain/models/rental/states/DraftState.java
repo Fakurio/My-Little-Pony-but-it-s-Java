@@ -7,18 +7,18 @@ import com.unicorn.my_little_pony.domain.models.rental.RentalOrder;
 public class DraftState implements OrderState {
 
     @Override
-    public void submit(RentalOrder context) {
+    public void submit(RentalOrderContext context) {
         System.out.println("Zamówienie złożone. Czekamy na płatność.");
         context.setState(new PendingPaymentState());
     }
 
     @Override
-    public void pay(RentalOrder context) {
+    public void pay(RentalOrderContext context) {
         System.out.println("Najpierw musisz złożyć zamówienie.");
     }
 
     @Override
-    public void cancel(RentalOrder context) {
+    public void cancel(RentalOrderContext context) {
         System.out.println("Szkic usunięty.");
         context.setState(new CancelledState());
     }

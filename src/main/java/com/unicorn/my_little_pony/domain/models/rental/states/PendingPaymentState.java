@@ -7,18 +7,18 @@ import com.unicorn.my_little_pony.domain.models.rental.RentalOrder;
 public class PendingPaymentState implements OrderState {
 
     @Override
-    public void submit(RentalOrder context) {
+    public void submit(RentalOrderContext context) {
         System.out.println("Zamówienie zostało już złożone.");
     }
 
     @Override
-    public void pay(RentalOrder context) {
+    public void pay(RentalOrderContext context) {
         System.out.println("Płatność zaakceptowana! Rezerwacja potwierdzona.");
         context.setState(new ConfirmedState());
     }
 
     @Override
-    public void cancel(RentalOrder context) {
+    public void cancel(RentalOrderContext context) {
         System.out.println("Anulowano nieopłacone zamówienie.");
         context.setState(new CancelledState());
     }
