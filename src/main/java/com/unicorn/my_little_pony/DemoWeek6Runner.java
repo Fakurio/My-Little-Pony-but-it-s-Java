@@ -2,10 +2,10 @@ package com.unicorn.my_little_pony;
 
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.customer.observer.CustomerNotifier;
-import com.unicorn.my_little_pony.domain.models.customer.observer.CustomerObserver;
 import com.unicorn.my_little_pony.domain.models.customer.observer.CustomerService;
+import com.unicorn.my_little_pony.domain.models.customer.visitor.CustomerCsvVisitor;
 import com.unicorn.my_little_pony.domain.models.customer.visitor.CustomerReportVisitor;
-import com.unicorn.my_little_pony.domain.models.customer.visitor.CustomerReportVisitorImpl;
+import com.unicorn.my_little_pony.domain.models.customer.visitor.CustomerJsonVisitor;
 import com.unicorn.my_little_pony.domain.models.customer.visitor.CustomerUnicornReport;
 import com.unicorn.my_little_pony.domain.models.rental.RentalOrder;
 import com.unicorn.my_little_pony.domain.models.rental.reservation.ReservationSystem;
@@ -18,9 +18,10 @@ import com.unicorn.my_little_pony.domain.models.rental.template.ExpressUnicornRe
 import com.unicorn.my_little_pony.domain.models.rental.template.PremiumUnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.StandardUnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.UnicornRentalProcess;
-import com.unicorn.my_little_pony.domain.models.rental.visitor.EventReportVisitor;
-import com.unicorn.my_little_pony.domain.models.rental.visitor.EventReportVisitorImpl;
-import com.unicorn.my_little_pony.domain.models.rental.visitor.UnicornEventReport;
+import com.unicorn.my_little_pony.domain.models.rental.visitor.RentalCostVisitor;
+import com.unicorn.my_little_pony.domain.models.rental.visitor.RentalVisitor;
+import com.unicorn.my_little_pony.domain.models.rental.visitor.RentalTextVisitor;
+import com.unicorn.my_little_pony.domain.models.rental.visitor.RentalReport;
 import com.unicorn.my_little_pony.domain.models.rentedUnicorn.RentedUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.ForestUnicornPreparation;
 import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.RainbowUnicornPreparation;
@@ -28,7 +29,6 @@ import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.RoyalUnicor
 import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.UnicornPreparationTemplate;
 import com.unicorn.my_little_pony.domain.models.unicorn.observer.StatusLogger;
 import com.unicorn.my_little_pony.domain.models.unicorn.observer.UnicornStatusManager;
-import com.unicorn.my_little_pony.domain.models.unicorn.observer.UnicornStatusObserver;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.DeliveryManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.WalkingDeliveryStrategy;
@@ -38,12 +38,14 @@ import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornSelect
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.WaterUnicorn;
-import com.unicorn.my_little_pony.domain.models.unicorn.visitor.MagicReportVisitor;
-import com.unicorn.my_little_pony.domain.models.unicorn.visitor.MagicReportVisitorImpl;
-import com.unicorn.my_little_pony.domain.models.unicorn.visitor.MagicUnicornReport;
+import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornElement;
+import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornVisitor;
+import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornBattleVisitor;
+import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornReportVisitor;
 import com.unicorn.my_little_pony.domain.pricing.strategies.StandardPricingStrategy;
 import com.unicorn.my_little_pony.domain.pricing.strategies.WeekendPricingStrategy;
 import com.unicorn.my_little_pony.domain.store.UnicornCart;
+import com.unicorn.my_little_pony.util.IdGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -119,43 +121,54 @@ public class DemoWeek6Runner implements CommandLineRunner {
         System.out.println("=========================");
         System.out.println("Visitor");
         System.out.println("=========================");
-        System.out.println("Zastosowanie 1: Magia jednorożców");
+        System.out.println("Zastosowanie 1 – jednorozce");
+        System.out.println("=========================");
 
-        String[][] magicData = {
-                {"Sparkle","Fire","90"},
-                {"Stardust","Ice","75"}
-        };
-        MagicUnicornReport magicReport = new MagicUnicornReport(magicData);
-        MagicReportVisitor magicVisitor = new MagicReportVisitorImpl();
+        List<UnicornElement> unicorns = List.of(
+                new FireUnicorn( IdGenerator.getInstance().nextUnicornId(),"Blaze","blue", 100),
+                new WaterUnicorn( IdGenerator.getInstance().nextUnicornId(),"Aqua", "pink",80)
+        );
 
-        System.out.println("Magic Report:");
-        System.out.println(magicReport.accept(magicVisitor));
+        System.out.println("Raport");
+        UnicornVisitor reportVisitor = new UnicornReportVisitor();
+        unicorns.forEach(u -> System.out.println(u.accept(reportVisitor)));
 
-        System.out.println("-------------------------");
-        System.out.println("Zastosowanie 2: status jednorozca");
-
-        String[][] eventData = {
-                {"Poranny trening","2026-04-07","5"},
-                {"Wieczorny trening","2026-04-07","3"}
-        };
-        UnicornEventReport eventReport = new UnicornEventReport(eventData);
-        EventReportVisitor eventVisitor = new EventReportVisitorImpl();
-
-        System.out.println("Event Report:");
-        System.out.println(eventReport.accept(eventVisitor));
+        System.out.println("Statystyki");
+        UnicornVisitor statsVisitor = new UnicornBattleVisitor();
+        unicorns.forEach(u -> System.out.println(u.accept(statsVisitor)));
 
         System.out.println("-------------------------");
-        System.out.println("Zastosowanie 3: raport klientow");
+        System.out.println("Zastosowanie 2: raport klientow");
 
-        String[][] customersData = {
-                {"Alice","Gold","3"},
-                {"Bob","Silver","1"}
-        };
-        CustomerUnicornReport customerReport = new CustomerUnicornReport(customersData);
-        CustomerReportVisitor customerVisitor = new CustomerReportVisitorImpl();
+            String[][] data = {
+                    {"Tony", "VIP", "5"},
+                    {"Anna", "REGULAR", "2"}
+            };
+            CustomerUnicornReport report = new CustomerUnicornReport(data);
 
-        System.out.println("Customer Report:");
-        System.out.println(customerReport.accept(customerVisitor));
+            System.out.println("JSON");
+            String json = report.accept(new CustomerJsonVisitor());
+            System.out.println(json + "\n");
+
+            System.out.println("CSV");
+            String csv = report.accept(new CustomerCsvVisitor());
+            System.out.println(csv);
+
+        System.out.println("-------------------------");
+
+        System.out.println("Zastosowanie 3: wypożyczenia");
+
+            RentalReport rental1 = new RentalReport("Blaze", 5);
+            RentalReport rental2 = new RentalReport("Aqua", 3);
+
+            System.out.println("Opis");
+            System.out.println(rental1.accept(new RentalTextVisitor()));
+            System.out.println(rental2.accept(new RentalTextVisitor()));
+
+            System.out.println("Koszt");
+            System.out.println(rental1.accept(new RentalCostVisitor()));
+            System.out.println(rental2.accept(new RentalCostVisitor()));
+
     }
 
     private void demoState() {

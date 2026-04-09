@@ -1,7 +1,7 @@
 package com.unicorn.my_little_pony.domain.models.customer.visitor;
 
 // Tydzień 6, Wzorzec Visitor, Zastosowanie 3
-// Raport przechowujący dane o customers szkółki jednorożców
+// Klasa przechowująca dane o klientach, które będą przetwarzane przez wizytatorów
 public class CustomerUnicornReport implements CustomerReportable {
     private String[][] customersData;
     public CustomerUnicornReport(String[][] data) { this.customersData = data; }
