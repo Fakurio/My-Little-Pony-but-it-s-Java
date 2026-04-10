@@ -14,6 +14,7 @@ import com.unicorn.my_little_pony.domain.models.rental.returnTemplate.DamagedRet
 import com.unicorn.my_little_pony.domain.models.rental.returnTemplate.LateReturnProcess;
 import com.unicorn.my_little_pony.domain.models.rental.returnTemplate.StandardReturnProcess;
 import com.unicorn.my_little_pony.domain.models.rental.returnTemplate.UnicornReturnTemplate;
+import com.unicorn.my_little_pony.domain.models.rental.states.RentalOrderContext;
 import com.unicorn.my_little_pony.domain.models.rental.template.ExpressUnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.PremiumUnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.StandardUnicornRentalProcess;
@@ -23,12 +24,15 @@ import com.unicorn.my_little_pony.domain.models.rental.visitor.RentalVisitor;
 import com.unicorn.my_little_pony.domain.models.rental.visitor.RentalTextVisitor;
 import com.unicorn.my_little_pony.domain.models.rental.visitor.RentalReport;
 import com.unicorn.my_little_pony.domain.models.rentedUnicorn.RentedUnicorn;
+import com.unicorn.my_little_pony.domain.models.rentedUnicorn.states.RentedUnicornContext;
 import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.ForestUnicornPreparation;
 import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.RainbowUnicornPreparation;
 import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.RoyalUnicornPreparation;
 import com.unicorn.my_little_pony.domain.models.unicorn.careTemplate.UnicornPreparationTemplate;
 import com.unicorn.my_little_pony.domain.models.unicorn.observer.StatusLogger;
 import com.unicorn.my_little_pony.domain.models.unicorn.observer.UnicornStatusManager;
+import com.unicorn.my_little_pony.domain.models.unicorn.observer.UnicornStatusObserver;
+import com.unicorn.my_little_pony.domain.models.unicorn.states.UnicornContext;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.DeliveryManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.WalkingDeliveryStrategy;
@@ -178,55 +182,58 @@ public class DemoWeek6Runner implements CommandLineRunner {
         System.out.println("Zastosowanie 1: Stan dostępności jednorożca");
 
         Unicorn twilight =  new WaterUnicorn("1", "Twilight", "Blue", 100);
+        UnicornContext twilightContext = new UnicornContext(twilight);
         System.out.println("Utworzono jednorożca: " + twilight.getName());
         System.out.println("\nKlient A wypożycza jednorożca:");
-        twilight.rent();
+        twilightContext.rent();
         System.out.println("\nKlient B próbuje wypożyczyć tego samego jednorożca:");
-        twilight.rent();
+        twilightContext.rent();
         System.out.println("\nKlient A zwraca jednorożca:");
-        twilight.returnUnicorn();
+        twilightContext.returnUnicorn();
         System.out.println("\nKlient C próbuje wypożyczyć brudnego jednorożca:");
-        twilight.rent();
+        twilightContext.rent();
         System.out.println("\nStajenny myje jednorożca:");
-        twilight.clean();
+        twilightContext.clean();
         System.out.println("\nKlient C ponawia próbę wypożyczenia:");
-        twilight.rent();
+        twilightContext.rent();
 
 
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 2: Stan zamówienia");
 
         RentalOrder order = new RentalOrder();
+        RentalOrderContext orderContext = new RentalOrderContext(order);
         System.out.println("Krok 1: Klient składa zamówienie (Szkic -> Oczekujące):");
-        order.submit();
+        orderContext.submit();
         System.out.println("\nKrok 2: Próba ponownego złożenia tego samego zamówienia:");
-        order.submit();
+        orderContext.submit();
         System.out.println("\nKrok 3: Klient opłaca zamówienie (Oczekujące -> Potwierdzone):");
-        order.pay();
+        orderContext.pay();
         System.out.println("\nKrok 4: Atakujący próbuje opłacić drugi raz:");
-        order.pay();
+        orderContext.pay();
         System.out.println("\nKrok 5: Klient rezygnuje (Potwierdzone -> Anulowane):");
-        order.cancel();
+        orderContext.cancel();
         System.out.println("\nKrok 6: Próba zapłaty za anulowane zamówienie:");
-        order.pay();
+        orderContext.pay();
 
 
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 3: Poziom energii wypożyczonego jednorożca");
 
         RentedUnicorn roach = new RentedUnicorn();
+        RentedUnicornContext roachContext = new RentedUnicornContext(roach);
         System.out.println("Akcja 1: Galop! (Stan: Pełen energii)");
-        roach.gallop();
+        roachContext.gallop();
         System.out.println("\nAkcja 2: Galop! (Stan: Pełen energii -> Zmęczony)");
-        roach.gallop();
+        roachContext.gallop();
         System.out.println("\nAkcja 3: Galop resztką sił! (Stan: Zmęczony -> Wyczerpany)");
-        roach.gallop();
+        roachContext.gallop();
         System.out.println("\nAkcja 4: Zmuszanie do galopu wyczerpanego zwierzęcia:");
-        roach.gallop();
+        roachContext.gallop();
         System.out.println("\nAkcja 5: Odpoczynek:");
-        roach.rest();
+        roachContext.rest();
         System.out.println("\nAkcja 6: Galop po odpoczynku:");
-        roach.gallop();
+        roachContext.gallop();
     }
 
     private void demoObserver() {

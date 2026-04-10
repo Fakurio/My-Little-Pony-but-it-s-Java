@@ -7,17 +7,17 @@ import com.unicorn.my_little_pony.domain.models.rental.RentalOrder;
 public class ConfirmedState implements OrderState {
 
     @Override
-    public void submit(RentalOrder context) {
+    public void submit(RentalOrderContext context) {
         System.out.println("Błąd: Zamówienie zostało już dawno zatwierdzone i opłacone.");
     }
 
     @Override
-    public void pay(RentalOrder context) {
+    public void pay(RentalOrderContext context) {
         System.out.println("Błąd: Płatność została już uregulowana.");
     }
 
     @Override
-    public void cancel(RentalOrder context) {
+    public void cancel(RentalOrderContext context) {
         System.out.println("Anulowano opłacone zamówienie. Zmiana stanu na: Anulowane.");
         context.setState(new CancelledState());
     }
