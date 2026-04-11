@@ -270,7 +270,7 @@ Wzorzec został użyty do centralizacji komunikacji pomiędzy usługami odpowied
 ## Strategy Design Pattern
 ### Obliczanie ceny
 Wzorzec ten został użyty do dynamicznego obliczania ostatecznej ceny wypożyczenia w zależności od obowiązujących reguł biznesowych (np. stawka standardowa, dopłata weekendowa). 
-* **Interfejs i Konkretne Strategie:** `domain.pricing.strategies`
+* **Interfejs i Konkretne Strategie:** `domain.pricing.strategies.pricing`
 * **Kontekst:** `domain.store.UnicornCart`
 
 ### Wybór jednorożca
@@ -325,3 +325,20 @@ Dzięki temu można łatwo tworzyć różne warianty procesu wypożyczenia (np. 
 
 * **Klasa abstrakcyjna z szablonem:** `domain.models.rental.template.UnicornRentalProcess`
 * **Konkretne implementacje:** `domain.models.rental.template.StandardRentalProcess`, `domain.models.rental.template.ExpressRentalProcess`, `domain.models.rental.template.PremiumRentalProcess`
+
+## 📅 Tydzień 7
+---
+## Single Resposibility Principle
+### Dostawa jednorożca
+Zmiana wymagań logiki biznesowej dotyczącej dostawy jednorożca teleportacją (sprawdzenie czy klient jest VIPem) wymaga tylko aktualizacji klasy `TeleportationDeliveryStrategy`.
+* **Klasa strategii:** `domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy`
+
+## Open Close Principle
+### Obliczanie opłat za typ magii
+#### Przez Abstrakcję (Wzorzec Strategy)
+Dodanie nowej reguły obliczania opłaty polega na utworzeniu nowej klasy implementującej dany interfejs. Główny moduł wykonawczy jest **zamknięty na modyfikacje**, ale **otwarty na rozbudowę** o nowe strategie.
+* **Klasy strategii:** `domain.pricing.strategies.magicFee`
+* **Klasa kalkulatora:** `domain.pricing.MagicFeeAbstractCalculator`
+#### Przez Sterowanie Danymi
+Główny algorytm opiera się na słowniku. Rozbudowa polega na dodaniu nowej reguły do słownika bez modyfikacji kodu klasy. Klasa jest zamknięta na modyfikacje ponieważ metoda obliczania opłaty jest stała i niezależna od typów magii w słowniku.
+* **Klasa kalkulatora:** `domain.pricing.MagicFeeDDCalculator`

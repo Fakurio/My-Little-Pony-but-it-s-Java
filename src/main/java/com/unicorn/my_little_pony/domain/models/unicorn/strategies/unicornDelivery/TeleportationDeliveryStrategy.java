@@ -9,8 +9,16 @@ public class TeleportationDeliveryStrategy implements DeliveryStrategy {
 
     @Override
     public void deliver(Unicorn unicorn, Customer customer) {
-        System.out.println("Dostawa: " + unicorn.getName() + " został przeteleportowany "
-                + "pod drzwi klienta " + customer.getName() + ".");
+        //Tydzień 7, SRP
+        // Nowa zasada dla teleportacji -> sprawdzenie czy klient jest Vipem
+        // Dotyczy ona tylko strategii teloportacji i nie wymaga ingerencji w inne klasy strategii dostawy
+        if (!customer.isVip()) {
+            System.out.println("Błąd: Dostawa teleportacją jest dostępna tylko dla klientów VIP");
+        } else {
+            System.out.println("Dostawa: " + unicorn.getName() + " został przeteleportowany "
+                    + "pod drzwi klienta " + customer.getName() + ".");
+        }
+        // Koniec, Tydzień 7, SRP
     }
 }
 // Koniec, Tydzień 6, Wzorzec Strategy
