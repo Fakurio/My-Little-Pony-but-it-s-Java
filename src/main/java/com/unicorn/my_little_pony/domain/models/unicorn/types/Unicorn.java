@@ -2,6 +2,8 @@ package com.unicorn.my_little_pony.domain.models.unicorn.types;
 
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.NoEquipment;
+import com.unicorn.my_little_pony.domain.models.unicorn.states.AvailableState;
+import com.unicorn.my_little_pony.domain.models.unicorn.states.UnicornState;
 import com.unicorn.my_little_pony.enums.PowerLevelCategory;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 import lombok.Getter;
@@ -22,6 +24,9 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     private final String color;
     private final int powerLevel;
     private UnicornStatus status;
+    private double price;
+    private double rating;
+    private UnicornState unicornState;
     // Tydzień 3, Wzorzec Bridge, Zastosowanie 3
     // Część abstrakcyjna wzorca bridge która oddelegowuje użycie konkretnego ekwipunku do obiektu equipment
     private Equipment equipment;
@@ -67,6 +72,8 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
                 ", powerLevel=" + powerLevel +
                 ", powerLevelCategory=" + getPowerLevelCategory() +
                 ", status=" + status +
+                ", price=" + price +
+                ", rating=" + rating +
                 '}';
     }
     //Tydzień 2, Wzorzec Prototype, Zastosowanie 3

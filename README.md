@@ -261,3 +261,67 @@ Wzorzec został użyty do centralizacji komunikacji pomiędzy usługami odpowied
 * **Konkretny współpracownik – usługa wyliczania ceny:** `domain.rentalservices.PricingService`
 * **Konkretny współpracownik – usługa rabatów:** `domain.rentalservices.DiscountService`
 * **Konkretny współpracownik – usługa ubezpieczeń:** `domain.rentalservices.InsuranceService`
+
+
+## 📅 Tydzień 6
+
+---
+
+## Strategy Design Pattern
+### Obliczanie ceny
+Wzorzec ten został użyty do dynamicznego obliczania ostatecznej ceny wypożyczenia w zależności od obowiązujących reguł biznesowych (np. stawka standardowa, dopłata weekendowa). 
+* **Interfejs i Konkretne Strategie:** `domain.pricing.strategies`
+* **Kontekst:** `domain.store.UnicornCart`
+
+### Wybór jednorożca
+Zastosowano w celu hermetyzacji różnych algorytmów dopasowujących wierzchowca do klienta z puli dostępnych zwierząt.
+
+* **Interfejs i Konkretne Strategie:** `domain.models.unicorn.strategies.unicornSelection`
+* **Kontekst:** `domain.models.unicorn.strategies.unicornSelection.UnicornMatcher`
+
+### Metody dostawy
+Wzorzec pozwolił na odseparowanie logiki logistycznej od reszty systemu. Klienci mogą decydować, w jaki sposób odbiorą swojego jednorożca. Menedżer dostaw inicjuje operację, delegując całą odpowiedzialność za szczegóły transportu do wstrzykniętego w argumencie obiektu strategii.
+
+* **Interfejs i Konkretne Strategie:** `domain.models.unicorn.strategies.unicornDelivery`
+* **Kontekst:** `domain.models.unicorn.strategies.unicornSelection.DeliveryManager`
+
+
+## State Design Pattern
+### Status dostępności jednorożca
+Wzorzec ten pozwolił na wdrożenie "maszyny stanów" zarządzającej logistyką w stajni. Poszczególne zachowania (wypożyczenie, zwrot, czyszczenie) wywołują różne efekty i odpowiednio odrzucają błędy w zależności od tego, czy jednorożec jest obecnie dostępny, wypożyczony czy w trakcie czyszczenia.
+
+* **Interfejs i Stany:** `domain.models.unicorn.states`
+* **Kontekst:** `domain.models.unicorn.states.UnicornContext`
+
+### Cykl życia rezerwacji
+Wzorzec State zabezpieczył przepływ zamówień w systemie. Zapobiega to błędom logicznym, takim jak próba opłacenia już anulowanego zamówienia lub anulowania transakcji, która została już zrealizowana.
+
+* **Interfejs i Stany:** `domain.models.rental.states`
+* **Kontekst:** `domain.models.rental.states.RentalOrderContext`
+
+### Stan energii wypożyczonego jednorożca
+Zastosowany do symulacji poziomu energii podczas jazdy. W zależności od punktów kondycji (stamina) zachowanie obiektu się zmienia. Energiczny jednorożec pędzi szybko, zmęczony zwalnia, a wyczerpany odrzuca komendy galopu do czasu, aż klient wywoła metodę odpoczynku.
+
+* **Interfejs i Stany:** `domain.models.rentedUnicorn.states`
+* **Kontekst:** `domain.models.rentedUnicorn.states.RentedUnicornContext`
+
+## Template Method Design Pattern
+### Proces wypożyczenia
+Wzorzec Template Method został użyty do zdefiniowania szkieletu procesu wypożyczenia, pozostawiając szczegóły implementacji poszczególnych kroków do klas potomnych.
+Dzięki temu można łatwo tworzyć różne warianty procesu wypożyczenia (np. standardowy, ekspresowy) bez duplikowania kodu.
+
+* **Klasa abstrakcyjna z szablonem:** `domain.models.rental.template.UnicornRentalProcess`
+* **Konkretne implementacje:** `domain.models.rental.template.StandardRentalProcess`, `domain.models.rental.template.ExpressRentalProcess`, `domain.models.rental.template.PremiumRentalProcess`
+
+### Proces zwrotu jednorożca
+Wzorzec Template Method został użyty do zdefiniowania szkieletu procesu zwrotu, pozostawiając szczegóły implementacji poszczególnych kroków do klas potomnych.
+
+* **Klasa abstrakcyjna z szablonem:** `domain.models.rental.returnTemplate.UnicornReturnTemplate`
+* **Konkretne implementacje:** `domain.models.rental.returnTemplate.DamagedReturnProcess`, `domain.models.rental.returnTemplate.LateReturnProcess`, `domain.models.rental.returnTemplate.StandardReturnProcess`
+
+### Proces pielęgnacji jednorożca
+Wzorzec Template Method został użyty do zdefiniowania szkieletu procesu wypożyczenia, pozostawiając szczegóły implementacji poszczególnych kroków do klas potomnych.
+Dzięki temu można łatwo tworzyć różne warianty procesu wypożyczenia (np. standardowy, ekspresowy) bez duplikowania kodu.
+
+* **Klasa abstrakcyjna z szablonem:** `domain.models.rental.template.UnicornRentalProcess`
+* **Konkretne implementacje:** `domain.models.rental.template.StandardRentalProcess`, `domain.models.rental.template.ExpressRentalProcess`, `domain.models.rental.template.PremiumRentalProcess`

@@ -2,11 +2,13 @@ package com.unicorn.my_little_pony.domain.models.unicorn.types;
 
 import com.unicorn.my_little_pony.domain.models.unicorn.factories.FireUnicornFactory;
 import com.unicorn.my_little_pony.domain.models.unicorn.factories.UnicornFactory;
+import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornElement;
+import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornVisitor;
 import com.unicorn.my_little_pony.util.IdGenerator;
 
 // Tydzień 2, Wzorzec Factory method
 // Konkretna klasa jednorożca implementująca umiejętność specjalną
-public class FireUnicorn extends Unicorn {
+public class FireUnicorn extends Unicorn implements UnicornElement {
 
     public FireUnicorn(String id, String name, String color, int powerLevel) {
         super(id, name, color, powerLevel);
@@ -31,6 +33,12 @@ public class FireUnicorn extends Unicorn {
         cloned.setStatus(this.getStatus());
         return (FireUnicorn) cloned;
     }
+    //Tydzien 6, wzorzec visitor
+    @Override
+    public String accept(UnicornVisitor visitor) {
+        return visitor.visit(this);
+    }
+    //Koniec, tydzien 6
     // Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 3
 }
 // Koniec, Tydzień 2, Wzorzec Factory method
