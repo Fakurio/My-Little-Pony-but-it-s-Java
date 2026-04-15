@@ -220,6 +220,7 @@ Wzorzec został użyty do umożliwienia iterowania po wypożyczeniach o określo
 * **Interfejs iteratora:** `domain.models.rental.iterator.RentalIterator`
 * **Interfejs kolekcji wypożyczeń:** `domain.models.rental.iterator.RentalCollection`
 * **Konkretna kolekcja wypożyczeń z klasą wewnętrzną iteratora dla statusów:** `domain.models.rental.RentalBook`
+W tygodniu 7 wprowadzona modyfikacja: klasa wewnętrzna przeniesiona i rozdzielona do osobnych klas: `domain.models.rental.StatusRentalIterator`, `domain.models.rental.RentalIteratorFactory` i `domain.models.rental.StatusRentalIteratorFactory` w celu zachowania zasady pojedynczej odpowiedzialności.
 
 ### Iteracja po poziomach mocy jednorożców
 Wzorzec został użyty do umożliwienia iterowania po jednorożcach o określonym poziomie mocy.
@@ -332,6 +333,12 @@ Dzięki temu można łatwo tworzyć różne warianty procesu wypożyczenia (np. 
 ### Dostawa jednorożca
 Zmiana wymagań logiki biznesowej dotyczącej dostawy jednorożca teleportacją (sprawdzenie czy klient jest VIPem) wymaga tylko aktualizacji klasy `TeleportationDeliveryStrategy`.
 * **Klasa strategii:** `domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy`
+### Iteracja po wypożyczeniach na podstawie statusu
+"Wyciągnięcie" logiki iteracji po statusie wypożyczenia do osobnych klas `StatusRentalIterator`, `RentalIteratorFactory` i `StatusRentalIteratorFactory` pozwala na utrzymanie pojedynczej odpowiedzialności dla klasy `RentalBook`, która teraz skupia się tylko na reprezentowaniu wypożyczenia, a nie na zarządzaniu kolekcją wypożyczeń.
+* **Klasa kolekcji:** `domain.models.rental.RentalBook`
+* **Klasa iteratora:** `domain.models.rental.iterator.RentalIterator.StatusRentalIterator`
+* **Interfejs fabryki iteratorów:** `domain.models.rental.iterator.RentalIterator.RentalIteratorFactory`
+* **Klasa fabryki iteratorów:** `domain.models.rental.iterator.RentalIterator.StatusRentalIteratorFactory`
 
 ## Open Close Principle
 ### Obliczanie opłat za typ magii
@@ -342,3 +349,21 @@ Dodanie nowej reguły obliczania opłaty polega na utworzeniu nowej klasy implem
 #### Przez Sterowanie Danymi
 Główny algorytm opiera się na słowniku. Rozbudowa polega na dodaniu nowej reguły do słownika bez modyfikacji kodu klasy. Klasa jest zamknięta na modyfikacje ponieważ metoda obliczania opłaty jest stała i niezależna od typów magii w słowniku.
 * **Klasa kalkulatora:** `domain.pricing.MagicFeeDDCalculator`
+
+### Proces wypożyczenia jednorożca
+#### Przez Abstrakcję
+Wzorzec Template Method został użyty do zdefiniowania szkieletu procesu wypożyczenia, pozostawiając szczegóły implementacji poszczególnych kroków do klas potomnych. Dzięki temu można łatwo tworzyć różne warianty procesu wypożyczenia
+(np. standardowy, ekspresowy) bez duplikowania kodu. Kiedy zajedzie potrzeba dodania nowego rodzajy wypożyczenia (np. FamilyUnicorn albo HolidayUnicorn), nie będzie konieczności wprowadzania zmian w `UnicornRentalProcess`, tylko będzie
+trzeba dodać nową klasę. To oznacza, że `UnicornRentalProcess` jest **zamkniete na modyfikację**, ale **otwarty na rozbudowę** o nowe typy.
+* **Klasa abstrakcyjna z szablonem:** `domain.models.rental.template.UnicornRentalProcess`
+* **Konkretne implementacje:** `domain.models.rental.template.StandardRentalProcess`, `domain.models.rental.template.ExpressRentalProcess`, `domain.models.rental.template.PremiumRentalProcess`
+
+#### Przez Sterowanie Danymi
+Zasada otwarte-zamknięte została zaimplementowana przez sterowanie danymi.
+Klasa `DataDrivenUnicornRentalProcess` nie zawiera na sztywno zapisanej konkretnej sekwencji wypożyczenia, lecz interpretuje listę kroków przekazanych w obiekcie `RentalProcessConfig`.
+Każdy krok procesu jest opisany danymi: typem kroku, komunikatem oraz flagą aktywności.
+Dzięki temu zmiana przebiegu procesu, kolejności kroków lub pominięcie wybranych etapów nie wymaga modyfikacji klasy procesu, a jedynie dostarczenia innej konfiguracji.
+* **Krok procesu:** `domain.models.rental.dataDriven.RentalStepType`
+* **Klasa konfiguracyjna kroku:** `domain.models.rental.dataDriven.RentalStep`
+* **Klasa konfiguracyjna procesu:** `domain.models.rental.dataDriven.RentalProcessConfig`
+* **Klasa realizująca proces:** `domain.models.rental.dataDriven.DataDrivenUnicornRentalProcess`

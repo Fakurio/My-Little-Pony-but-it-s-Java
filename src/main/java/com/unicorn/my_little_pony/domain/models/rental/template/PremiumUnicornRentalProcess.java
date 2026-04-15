@@ -2,6 +2,8 @@ package com.unicorn.my_little_pony.domain.models.rental.template;
 
 // Tydzień 6, Wzorzec Template, Zastosowanie 1
 // Implementacja procesu wypożyczenia premium jednorożca, definiująca specyficzne kroki wyboru, kalkulacji ceny i wydania jednorożca dla klientów VIP
+// Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez abstrakcję)
+// Klasa PremiumUnicornRentalProcess jest rozszerzeniem szablonu UnicornRentalProcess
 public class PremiumUnicornRentalProcess extends UnicornRentalProcess {
 
     @Override
@@ -20,3 +22,4 @@ public class PremiumUnicornRentalProcess extends UnicornRentalProcess {
     }
 }
 // Koniec, Tydzień 6, Wzorzec Template, Zastosowanie 1
+// Koniec, Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez abstrakcję)

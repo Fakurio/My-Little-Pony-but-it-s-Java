@@ -3,6 +3,8 @@ package com.unicorn.my_little_pony.domain.models.rental.template;
 // Tydzień 6, Wzorzec Template, Zastosowanie 1
 // Implementacja procesu ekspresowego wypożyczenia jednorożca, definiująca specyficzne kroki wyboru, kalkulacji ceny i
 // wydania jednorożca dla klientów potrzebujących szybkiej obsługi
+// Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez abstrakcję)
+// Klasa ExpressUnicornRentalProcess jest rozszerzeniem szablonu UnicornRentalProcess
 public class ExpressUnicornRentalProcess extends UnicornRentalProcess {
 
     @Override
@@ -22,3 +24,4 @@ public class ExpressUnicornRentalProcess extends UnicornRentalProcess {
 
 }
 // Koniec, Tydzień 6, Wzorzec Template, Zastosowanie 1
+// Koniec, Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez abstrakcję)

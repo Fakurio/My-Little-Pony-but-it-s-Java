@@ -2,6 +2,9 @@ package com.unicorn.my_little_pony.domain.models.rental.template;
 
 //Tydzień 6, Wzorzec Template, Zastosowanie 1
 // Szablon procesu wypożyczenia jednorożca, definiujący ogólny przebieg procesu, pozostawiający szczegóły do implementacji
+// Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez abstrakcję)
+// Klasa jest otwarta na rozszerzenia (można tworzyć różne procesy wypożyczenia jednorożca), ale zamknięta na modyfikacje
+//  (nie trzeba zmieniać istniejącego kodu, aby dodać nowe procesy).
 public abstract class UnicornRentalProcess {
 
     public final void processRental() {
@@ -38,3 +41,4 @@ public abstract class UnicornRentalProcess {
 
 }
 // Koniec, Tydzień 6, Wzorzec Template, Zastosowanie 1
+// Koniec, Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez abstrakcję)
