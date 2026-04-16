@@ -1,17 +1,30 @@
 package com.unicorn.my_little_pony.domain.models.rental.template.dataDriven;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Consumer;
+
 // Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez sterowanie danymi)
 // Klasa realizująca proces wypożyczenia jednorożca.
-// Nie zawiera na stałe zakodowanej sekwencji kroków tylko wykonuje je na podstawie konfiguracji przekazanej w obiekcie RentalProcessConfig.
+// Nie zawiera na stałe zakodowanej sekwencji kroków tylko wykonuje je na podstawie konfiguracji przekazanej
+// w obiekcie RentalProcessConfig.
 public class DataDrivenUnicornRentalProcess {
 
     private final RentalProcessConfig config;
+    private final Map<String, Consumer<String>> stepHandlers;
 
-    public DataDrivenUnicornRentalProcess(RentalProcessConfig config) {
+    public DataDrivenUnicornRentalProcess(RentalProcessConfig config, Map<String, Consumer<String>> stepHandlers) {
         if (config == null) {
             throw new IllegalArgumentException("Rental process config cannot be null");
         }
+        if (stepHandlers == null || stepHandlers.isEmpty()) {
+            throw new IllegalArgumentException("Step handlers cannot be null or empty");
+        }
+
         this.config = config;
+        this.stepHandlers = validateAndCopyHandlers(stepHandlers);
     }
 
     public final void processRental() {
@@ -24,39 +37,30 @@ public class DataDrivenUnicornRentalProcess {
         }
     }
 
+    // Wykonuje pojedynczy krok procesu na podstawie jego typu, korzystając z zarejestrowanych handlerów
     private void executeStep(RentalStep step) {
-        switch (step.getType()) {
-            case VALIDATE_CUSTOMER -> validateCustomer(step.getMessage());
-            case CHOOSE_UNICORN -> chooseUnicorn(step.getMessage());
-            case CALCULATE_PRICE -> calculatePrice(step.getMessage());
-            case PREPARE_AGREEMENT -> prepareAgreement(step.getMessage());
-            case RELEASE_UNICORN -> releaseUnicorn(step.getMessage());
-            case SEND_NOTIFICATION -> sendNotification(step.getMessage());
+        Consumer<String> handler = stepHandlers.get(step.getType());
+        if (handler == null) {
+            throw new IllegalArgumentException("No handler registered for rental step type: " + step.getType());
         }
+
+        handler.accept(step.getMessage());
     }
 
-    private void validateCustomer(String message) {
-        System.out.println(message);
-    }
+    // Walidacja i stworzenie niemutowalnej kopii mapy handlerów, aby zapewnić bezpieczeństwo i integralność danych
+    private static Map<String, Consumer<String>> validateAndCopyHandlers(Map<String, Consumer<String>> stepHandlers) {
+        Map<String, Consumer<String>> safeCopy = new HashMap<>();
+        for (Map.Entry<String, Consumer<String>> entry : stepHandlers.entrySet()) {
+            String stepType = Objects.requireNonNull(entry.getKey(), "Rental step handler key cannot be null");
+            if (stepType.isBlank()) {
+                throw new IllegalArgumentException("Rental step handler key cannot be blank");
+            }
 
-    private void chooseUnicorn(String message) {
-        System.out.println(message);
-    }
+            Consumer<String> handler = Objects.requireNonNull(entry.getValue(), "Rental step handler cannot be null");
+            safeCopy.put(stepType, handler);
+        }
 
-    private void calculatePrice(String message) {
-        System.out.println(message);
-    }
-
-    private void prepareAgreement(String message) {
-        System.out.println(message);
-    }
-
-    private void releaseUnicorn(String message) {
-        System.out.println(message);
-    }
-
-    private void sendNotification(String message) {
-        System.out.println(message);
+        return Collections.unmodifiableMap(safeCopy);
     }
 }
 // Koniec, Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez sterowanie danymi)

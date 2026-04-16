@@ -10,7 +10,6 @@ import com.unicorn.my_little_pony.domain.models.rental.template.PremiumUnicornRe
 import com.unicorn.my_little_pony.domain.models.rental.template.StandardUnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.UnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.dataDriven.RentalStep;
-import com.unicorn.my_little_pony.domain.models.rental.template.dataDriven.RentalStepType;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.DeliveryManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
@@ -28,7 +27,10 @@ import com.unicorn.my_little_pony.domain.models.rental.template.dataDriven.DataD
 import com.unicorn.my_little_pony.domain.models.rental.template.dataDriven.RentalProcessConfig;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 @Component
 public class DemoWeek7Runner implements CommandLineRunner {
@@ -167,67 +169,49 @@ public class DemoWeek7Runner implements CommandLineRunner {
         System.out.println("-------------------------");
         System.out.println("Procesowanie wypożyczenia jednorożca - przez sterowanie danymi");
 
-        // // Standard rental process: validate -> select -> calculate -> agree -> release -> notify
-        // java.util.List<Runnable> standardSteps = java.util.Arrays.asList(
-        //     () -> System.out.println("Verifying customer eligibility and rental history..."),
-        //     () -> System.out.println("A standard unicorn was selected from the available stable."),
-        //     () -> System.out.println("Standard rental price calculated."),
-        //     () -> System.out.println("Preparing rental agreement and processing payment..."),
-        //     () -> System.out.println("The unicorn was handed over to the customer at the pickup point."),
-        //     () -> System.out.println("Notifying customer about rental details and pickup instructions...")
-        // );
-        // RentalProcessConfig standardConfig = new RentalProcessConfig(standardSteps);
-        // DataDrivenUnicornRentalProcess standardProcess = new DataDrivenUnicornRentalProcess(standardConfig);
-        // standardProcess.processRental();
-        // System.out.println();
-
-        // // Festival rental process: validate -> agree -> calculate -> select -> release (skips notify for custom handling)
-        // java.util.List<Runnable> festivalSteps = java.util.Arrays.asList(
-        //     () -> System.out.println("Verifying customer eligibility and rental history..."),
-        //     () -> System.out.println("Preparing rental agreement and processing payment..."),
-        //     () -> System.out.println("Festival rental price calculated with event package and decoration fee."),
-        //     () -> System.out.println("A colorful festival unicorn was selected for the seasonal event."),
-        //     () -> System.out.println("The festival unicorn was released with decorative accessories.")
-        // );
-        // RentalProcessConfig festivalConfig = new RentalProcessConfig(festivalSteps);
-        // DataDrivenUnicornRentalProcess festivalProcess = new DataDrivenUnicornRentalProcess(festivalConfig);
-        // festivalProcess.processRental();
-
         RentalProcessConfig config = new RentalProcessConfig(List.of(
                 new RentalStep(
-                        RentalStepType.VALIDATE_CUSTOMER,
+                        "VALIDATE_CUSTOMER",
                         "Verifying customer eligibility and rental history...",
                         true
                 ),
                 new RentalStep(
-                        RentalStepType.CHOOSE_UNICORN,
+                        "CHOOSE_UNICORN",
                         "Selecting a crystal unicorn for the customer...",
                         true
                 ),
                 new RentalStep(
-                        RentalStepType.CALCULATE_PRICE,
+                        "CALCULATE_PRICE",
                         "Calculating magical rental price with premium insurance...",
                         true
                 ),
                 new RentalStep(
-                        RentalStepType.PREPARE_AGREEMENT,
+                        "PREPARE_AGREEMENT",
                         "Preparing rental agreement and processing payment...",
                         true
                 ),
                 new RentalStep(
-                        RentalStepType.RELEASE_UNICORN,
+                        "RELEASE_UNICORN",
                         "Releasing the unicorn from the enchanted stable...",
                         true
                 ),
                 new RentalStep(
-                        RentalStepType.SEND_NOTIFICATION,
+                        "SEND_NOTIFICATION",
                         "Sending pickup instructions to the customer...",
                         true
                 )
         ));
 
+        Map<String, Consumer<String>> handlers = new HashMap<>();
+        handlers.put("VALIDATE_CUSTOMER", System.out::println);
+        handlers.put("CHOOSE_UNICORN", System.out::println);
+        handlers.put("CALCULATE_PRICE", System.out::println);
+        handlers.put("PREPARE_AGREEMENT", System.out::println);
+        handlers.put("RELEASE_UNICORN", System.out::println);
+        handlers.put("SEND_NOTIFICATION", System.out::println);
+
         DataDrivenUnicornRentalProcess process =
-                new DataDrivenUnicornRentalProcess(config);
+                new DataDrivenUnicornRentalProcess(config, handlers);
 
         process.processRental();
         System.out.println("==========================");

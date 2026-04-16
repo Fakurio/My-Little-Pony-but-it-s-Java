@@ -5,12 +5,12 @@ package com.unicorn.my_little_pony.domain.models.rental.template.dataDriven;
 // Jest to czysta struktura danych, która nie zawiera logiki, tylko opisuje co ma zostać wykonane.
 public class RentalStep {
 
-    private final RentalStepType type;
+    private final String type;
     private final String message;
     private final boolean enabled;
 
-    public RentalStep(RentalStepType type, String message, boolean enabled) {
-        if (type == null) {
+    public RentalStep(String type, String message, boolean enabled) {
+        if (type == null || type.isBlank()) {
             throw new IllegalArgumentException("Rental step type cannot be null");
         }
         if (message == null || message.isBlank()) {
@@ -22,7 +22,7 @@ public class RentalStep {
         this.enabled = enabled;
     }
 
-    public RentalStepType getType() {
+    public String getType() {
         return type;
     }
 

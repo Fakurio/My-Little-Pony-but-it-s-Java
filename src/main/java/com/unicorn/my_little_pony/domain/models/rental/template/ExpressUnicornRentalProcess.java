@@ -8,18 +8,23 @@ package com.unicorn.my_little_pony.domain.models.rental.template;
 public class ExpressUnicornRentalProcess extends UnicornRentalProcess {
 
     @Override
-    public void chooseUnicorn() {
+    protected void chooseUnicorn() {
         System.out.println("Quickly select the first available unicorn that meets your requirements.");
     }
 
     @Override
-    public void calculatePrice() {
+    protected void calculatePrice() {
         System.out.println("Express price calculated with a priority service surcharge.");
     }
 
     @Override
-    public void releaseUnicorn() {
+    protected void releaseUnicorn() {
         System.out.println("The unicorn was released immediately in express mode.");
+    }
+
+    @Override
+    protected void prepareAgreement() {
+        System.out.println("Preparing a simplified express agreement with priority payment processing...");
     }
 
 }

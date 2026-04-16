@@ -7,17 +7,17 @@ package com.unicorn.my_little_pony.domain.models.rental.template;
 public class StandardUnicornRentalProcess extends UnicornRentalProcess {
 
     @Override
-    public void chooseUnicorn() {
+    protected void chooseUnicorn() {
         System.out.println("A standard unicorn was selected from the available stable.");
     }
 
     @Override
-    public void calculatePrice() {
+    protected void calculatePrice() {
         System.out.println("Standard rental price calculated.");
     }
 
     @Override
-    public void releaseUnicorn() {
+    protected void releaseUnicorn() {
         System.out.println("The unicorn was handed over to the customer at the pickup point.");
     }
 }

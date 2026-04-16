@@ -19,25 +19,29 @@ public abstract class UnicornRentalProcess {
         }
     }
 
-    private void validateCustomer() {
+    // Można nadpisać w klasie pochodnej, aby dostosować (private na protected)
+    protected void validateCustomer() {
         System.out.println("Verifying customer eligibility and rental history...");
     }
 
-    private void prepareAgreement() {
+    // Można nadpisać w klasie pochodnej, aby dostosować (private na protected)
+    protected void prepareAgreement() {
         System.out.println("Preparing rental agreement and processing payment...");
     }
 
-    private boolean shouldSendNotification() {
+    // Można nadpisać w klasie pochodnej, aby dostosować (private na protected)
+    protected boolean shouldSendNotification() {
         return true;
     }
 
-    private void sendNotification() {
+    // Można nadpisać w klasie pochodnej, aby dostosować (private na protected)
+    protected void sendNotification() {
         System.out.println("Notifying customer about rental details and pickup instructions...");
     }
-
-    public abstract void chooseUnicorn();
-    public abstract void calculatePrice();
-    public abstract void releaseUnicorn();
+    // public na protected
+    protected abstract void chooseUnicorn();
+    protected abstract void calculatePrice();
+    protected abstract void releaseUnicorn();
 
 }
 // Koniec, Tydzień 6, Wzorzec Template, Zastosowanie 1

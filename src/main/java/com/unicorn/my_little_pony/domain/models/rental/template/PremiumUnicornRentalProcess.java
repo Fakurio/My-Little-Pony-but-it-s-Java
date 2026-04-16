@@ -7,17 +7,17 @@ package com.unicorn.my_little_pony.domain.models.rental.template;
 public class PremiumUnicornRentalProcess extends UnicornRentalProcess {
 
     @Override
-    public void chooseUnicorn() {
+    protected void chooseUnicorn() {
         System.out.println("A rare premium unicorn with a high power level was selected.");
     }
 
     @Override
-    public void calculatePrice() {
+    protected void calculatePrice() {
         System.out.println("Premium price calculated with additional VIP fees.");
     }
 
     @Override
-    public void releaseUnicorn() {
+    protected void releaseUnicorn() {
         System.out.println("The premium unicorn was prepared and delivered with a caretaker.");
     }
 }
