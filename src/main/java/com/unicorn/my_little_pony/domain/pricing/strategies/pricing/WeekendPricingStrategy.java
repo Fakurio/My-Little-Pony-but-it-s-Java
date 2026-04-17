@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.pricing.strategies;
+package com.unicorn.my_little_pony.domain.pricing.strategies.pricing;
 
 import com.unicorn.my_little_pony.domain.pricing.PricingConfig;
 

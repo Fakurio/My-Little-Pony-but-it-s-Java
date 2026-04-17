@@ -1,7 +1,7 @@
 package com.unicorn.my_little_pony.domain.store;
 
 import com.unicorn.my_little_pony.domain.models.unicorn.commands.Command;
-import com.unicorn.my_little_pony.domain.pricing.strategies.PricingStrategy;
+import com.unicorn.my_little_pony.domain.pricing.strategies.pricing.PricingStrategy;
 
 import java.util.Stack;
 

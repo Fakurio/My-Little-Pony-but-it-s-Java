@@ -1,7 +1,8 @@
 package com.unicorn.my_little_pony.domain.models.unicorn.careTemplate;
 
 // Tydzień 6, Wzorzec Template, Zastosowanie 3
-// Definicja szablonu przygotowania jednorożca, który określa ogólny proces pielęgnacji, pozostawiając szczegóły implementacji poszczególnych kroków do konkretnych klas dziedziczących
+// Definicja szablonu przygotowania jednorożca, który określa ogólny proces pielęgnacji, pozostawiając szczegóły
+// implementacji poszczególnych kroków do konkretnych klas dziedziczących
 public abstract class UnicornPreparationTemplate {
 
     public final void prepareUnicorn() {
