@@ -1,5 +1,8 @@
 package com.unicorn.my_little_pony;
 
+import com.unicorn.my_little_pony.domain.facades.booking.services.RecommendationService;
+import com.unicorn.my_little_pony.domain.facades.rental.services.PricingService;
+import com.unicorn.my_little_pony.domain.facades.rental.services.RainbowPricingRule;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
 import com.unicorn.my_little_pony.domain.models.rental.builders.RentalBuilder;
@@ -10,6 +13,8 @@ import com.unicorn.my_little_pony.domain.models.rental.template.PremiumUnicornRe
 import com.unicorn.my_little_pony.domain.models.rental.template.StandardUnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.UnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.dataDriven.RentalStep;
+import com.unicorn.my_little_pony.domain.models.service.composite.ServiceBundle;
+import com.unicorn.my_little_pony.domain.models.service.composite.ServiceComponent;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.DeliveryManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
@@ -127,7 +132,38 @@ public class DemoWeek7Runner implements CommandLineRunner {
         while (completedIterator.hasNext()) {
             System.out.println(completedIterator.next());
         }
+        System.out.println("Przykład 3");
+        System.out.println("Zastosowanie 3: ServiceBundle");
+        ServiceComponent decoration = new ServiceComponent() {
+            @Override
+            public double getPrice() {
+                return 30;
+            }
 
+            @Override
+            public String getDescription() {
+                return "Decoration";
+            }
+        };
+
+        ServiceComponent trainer = new ServiceComponent() {
+            @Override
+            public double getPrice() {
+                return 50;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Trainer";
+            }
+        };
+
+        ServiceBundle bundle = new ServiceBundle("VIP Package");
+        bundle.add(decoration);
+        bundle.add(trainer);
+
+        System.out.println("Total price: " + bundle.getPrice());
+        System.out.println("Description: " + bundle.getDescription());
 
     }
 
@@ -216,5 +252,38 @@ public class DemoWeek7Runner implements CommandLineRunner {
         process.processRental();
         System.out.println("==========================");
 
+        System.out.println("==========================");
+        System.out.println("PRZYKŁAD 3");
+        System.out.println("Procesowanie wypożyczenia jednorożca - przez abstrakcję");
+        System.out.println("-------------------------");
+
+        PricingService pricingService = new PricingService(List.of(
+                new RainbowPricingRule()
+        ));
+
+        String rainbowUnicorn = "RAINBOW_001";
+        String normalUnicorn = "NORMAL_001";
+
+        double rainbowPrice = pricingService.calculatePrice(rainbowUnicorn);
+        double normalPrice = pricingService.calculatePrice(normalUnicorn);
+
+        System.out.println("Unicorn: " + rainbowUnicorn + " price: " + rainbowPrice);
+        System.out.println("Unicorn: " + normalUnicorn + " price: " + normalPrice);
+        System.out.println("-------------------------");
+
+        System.out.println("Obliczanie opłaty magicznej - przez sterowanie danymi");
+        RecommendationService recommendationService = new RecommendationService();
+
+        System.out.println("DEFAULT customer:");
+        System.out.println(recommendationService.recommendExtras("DEFAULT"));
+
+        System.out.println("VIP customer:");
+        System.out.println(recommendationService.recommendExtras("VIP"));
+
+        System.out.println("RAINBOW customer:");
+        System.out.println(recommendationService.recommendExtras("RAINBOW"));
+
+        System.out.println("UNKNOWN customer:");
+        System.out.println(recommendationService.recommendExtras("UNKNOWN"));
     }
 }

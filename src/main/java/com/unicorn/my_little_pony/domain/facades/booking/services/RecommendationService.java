@@ -6,18 +6,35 @@ package com.unicorn.my_little_pony.domain.facades.booking.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.*;
+
+//Tydzien 7, zasada open-close sterowanie danymi
+//rekomendacje dodatków nie sa zapisane w logice metody,
+//ale z wynikaja z danych przechowywanych w mapie rekomendacji.
+
 public class RecommendationService {
 
-    public List<String> recommendExtras() {
+    private final Map<String, List<String>> recommendations = new HashMap<>();
 
-        List<String> extras = new ArrayList<>();
+    public RecommendationService() {
+        recommendations.put("DEFAULT", Arrays.asList("Decoration", "Trainer"));
+        recommendations.put("VIP", Arrays.asList("Decoration", "Trainer", "Golden Saddle"));
+        recommendations.put("RAINBOW", Arrays.asList("Rainbow Sparkles", "Magic Trainer"));
+    }
 
-        extras.add("Decoration");
-        extras.add("Trainer");
+    public void addRule(String customerType, List<String> extras) {
+        recommendations.put(customerType, extras);
+    }
 
-        System.out.println("Recommended extras: " + extras);
+    public List<String> recommendExtras(String customerType) {
 
-        return extras;
+        List<String> result =
+                recommendations.getOrDefault(customerType, recommendations.get("DEFAULT"));
+
+        System.out.println("Recommended extras: " + result);
+
+        return result;
     }
 }
+//Koniec Tydzien 7
 //Koniec Tydzień 4, Wzorzec Facade

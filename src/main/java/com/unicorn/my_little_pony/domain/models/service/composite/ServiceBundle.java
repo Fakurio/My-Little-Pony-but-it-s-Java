@@ -5,6 +5,8 @@ import java.util.List;
 
 // Tydzień 3, Wzorzec Composite, Zastosowanie 1
 // Klasa reprezentująca pakiet usług
+//Tydzien 7, zasada pojedynczej odpowiedzialnosci, fukcja tworzaca opis zostala przeniesiona
+//do osobnego pliku
 public class ServiceBundle implements ServiceComponent {
 
     private final String name;
@@ -25,24 +27,15 @@ public class ServiceBundle implements ServiceComponent {
     @Override
     public double getPrice() {
         double total = 0;
-
         for (ServiceComponent item : items) {
             total += item.getPrice();
         }
-
         return total;
     }
 
     @Override
     public String getDescription() {
-
-        StringBuilder description = new StringBuilder(name + ": ");
-
-        for (ServiceComponent item : items) {
-            description.append(item.getDescription()).append(", ");
-        }
-
-        return description.toString();
+        return ServiceDescriptionBuilder.build(name, items);
     }
 }
 //Koniec, Tydzień 3, Wzorzec Composite, Zastosowanie 1

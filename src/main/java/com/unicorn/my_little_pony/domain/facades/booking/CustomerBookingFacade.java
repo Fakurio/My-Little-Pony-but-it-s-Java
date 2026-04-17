@@ -30,7 +30,7 @@ public class CustomerBookingFacade {
 
         loyaltyService.calculatePoints(customerId);
 
-        recommendationService.recommendExtras();
+        recommendationService.recommendExtras("DEFAULT");
 
         String offerDescription = "Offer for customer " + customerId +
                 " with unicorn " + unicorn.getName() +
