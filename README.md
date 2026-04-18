@@ -367,3 +367,19 @@ Dzięki temu zmiana przebiegu procesu, kolejności kroków lub pominięcie wybra
 * **Klasa konfiguracyjna kroku:** `domain.models.rental.dataDriven.RentalStep`
 * **Klasa konfiguracyjna procesu:** `domain.models.rental.dataDriven.RentalProcessConfig`
 * **Klasa realizująca proces:** `domain.models.rental.dataDriven.DataDrivenUnicornRentalProcess`
+
+## 📅 Tydzień 8
+---
+## Dependency Inversion
+### Pośrednik płatności
+Główny kontroler płatności (`PaymentProcessor`) nie jest "na sztywno" powiązany z kodem konkretnego dostawcy (np. klasą `PayPalProvider` czy `StripeProvider`). Zależy on jedynie od abstrakcyjnego kontraktu `PaymentProvider`. Umożliwia to wymianę całego systemu płatności w locie, bez ani jednej zmiany w kodzie realizującym logikę biznesową wypożyczenia.
+* **Moduł wysokopoziomowy:** `integration.payment.PaymentProcessor`
+* **Moduły niskopoziomowe:** `integration.payment.providers`
+### Repozytoria
+Serwis (`UnicornManager`) operują wyłącznie na interfejsie `UnicornRepository`. Dzięki odwróceniu zależności, warstwa logiki nie ma pojęcia o istnieniu technologii bazodanowych — nie wie, czy dane są zapisywane w relacyjnej bazie SQL, czy zwykłym pliku tekstowym.
+* **Moduł wysokopoziomowy:** `domain.store.UnicornManager`
+* **Moduły niskopoziomowe:** `repositories`
+### System ataków magicznych
+Centralna mechanika (`UnicornBattleSystem`) nie weryfikuje instrukcjami warunkowymi, jakiego rodzaju czaru jednorożec używa. Zamiast tego zależy od abstrakcji `MagicEffect`. To same zaklęcia wiedzą, jak zadać obrażenia, co pozwala na dodawanie nieskończonej liczby nowych ataków bez modyfikacji silnika walki.
+* **Moduł wysokopoziomowy:** `domain.magicCombat.UnicornBattleSystem`
+* **Moduły niskopoziomowe:** `domain.magicCombat.attacks`

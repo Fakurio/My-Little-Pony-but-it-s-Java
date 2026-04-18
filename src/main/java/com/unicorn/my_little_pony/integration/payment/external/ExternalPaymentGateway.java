@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.integration.payment;
+package com.unicorn.my_little_pony.integration.payment.external;
 
 //Tydzień 3, Wzorzec Adapter 1 (przez kompozycję)
 //Klasa, która chcemy użyć, ale jej interfejs jest niekompatybilny z naszym systemem (PaymentService).

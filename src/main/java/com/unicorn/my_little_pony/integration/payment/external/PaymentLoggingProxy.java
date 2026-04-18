@@ -1,11 +1,11 @@
-package com.unicorn.my_little_pony.integration.payment;
+package com.unicorn.my_little_pony.integration.payment.external;
 
 import lombok.AllArgsConstructor;
 
 // Tydzień 4, Wzorzec Proxy, Zastosowanie 2
 // Proxy loggera dla wszystkich płatności w systemie
 @AllArgsConstructor
-public class PaymentLoggingProxy implements PaymentService{
+public class PaymentLoggingProxy implements PaymentService {
     private final PaymentService paymentService;
 
     @Override
