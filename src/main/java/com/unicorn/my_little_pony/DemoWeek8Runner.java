@@ -3,6 +3,17 @@ package com.unicorn.my_little_pony;
 import com.unicorn.my_little_pony.domain.magicCombat.UnicornBattleSystem;
 import com.unicorn.my_little_pony.domain.magicCombat.attacks.FireAttack;
 import com.unicorn.my_little_pony.domain.magicCombat.attacks.WaterAttack;
+import com.unicorn.my_little_pony.domain.models.service.composite.BasicService;
+import com.unicorn.my_little_pony.domain.models.service.composite.ServiceBundle;
+import com.unicorn.my_little_pony.domain.models.service.composite.ServiceComponent;
+import com.unicorn.my_little_pony.domain.models.unicorn.composite.Herd;
+import com.unicorn.my_little_pony.domain.models.unicorn.composite.SingleUnicornUnit;
+import com.unicorn.my_little_pony.domain.models.unicorn.composite.UnicornUnit;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.ColorExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.NameExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.PowerExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.UnicornExpression;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 import com.unicorn.my_little_pony.domain.store.isp.rental.BrowsingClient;
 import com.unicorn.my_little_pony.domain.store.isp.rental.CheckoutClient;
 import com.unicorn.my_little_pony.domain.store.isp.rental.ConsoleCustomerNotifier;
@@ -71,7 +82,51 @@ public class DemoWeek8Runner implements CommandLineRunner {
     }
 
     private void demoLiskov() {
-    }
+
+            System.out.println("=========================");
+            System.out.println("Liskov Substitution Principle");
+            System.out.println("=========================");
+
+            // =========================
+            System.out.println("Przykład 1 - ServiceComponent");
+
+            ServiceComponent basic = new BasicService("Trainer", 50);
+
+            ServiceBundle bundle = new ServiceBundle("VIP Bundle");
+            bundle.add(new BasicService("Decoration", 30));
+            bundle.add(new BasicService("Trainer", 50));
+
+            testService(basic);
+            testService(bundle);
+
+            System.out.println("----------------------------");
+
+            // =========================
+            System.out.println("Przykład 2 - UnicornUnit");
+
+            UnicornUnit single = new SingleUnicornUnit(3);
+
+            Herd herd = new Herd();
+            herd.add(new SingleUnicornUnit(2));
+            herd.add(new SingleUnicornUnit(5));
+
+            testUnit(single);
+            testUnit(herd);
+
+            System.out.println("----------------------------");
+
+            // =========================
+            System.out.println("Przykład 3 - UnicornExpression");
+
+            Unicorn unicorn = new FireUnicorn("1", "Inferno", "Red", 120);
+
+            testExpression(new ColorExpression("Red"), unicorn);
+            testExpression(new PowerExpression(100), unicorn);
+            testExpression(new NameExpression("Inferno"), unicorn);
+
+            System.out.println("----------------------------");
+        }
+
 
     private void demoDI() {
         System.out.println("=========================");
@@ -177,5 +232,15 @@ public class DemoWeek8Runner implements CommandLineRunner {
         rentalFinance.processPayment("R002", 100.0);
         accountant.processRefund("R002");
         reportGenerator.generateReports("R002");
+    }
+    private void testUnit(UnicornUnit unit) {
+        System.out.println("Available unicorns: " + unit.getAvailableCount());
+    }
+    private void testService(ServiceComponent service) {
+        System.out.println("Price: " + service.getPrice());
+        System.out.println("Description: " + service.getDescription());
+
+    }private void testExpression(UnicornExpression expr, Unicorn unicorn) {
+        System.out.println("Result: " + expr.interpret(unicorn));
     }
 }
