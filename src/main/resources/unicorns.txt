@@ -1,0 +1,2 @@
+Blaze;red;120;
+Volcano;black;130;

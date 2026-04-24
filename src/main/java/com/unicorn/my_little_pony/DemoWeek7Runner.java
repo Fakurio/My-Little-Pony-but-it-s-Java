@@ -42,15 +42,15 @@ public class DemoWeek7Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("\n");
-        System.out.println("===========================================================");
-        System.out.println("  DEMO TYDZIEŃ 7: SRP + OCP ");
-        System.out.println("===========================================================");
-        System.out.println();
-        demoSRP();
-        demoOCP();
-        System.out.println();
-        System.out.println("===========================================================");
+//        System.out.println("\n");
+//        System.out.println("===========================================================");
+//        System.out.println("  DEMO TYDZIEŃ 7: SRP + OCP ");
+//        System.out.println("===========================================================");
+//        System.out.println();
+//        demoSRP();
+//        demoOCP();
+//        System.out.println();
+//        System.out.println("===========================================================");
     }
 
     private void demoSRP() {
