@@ -1,5 +1,6 @@
 package com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery;
 
+import com.unicorn.my_little_pony.domain.exceptions.VipAccessRequiredException;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 
@@ -13,11 +14,10 @@ public class TeleportationDeliveryStrategy implements DeliveryStrategy {
         // Nowa zasada dla teleportacji -> sprawdzenie czy klient jest Vipem
         // Dotyczy ona tylko strategii teloportacji i nie wymaga ingerencji w inne klasy strategii dostawy
         if (!customer.isVip()) {
-            System.out.println("Błąd: Dostawa teleportacją jest dostępna tylko dla klientów VIP");
-        } else {
-            System.out.println("Dostawa: " + unicorn.getName() + " został przeteleportowany "
-                    + "pod drzwi klienta " + customer.getName() + ".");
+            throw new VipAccessRequiredException(customer.getName());
         }
+        System.out.println("Dostawa: " + unicorn.getName() + " został przeteleportowany "
+                + "pod drzwi klienta " + customer.getName() + ".");
         // Koniec, Tydzień 7, SRP
     }
 }

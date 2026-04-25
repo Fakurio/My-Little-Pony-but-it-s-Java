@@ -9,42 +9,38 @@ public class EquipmentFlyweightFactory {
 
     private static final Map<String, EquipmentFlyweight> equipmentMap = new HashMap<>();
 
-    public static EquipmentFlyweight getEquipmentPackage(
-            String packageType,
-            String packageName,
-            String saddleType,
-            String harnessType,
-            String decorationStyle,
-            String safetyLevel) {
+    public static EquipmentFlyweight getEquipmentPackage(EquipmentPackageConfig config) {
 
-        String key = packageType + "_" + packageName + "_" + saddleType + "_"
-                + harnessType + "_" + decorationStyle + "_" + safetyLevel;
+        String key = config.toKey();
 
         if (!equipmentMap.containsKey(key)) {
-            if ("BASIC".equalsIgnoreCase(packageType)) {
-                equipmentMap.put(
-                        key,
-                        new BasicEquipmentPackage(
-                                packageName,
-                                saddleType,
-                                harnessType,
-                                decorationStyle,
-                                safetyLevel
-                        )
-                );
-            } else if ("PREMIUM".equalsIgnoreCase(packageType)) {
-                equipmentMap.put(
-                        key,
-                        new PremiumEquipmentPackage(
-                                packageName,
-                                saddleType,
-                                harnessType,
-                                decorationStyle,
-                                safetyLevel
-                        )
-                );
-            } else {
-                throw new IllegalArgumentException("Unknown equipment package type: " + packageType);
+            switch (config.getPackageType()) {
+                case BASIC:
+                    equipmentMap.put(
+                            key,
+                            new BasicEquipmentPackage(
+                                    config.getPackageName(),
+                                    config.getSaddleType(),
+                                    config.getHarnessType(),
+                                    config.getDecorationStyle(),
+                                    config.getSafetyLevel()
+                            )
+                    );
+                    break;
+                case PREMIUM:
+                    equipmentMap.put(
+                            key,
+                            new PremiumEquipmentPackage(
+                                    config.getPackageName(),
+                                    config.getSaddleType(),
+                                    config.getHarnessType(),
+                                    config.getDecorationStyle(),
+                                    config.getSafetyLevel()
+                            )
+                    );
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown equipment package type: " + config.getPackageType());
             }
         }
 

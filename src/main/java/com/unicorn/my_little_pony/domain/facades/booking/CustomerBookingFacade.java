@@ -12,6 +12,8 @@ import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 
 public class CustomerBookingFacade {
 
+    private static final double PRICE_PER_POWER_UNIT = 10.0;
+
     private CustomerValidationService validationService = new CustomerValidationService();
     private DiscountService discountService = new DiscountService();
     private RentalHistoryService historyService = new RentalHistoryService();
@@ -24,7 +26,7 @@ public class CustomerBookingFacade {
 
         historyService.checkHistory(customerId);
 
-        double basePrice = unicorn.getPowerLevel() * 10.0;
+        double basePrice = unicorn.getPowerLevel() * PRICE_PER_POWER_UNIT;
 
         double discountedPrice = discountService.applyDiscount(basePrice);
 

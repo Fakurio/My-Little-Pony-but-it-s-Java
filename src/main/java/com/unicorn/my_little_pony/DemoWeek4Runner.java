@@ -5,12 +5,17 @@ import com.unicorn.my_little_pony.database.RentingHistoryLoader;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
 import com.unicorn.my_little_pony.domain.models.route.RidePlan;
+import com.unicorn.my_little_pony.domain.models.route.RideRouteConfig;
 import com.unicorn.my_little_pony.domain.models.route.RideRouteFlyweight;
 import com.unicorn.my_little_pony.domain.models.route.RideRouteFlyweightFactory;
+import com.unicorn.my_little_pony.domain.models.route.RideRouteType;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentFlyweight;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentFlyweightFactory;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentPackageConfig;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentPackageType;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.RentalEquipmentAssignment;
 import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.Unicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.UnicornVariantConfig;
 import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.UnicornVariantFactory;
 import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.UnicornVariantFlyweight;
 import com.unicorn.my_little_pony.domain.models.unicorn.proxies.CachingRentingHistoryProxy;
@@ -105,29 +110,17 @@ public class DemoWeek4Runner implements CommandLineRunner {
         System.out.println("Zastosowanie 1: Unicorn Flyweight");
         UnicornVariantFlyweight moonlight =
                 UnicornVariantFactory.getUnicornVariant(
-                        "Moonlight",
-                        "Spiral Horn",
-                        "Silver Wings",
-                        "Pearl Mane",
-                        "Night Glow"
+                        new UnicornVariantConfig("Moonlight", "Spiral Horn", "Silver Wings", "Pearl Mane", "Night Glow")
                 );
 
         UnicornVariantFlyweight moonlightAgain =
                 UnicornVariantFactory.getUnicornVariant(
-                        "Moonlight",
-                        "Spiral Horn",
-                        "Silver Wings",
-                        "Pearl Mane",
-                        "Night Glow"
+                        new UnicornVariantConfig("Moonlight", "Spiral Horn", "Silver Wings", "Pearl Mane", "Night Glow")
                 );
 
         UnicornVariantFlyweight sparkle =
                 UnicornVariantFactory.getUnicornVariant(
-                        "Sparkle",
-                        "Crystal Horn",
-                        "Rainbow Wings",
-                        "Pink Mane",
-                        "Star Dust"
+                        new UnicornVariantConfig("Sparkle", "Crystal Horn", "Rainbow Wings", "Pink Mane", "Star Dust")
                 );
 
         Unicorn u1 = new Unicorn("U1", "Luna", moonlight, "Stable A", true);
@@ -147,30 +140,15 @@ public class DemoWeek4Runner implements CommandLineRunner {
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 2: Equipment Flyweight");
         EquipmentFlyweight basic1 = EquipmentFlyweightFactory.getEquipmentPackage(
-                "BASIC",
-                "Forest Basic Set",
-                "Standard Saddle",
-                "Classic Harness",
-                "Green Ribbons",
-                "STANDARD"
+                new EquipmentPackageConfig(EquipmentPackageType.BASIC, "Forest Basic Set", "Standard Saddle", "Classic Harness", "Green Ribbons", "STANDARD")
         );
 
         EquipmentFlyweight basic2 = EquipmentFlyweightFactory.getEquipmentPackage(
-                "BASIC",
-                "Forest Basic Set",
-                "Standard Saddle",
-                "Classic Harness",
-                "Green Ribbons",
-                "STANDARD"
+                new EquipmentPackageConfig(EquipmentPackageType.BASIC, "Forest Basic Set", "Standard Saddle", "Classic Harness", "Green Ribbons", "STANDARD")
         );
 
         EquipmentFlyweight premium1 = EquipmentFlyweightFactory.getEquipmentPackage(
-                "PREMIUM",
-                "Royal Parade Set",
-                "Luxury Saddle",
-                "Golden Harness",
-                "Crystal Decorations",
-                "HIGH"
+                new EquipmentPackageConfig(EquipmentPackageType.PREMIUM, "Royal Parade Set", "Luxury Saddle", "Golden Harness", "Crystal Decorations", "HIGH")
         );
         IdGenerator gen = IdGenerator.getInstance();
 
@@ -199,27 +177,15 @@ public class DemoWeek4Runner implements CommandLineRunner {
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 3: RideRoute");
         RideRouteFlyweight shortRoute1 = RideRouteFlyweightFactory.getRideRoute(
-                "SHORT",
-                "Moonlight Garden",
-                "EASY",
-                20,
-                "FLAT"
+                new RideRouteConfig(RideRouteType.SHORT, "Moonlight Garden", "EASY", 20, "FLAT")
         );
 
         RideRouteFlyweight shortRoute2 = RideRouteFlyweightFactory.getRideRoute(
-                "SHORT",
-                "Moonlight Garden",
-                "EASY",
-                20,
-                "FLAT"
+                new RideRouteConfig(RideRouteType.SHORT, "Moonlight Garden", "EASY", 20, "FLAT")
         );
 
         RideRouteFlyweight adventureRoute = RideRouteFlyweightFactory.getRideRoute(
-                "ADVENTURE",
-                "Crystal Mountain Trail",
-                "HARD",
-                60,
-                "MOUNTAIN"
+                new RideRouteConfig(RideRouteType.ADVENTURE, "Crystal Mountain Trail", "HARD", 60, "MOUNTAIN")
         );
 
         RidePlan p1 = new RidePlan(

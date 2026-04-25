@@ -10,12 +10,14 @@ import java.util.List;
 // Tydzień 4, Wzorzec Proxy, Zastosowanie 3
 // Klasa wykonująca długą operację wczytywania historii wypożyczeń z bazy danych
 public class DatabaseRentingHistoryLoader implements RentingHistoryLoader {
+    private static final int DATABASE_QUERY_DELAY_MS = 2000;
+
     @Override
     public List<Rental> fetchRentingHistory(String unicornId) {
         System.out.println("[DATABASE] Connecting to the rental archive...");
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(DATABASE_QUERY_DELAY_MS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

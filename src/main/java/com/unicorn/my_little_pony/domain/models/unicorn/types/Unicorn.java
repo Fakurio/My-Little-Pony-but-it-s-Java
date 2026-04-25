@@ -19,6 +19,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class Unicorn implements Cloneable, IUnicorn {
+    private static final int STRONG_POWER_THRESHOLD = 60;
+    private static final int LEGENDARY_POWER_THRESHOLD = 100;
+
     private final String id;
     private final String name;
     private final String color;
@@ -54,9 +57,9 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     public PowerLevelCategory getPowerLevelCategory() {
         int totalPower = getTotalPower();
 
-        if (totalPower < 60) {
+        if (totalPower < STRONG_POWER_THRESHOLD) {
             return PowerLevelCategory.AVERAGE_PONY;
-        } else if (totalPower < 100) {
+        } else if (totalPower < LEGENDARY_POWER_THRESHOLD) {
             return PowerLevelCategory.STRONG;
         } else {
             return PowerLevelCategory.LEGENDARY;

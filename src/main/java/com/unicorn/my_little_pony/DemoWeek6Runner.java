@@ -46,6 +46,7 @@ import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornReportVis
 import com.unicorn.my_little_pony.domain.pricing.strategies.pricing.StandardPricingStrategy;
 import com.unicorn.my_little_pony.domain.pricing.strategies.pricing.WeekendPricingStrategy;
 import com.unicorn.my_little_pony.domain.store.UnicornCart;
+import com.unicorn.my_little_pony.domain.store.PaymentContext;
 import com.unicorn.my_little_pony.util.IdGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -292,18 +293,19 @@ public class DemoWeek6Runner implements CommandLineRunner {
         System.out.println("Zastosowanie 1: Obliczanie ceny");
 
         UnicornCart cart = new UnicornCart();
+        PaymentContext paymentContext = new PaymentContext();
         int rentHours = 5;
 
         System.out.println("--- Standard pricing na tygodniu ---");
-        double standardPrice = cart.pay(new StandardPricingStrategy(), rentHours, false);
+        double standardPrice = paymentContext.pay(new StandardPricingStrategy(), rentHours, false);
         System.out.println("Wynik: " + standardPrice + " PLN\n");
 
         System.out.println("--- Weekend pricing w weekend ---");
-        double weekendPrice = cart.pay(new WeekendPricingStrategy(), rentHours, true);
+        double weekendPrice = paymentContext.pay(new WeekendPricingStrategy(), rentHours, true);
         System.out.println("Wynik: " + weekendPrice + " PLN\n");
 
         System.out.println("--- Weekend pricing na tygodniu ---");
-        standardPrice = cart.pay(new WeekendPricingStrategy(), rentHours, false);
+        standardPrice = paymentContext.pay(new WeekendPricingStrategy(), rentHours, false);
         System.out.println("Wynik: " + standardPrice + " PLN\n");
 
 
