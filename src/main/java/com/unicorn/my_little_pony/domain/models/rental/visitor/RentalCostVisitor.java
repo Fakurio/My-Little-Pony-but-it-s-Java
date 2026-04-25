@@ -4,9 +4,11 @@ package com.unicorn.my_little_pony.domain.models.rental.visitor;
 
 public class RentalCostVisitor implements RentalVisitor {
 
+    private static final int COST_PER_HOUR = 20;
+
     @Override
     public String visit(RentalReport r) {
-        return "Cost: " + (r.getHours() * 20) + " PLN";
+        return "Cost: " + (r.getHours() * COST_PER_HOUR) + " PLN";
     }
 }
 // Koniec Tydzień 6, Wzorzec Visitor

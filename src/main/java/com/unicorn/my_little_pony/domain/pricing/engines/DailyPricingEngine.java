@@ -6,9 +6,11 @@ import com.unicorn.my_little_pony.domain.pricing.PricingConfig;
 // Konkretna implementacja sposobu naliczania ceny
 public class DailyPricingEngine implements PricingEngine {
 
+    private static final int HOURS_PER_DAY = 20;
+
     @Override
     public double calculateBasePrice(int days) {
-        double dailyRate = PricingConfig.getInstance().getBasePricePerHour() * 20;
+        double dailyRate = PricingConfig.getInstance().getBasePricePerHour() * HOURS_PER_DAY;
         return dailyRate * days;
     }
 }

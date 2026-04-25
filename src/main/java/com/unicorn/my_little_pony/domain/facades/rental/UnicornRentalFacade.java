@@ -1,5 +1,7 @@
 package com.unicorn.my_little_pony.domain.facades.rental;
 
+import com.unicorn.my_little_pony.domain.exceptions.RentalCheckoutException;
+import com.unicorn.my_little_pony.domain.exceptions.UnicornNotAvailableException;
 import com.unicorn.my_little_pony.domain.facades.rental.services.RainbowPricingRule;
 import com.unicorn.my_little_pony.domain.facades.rental.services.UnicornAvailabilityService;
 import com.unicorn.my_little_pony.domain.facades.rental.services.PricingService;
@@ -24,7 +26,7 @@ import java.util.List;
 
         public String rentUnicorn(Unicorn unicorn, String customerId) {
             if (!availabilityService.isAvailable(unicorn)) {
-                return "Unicorn not available";
+                throw new UnicornNotAvailableException(unicorn.getName());
             }
 
             // Tydzień 5, Wzorzec Command, Zastosowanie 3
@@ -36,7 +38,7 @@ import java.util.List;
                 return rentalCreationService.createRental(unicorn.getId(), customerId);
             } catch (Exception e) {
                 transactionMacro.undo();
-                return "Error during checkout: " + e.getMessage();
+                throw new RentalCheckoutException(e.getMessage(), e);
             }
             // Koniec, Tydzień 5, Wzorzec Command
         }

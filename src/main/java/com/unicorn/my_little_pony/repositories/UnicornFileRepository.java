@@ -18,7 +18,11 @@ public class UnicornFileRepository implements UnicornRepository {
     private final List<Unicorn> unicorns;
 
     public UnicornFileRepository() {
-        this.unicorns = new ArrayList<>();
+        this.unicorns = loadUnicornsFromFile();
+    }
+
+    private List<Unicorn> loadUnicornsFromFile() {
+        List<Unicorn> loaded = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(
                         Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("unicorns.txt")))
@@ -29,11 +33,12 @@ public class UnicornFileRepository implements UnicornRepository {
                 String name = parts[0].trim();
                 String color = parts[1].trim();
                 int powerLevel = Integer.parseInt(parts[2].trim());
-                unicorns.add(new FireUnicorn(IdGenerator.getInstance().nextUnicornId(), name, color, powerLevel));
+                loaded.add(new FireUnicorn(IdGenerator.getInstance().nextUnicornId(), name, color, powerLevel));
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        return loaded;
     }
 
     @Override

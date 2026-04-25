@@ -7,6 +7,8 @@ import com.unicorn.my_little_pony.domain.pricing.engines.PricingEngine;
 // i nakłada ograniczenia na już obliczoną cene
 public class VipPricingPlan extends PricingPlan {
 
+    private static final double VIP_DISCOUNT_MULTIPLIER = 0.8;
+
     public VipPricingPlan(PricingEngine engine) {
         super(engine);
     }
@@ -14,7 +16,7 @@ public class VipPricingPlan extends PricingPlan {
     @Override
     public double calculateFinalPrice(int timeUnits) {
         double basePrice = engine.calculateBasePrice(timeUnits);
-        return basePrice * 0.8;
+        return basePrice * VIP_DISCOUNT_MULTIPLIER;
     }
 }
 // Koniec, Tydzień 3, Wzorzec Bridge, Zastosowanie 1
