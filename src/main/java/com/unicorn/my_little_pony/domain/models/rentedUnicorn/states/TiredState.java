@@ -4,12 +4,16 @@ package com.unicorn.my_little_pony.domain.models.rentedUnicorn.states;
 //Konkretny stan energii jednorożca
 public class TiredState implements EnergyState{
 
+    private static final int GALLOP_STAMINA_COST = 30;
+    private static final int EXHAUSTED_STAMINA_THRESHOLD = 0;
+    private static final int FULL_STAMINA = 100;
+
     @Override
     public void gallop(RentedUnicornContext context) {
-        System.out.println("Jednorożec truchta wolniej... (Stamina -30)");
-        context.getUnicorn().setStamina(context.getUnicorn().getStamina() - 30);
+        System.out.println("Jednorożec truchta wolniej... (Stamina -" + GALLOP_STAMINA_COST + ")");
+        context.getUnicorn().setStamina(context.getUnicorn().getStamina() - GALLOP_STAMINA_COST);
 
-        if (context.getUnicorn().getStamina() <= 0) {
+        if (context.getUnicorn().getStamina() <= EXHAUSTED_STAMINA_THRESHOLD) {
             System.out.println("Jednorożec opadł z sił!");
             context.setState(new ExhaustedState());
         }
@@ -18,7 +22,7 @@ public class TiredState implements EnergyState{
     @Override
     public void rest(RentedUnicornContext context) {
         System.out.println("Jednorożec odpoczywa i odzyskuje siły.");
-        context.getUnicorn().setStamina(100);
+        context.getUnicorn().setStamina(FULL_STAMINA);
         context.setState(new EnergeticState());
     }
 }

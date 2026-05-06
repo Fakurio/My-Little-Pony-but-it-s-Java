@@ -10,17 +10,12 @@ public class PremiumEquipmentPackage implements EquipmentFlyweight {
     private final String decorationStyle;
     private final String safetyLevel;
 
-    public PremiumEquipmentPackage(
-            String packageName,
-            String saddleType,
-            String harnessType,
-            String decorationStyle,
-            String safetyLevel) {
-        this.packageName = packageName;
-        this.saddleType = saddleType;
-        this.harnessType = harnessType;
-        this.decorationStyle = decorationStyle;
-        this.safetyLevel = safetyLevel;
+    public PremiumEquipmentPackage(EquipmentPackageConfig equipmentPackageConfig) {
+        this.packageName = equipmentPackageConfig.getPackageName();
+        this.saddleType = equipmentPackageConfig.getSaddleType();
+        this.harnessType = equipmentPackageConfig.getHarnessType();
+        this.decorationStyle = equipmentPackageConfig.getDecorationStyle();
+        this.safetyLevel = equipmentPackageConfig.getSafetyLevel();
     }
 
     @Override

@@ -9,21 +9,19 @@ public class Unicorn {
 
     private final UnicornVariantFlyweight unicornVariant;
 
-    private String stableLocation;
-    private boolean available;
+    private final String stableLocation;
+    private final boolean available;
 
-    public Unicorn(
-            String id,
-            String name,
-            UnicornVariantFlyweight unicornVariant,
-            String stableLocation,
-            boolean available) {
+    private Unicorn(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.unicornVariant = builder.unicornVariant;
+        this.stableLocation = builder.stableLocation;
+        this.available = builder.available;
+    }
 
-        this.id = id;
-        this.name = name;
-        this.unicornVariant = unicornVariant;
-        this.stableLocation = stableLocation;
-        this.available = available;
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getInfo() {
@@ -37,6 +35,43 @@ public class Unicorn {
 
     public UnicornVariantFlyweight getType() {
         return unicornVariant;
+    }
+
+    public static class Builder {
+        private String id;
+        private String name;
+        private UnicornVariantFlyweight unicornVariant;
+        private String stableLocation;
+        private boolean available;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder unicornVariant(UnicornVariantFlyweight unicornVariant) {
+            this.unicornVariant = unicornVariant;
+            return this;
+        }
+
+        public Builder stableLocation(String stableLocation) {
+            this.stableLocation = stableLocation;
+            return this;
+        }
+
+        public Builder available(boolean available) {
+            this.available = available;
+            return this;
+        }
+
+        public Unicorn build() {
+            return new Unicorn(this);
+        }
     }
 }
 // Koniec, Tydzień 4, Wzorzec Flyweight, Zastosowanie 1

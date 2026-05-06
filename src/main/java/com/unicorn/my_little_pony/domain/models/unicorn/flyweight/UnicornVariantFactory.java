@@ -10,24 +10,10 @@ public class UnicornVariantFactory {
     private static final Map<String, UnicornVariantFlyweight> unicornVariants = new HashMap<>();
 
     public static UnicornVariantFlyweight getUnicornVariant(UnicornVariantConfig config) {
-
-        String key = config.toKey();
-
-        if (!unicornVariants.containsKey(key)) {
-
-            unicornVariants.put(
-                    key,
-                    new ConcreteUnicornVariant(
-                            config.getBreed(),
-                            config.getHornStyle(),
-                            config.getWingType(),
-                            config.getManeColor(),
-                            config.getMagicAura()
-                    )
-            );
-        }
-
-        return unicornVariants.get(key);
+        return unicornVariants.computeIfAbsent(
+                config.toKey(),
+                key -> new ConcreteUnicornVariant(config)
+        );
     }
 
     public static int getFlyweightCount() {

@@ -9,7 +9,7 @@ public interface CompleteRentalManagement {
     void createRental(String rentalId, Unicorn unicorn, Customer customer);
     void confirmRental(String rentalId);
     void cancelRental(String rentalId);
-    boolean processRentalPayment(String rentalId, double amount);
+    void processRentalPayment(String rentalId, double amount);
     double getRefundAmount(String rentalId);
     void notifyCustomer(String rentalId, String message);
     String getCustomerName(String rentalId);
@@ -17,4 +17,3 @@ public interface CompleteRentalManagement {
     String generateFinancialReport(String rentalId);
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 3
-

@@ -35,10 +35,10 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     private Equipment equipment;
     // Koniec, Tydzień 3, Wzorzec Bridge, Zastosowanie 3
 
-    public Unicorn(String id, String name, String color, int powerLevel) {
-        this.id = id;
-        this.name = name;
-        this.color = color;
+    public Unicorn(UnicornIdentity unicornIdentity, int powerLevel) {
+        this.id = unicornIdentity.getId();
+        this.name = unicornIdentity.getName();
+        this.color = unicornIdentity.getColor();
         this.powerLevel = powerLevel;
         this.status = UnicornStatus.AVAILABLE;
         this.equipment = new NoEquipment();

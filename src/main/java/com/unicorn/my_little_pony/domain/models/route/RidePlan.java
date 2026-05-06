@@ -8,23 +8,21 @@ public class RidePlan {
     private final String unicornId;
     private final RideRouteFlyweight routeFlyweight;
 
-    private String rideDate;
-    private String weather;
-    private int participantCount;
+    private final String rideDate;
+    private final String weather;
+    private final int participantCount;
 
-    public RidePlan(
-            String rideId,
-            String unicornId,
-            RideRouteFlyweight routeFlyweight,
-            String rideDate,
-            String weather,
-            int participantCount) {
-        this.rideId = rideId;
-        this.unicornId = unicornId;
-        this.routeFlyweight = routeFlyweight;
-        this.rideDate = rideDate;
-        this.weather = weather;
-        this.participantCount = participantCount;
+    private RidePlan(Builder builder) {
+        this.rideId = builder.rideId;
+        this.unicornId = builder.unicornId;
+        this.routeFlyweight = builder.routeFlyweight;
+        this.rideDate = builder.rideDate;
+        this.weather = builder.weather;
+        this.participantCount = builder.participantCount;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public RideRouteFlyweight getRouteFlyweight() {
@@ -40,6 +38,49 @@ public class RidePlan {
                 ", weather='" + weather + '\'' +
                 ", participantCount=" + participantCount +
                 '}';
+    }
+
+    public static class Builder {
+        private String rideId;
+        private String unicornId;
+        private RideRouteFlyweight routeFlyweight;
+        private String rideDate;
+        private String weather;
+        private int participantCount;
+
+        public Builder rideId(String rideId) {
+            this.rideId = rideId;
+            return this;
+        }
+
+        public Builder unicornId(String unicornId) {
+            this.unicornId = unicornId;
+            return this;
+        }
+
+        public Builder routeFlyweight(RideRouteFlyweight routeFlyweight) {
+            this.routeFlyweight = routeFlyweight;
+            return this;
+        }
+
+        public Builder rideDate(String rideDate) {
+            this.rideDate = rideDate;
+            return this;
+        }
+
+        public Builder weather(String weather) {
+            this.weather = weather;
+            return this;
+        }
+
+        public Builder participantCount(int participantCount) {
+            this.participantCount = participantCount;
+            return this;
+        }
+
+        public RidePlan build() {
+            return new RidePlan(this);
+        }
     }
 }
 // Koniec, Tydzień 4, Wzorzec Flyweight, Zastosowanie 3

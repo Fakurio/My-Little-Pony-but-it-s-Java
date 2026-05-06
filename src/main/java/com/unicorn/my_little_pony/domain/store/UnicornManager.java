@@ -17,7 +17,7 @@ public class UnicornManager {
     }
 
     public List<Unicorn> getUnicorns() {
-        return this.unicornRepository.getAllUnicorn();
+        return this.unicornRepository.getAllUnicorns();
     }
 }
 //Koniec, Tydzień 8, DI

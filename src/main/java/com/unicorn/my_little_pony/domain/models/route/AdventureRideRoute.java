@@ -9,15 +9,11 @@ public class AdventureRideRoute implements RideRouteFlyweight {
     private final int defaultDurationMinutes;
     private final String terrainType;
 
-    public AdventureRideRoute(
-            String routeName,
-            String difficultyLevel,
-            int defaultDurationMinutes,
-            String terrainType) {
-        this.routeName = routeName;
-        this.difficultyLevel = difficultyLevel;
-        this.defaultDurationMinutes = defaultDurationMinutes;
-        this.terrainType = terrainType;
+    public AdventureRideRoute(RideRouteConfig routeConfig) {
+        this.routeName = routeConfig.getRouteName();
+        this.difficultyLevel = routeConfig.getDifficultyLevel();
+        this.defaultDurationMinutes = routeConfig.getDefaultDurationMinutes();
+        this.terrainType = routeConfig.getTerrainType();
     }
 
     @Override

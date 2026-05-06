@@ -17,7 +17,7 @@ public class RepositoryUnicornCatalog implements UnicornCatalog {
 
     @Override
     public List<Unicorn> getAvailableUnicorns() {
-        return unicornRepository.getAllUnicorn();
+        return unicornRepository.getAllUnicorns();
     }
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 1

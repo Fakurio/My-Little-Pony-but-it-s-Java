@@ -4,6 +4,8 @@ package com.unicorn.my_little_pony.domain.store.isp.rental_lifecycle;
 // Implementacja segregated interface - finansowanie
 public class RentalFinanceImpl implements RentalFinance {
 
+    private static final double REFUND_RATE = 0.5;
+
     private final java.util.Map<String, Double> payments = new java.util.HashMap<>();
 
     @Override
@@ -16,7 +18,7 @@ public class RentalFinanceImpl implements RentalFinance {
     @Override
     public double getRefundAmount(String rentalId) {
         Double paid = payments.get(rentalId);
-        return paid != null ? paid * 0.5 : 0;
+        return paid != null ? paid * REFUND_RATE : 0;
     }
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 3

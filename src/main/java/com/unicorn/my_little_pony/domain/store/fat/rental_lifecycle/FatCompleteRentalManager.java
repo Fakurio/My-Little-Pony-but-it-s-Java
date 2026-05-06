@@ -1,5 +1,6 @@
 package com.unicorn.my_little_pony.domain.store.fat.rental_lifecycle;
 
+import com.unicorn.my_little_pony.domain.exceptions.RentalRecordNotFoundException;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 
@@ -9,6 +10,9 @@ import java.util.Map;
 // Tydzien 8, ISP, Zastosowanie 3
 // Fat implementation implementuje wszystko naraz
 public class FatCompleteRentalManager implements CompleteRentalManagement {
+
+    private static final double REFUND_RATE = 0.5;
+    private static final double INITIAL_PAYMENT_AMOUNT = 0.0;
 
     private final Map<String, RentalData> rentals = new HashMap<>();
 
@@ -25,7 +29,7 @@ public class FatCompleteRentalManager implements CompleteRentalManagement {
         data.unicorn = unicorn;
         data.customer = customer;
         data.confirmed = false;
-        data.paid = 0;
+        data.paid = INITIAL_PAYMENT_AMOUNT;
         rentals.put(rentalId, data);
         System.out.println("[FAT RENTAL] Rental created: " + rentalId);
     }
@@ -45,21 +49,15 @@ public class FatCompleteRentalManager implements CompleteRentalManagement {
     }
 
     @Override
-    public boolean processRentalPayment(String rentalId, double amount) {
-        if (rentals.containsKey(rentalId)) {
-            rentals.get(rentalId).paid = amount;
-            System.out.println("[FAT RENTAL] Payment processed: " + amount + " PLN");
-            return true;
-        }
-        return false;
+    public void processRentalPayment(String rentalId, double amount) {
+        RentalData rentalData = getRentalDataOrThrow(rentalId);
+        rentalData.paid = amount;
+        System.out.println("[FAT RENTAL] Payment processed: " + amount + " PLN");
     }
 
     @Override
     public double getRefundAmount(String rentalId) {
-        if (rentals.containsKey(rentalId)) {
-            return rentals.get(rentalId).paid * 0.5;
-        }
-        return 0;
+        return getRentalDataOrThrow(rentalId).paid * REFUND_RATE;
     }
 
     @Override
@@ -71,10 +69,7 @@ public class FatCompleteRentalManager implements CompleteRentalManagement {
 
     @Override
     public String getCustomerName(String rentalId) {
-        if (rentals.containsKey(rentalId)) {
-            return rentals.get(rentalId).customer.getName();
-        }
-        return "Unknown";
+        return getRentalDataOrThrow(rentalId).customer.getName();
     }
 
     @Override
@@ -86,6 +81,13 @@ public class FatCompleteRentalManager implements CompleteRentalManagement {
     public String generateFinancialReport(String rentalId) {
         return "Financial Report for " + rentalId;
     }
+
+    private RentalData getRentalDataOrThrow(String rentalId) {
+        RentalData rentalData = rentals.get(rentalId);
+        if (rentalData == null) {
+            throw new RentalRecordNotFoundException(rentalId);
+        }
+        return rentalData;
+    }
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 3
-

@@ -4,6 +4,8 @@ import com.unicorn.my_little_pony.domain.facades.booking.services.Recommendation
 import com.unicorn.my_little_pony.domain.facades.rental.services.PricingService;
 import com.unicorn.my_little_pony.domain.facades.rental.services.RainbowPricingRule;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerContact;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerIdentity;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
 import com.unicorn.my_little_pony.domain.models.rental.builders.RentalBuilder;
 import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalBook;
@@ -20,6 +22,7 @@ import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelive
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.LightningUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
 import com.unicorn.my_little_pony.domain.pricing.MagicFeeAbstractCalculator;
 import com.unicorn.my_little_pony.domain.pricing.MagicFeeDDCalculator;
 import com.unicorn.my_little_pony.domain.pricing.strategies.magicFee.FireMagicFee;
@@ -59,10 +62,17 @@ public class DemoWeek7Runner implements CommandLineRunner {
         System.out.println("=========================");
         System.out.println("Przykład 1");
         DeliveryManager deliveryManager = new DeliveryManager();
-        Unicorn inferno =  new FireUnicorn("1", "Inferno", "Red", 100);
-        Customer vipCustomer = new Customer("C-1", "Princess Celestia",
-                "princess@gmail.com", "111111111", true);
-        Customer customer = new Customer("C-2", "Tony", "tony@gmail.com", "222222222", false);
+        Unicorn inferno =  new FireUnicorn(new UnicornIdentity("1", "Inferno", "Red"), 100);
+        Customer vipCustomer = new Customer(
+                new CustomerIdentity("C-1", "Princess Celestia"),
+                new CustomerContact("princess@gmail.com", "111111111"),
+                true
+        );
+        Customer customer = new Customer(
+                new CustomerIdentity("C-2", "Tony"),
+                new CustomerContact("tony@gmail.com", "222222222"),
+                false
+        );
         deliveryManager.arrangeDelivery(new TeleportationDeliveryStrategy(), inferno, vipCustomer);
         deliveryManager.arrangeDelivery(new TeleportationDeliveryStrategy(), inferno, customer);
 

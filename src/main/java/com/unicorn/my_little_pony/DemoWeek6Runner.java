@@ -1,6 +1,8 @@
 package com.unicorn.my_little_pony;
 
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerContact;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerIdentity;
 import com.unicorn.my_little_pony.domain.models.customer.observer.CustomerNotifier;
 import com.unicorn.my_little_pony.domain.models.customer.observer.CustomerService;
 import com.unicorn.my_little_pony.domain.models.customer.visitor.CustomerCsvVisitor;
@@ -38,6 +40,7 @@ import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornSelect
 import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornSelection.UnicornMatcher;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.WaterUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornElement;
 import com.unicorn.my_little_pony.domain.models.unicorn.visitor.UnicornVisitor;
@@ -127,8 +130,14 @@ public class DemoWeek6Runner implements CommandLineRunner {
         System.out.println("=========================");
 
         List<UnicornElement> unicorns = List.of(
-                new FireUnicorn( IdGenerator.getInstance().nextUnicornId(),"Blaze","blue", 100),
-                new WaterUnicorn( IdGenerator.getInstance().nextUnicornId(),"Aqua", "pink",80)
+                new FireUnicorn(
+                        new UnicornIdentity(IdGenerator.getInstance().nextUnicornId(), "Blaze", "blue"),
+                        100
+                ),
+                new WaterUnicorn(
+                        new UnicornIdentity(IdGenerator.getInstance().nextUnicornId(), "Aqua", "pink"),
+                        80
+                )
         );
 
         System.out.println("Raport");
@@ -179,7 +188,7 @@ public class DemoWeek6Runner implements CommandLineRunner {
         System.out.println("=========================");
         System.out.println("Zastosowanie 1: Stan dostępności jednorożca");
 
-        Unicorn twilight =  new WaterUnicorn("1", "Twilight", "Blue", 100);
+        Unicorn twilight =  new WaterUnicorn(new UnicornIdentity("1", "Twilight", "Blue"), 100);
         UnicornContext twilightContext = new UnicornContext(twilight);
         System.out.println("Utworzono jednorożca: " + twilight.getName());
         System.out.println("\nKlient A wypożycza jednorożca:");
@@ -313,16 +322,23 @@ public class DemoWeek6Runner implements CommandLineRunner {
         System.out.println("Zastosowanie 2: Wybór jednorożca");
 
         UnicornMatcher matcher = new UnicornMatcher();
-        Unicorn blaze =  new FireUnicorn("1", "Blaze", "Red", 100);
+        Unicorn blaze =  new FireUnicorn(new UnicornIdentity("1", "Blaze", "Red"), 100);
         blaze.setPrice(30.4);
         blaze.setRating(5);
-        Unicorn inferno =  new FireUnicorn("2", "Inferno", "Red", 100);
+        Unicorn inferno =  new FireUnicorn(new UnicornIdentity("2", "Inferno", "Red"), 100);
         inferno.setPrice(10.4);
         inferno.setRating(2);
         List<Unicorn> store = List.of(blaze, inferno);
-        Customer customer = new Customer("C-2", "Tony", "tony@gmail.com", "222222222", false);
-        Customer vipCustomer = new Customer("C-1", "Princess Celestia",
-                "princess@gmail.com", "111111111", true);
+        Customer customer = new Customer(
+                new CustomerIdentity("C-2", "Tony"),
+                new CustomerContact("tony@gmail.com", "222222222"),
+                false
+        );
+        Customer vipCustomer = new Customer(
+                new CustomerIdentity("C-1", "Princess Celestia"),
+                new CustomerContact("princess@gmail.com", "111111111"),
+                true
+        );
         System.out.println("Dostępne jednorożce:");
         store.forEach(System.out::println);
 

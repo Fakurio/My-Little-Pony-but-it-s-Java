@@ -6,8 +6,8 @@ import com.unicorn.my_little_pony.domain.models.unicorn.builders.LightningUnicor
 // Konkretna klasa jednorożca implementująca umiejętność specjalną
 public class LightningUnicorn extends Unicorn {
 
-    public LightningUnicorn(String id, String name, String color, int powerLevel) {
-        super(id, name, color, powerLevel);
+    public LightningUnicorn(UnicornIdentity unicornIdentity, int powerLevel) {
+        super(unicornIdentity, powerLevel);
     }
 
     @Override

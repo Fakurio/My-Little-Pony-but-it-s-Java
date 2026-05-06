@@ -8,53 +8,66 @@ import com.unicorn.my_little_pony.domain.models.unicorn.builders.LightningUnicor
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 
 public class DemoWeek4Facade {
+    private static final int ICE_UNICORN_POWER_LEVEL = 20;
+    private static final int LIGHTNING_UNICORN_POWER_LEVEL = 35;
 
     public static void main(String[] args) throws Exception {
         new DemoWeek4Facade().run();
     }
     public void run(String... args) throws Exception {
+        printHeader();
+        Unicorn iceUnicorn = createIceUnicorn();
+        Unicorn lightningUnicorn = createLightningUnicorn();
+        UnicornRentalFacade rentalFacade = new UnicornRentalFacade();
+        runRentalDemo(rentalFacade, iceUnicorn);
+        runReturnDemo(rentalFacade, iceUnicorn);
+        runBookingDemo(lightningUnicorn);
+    }
+
+    private void printHeader() {
         System.out.println("=========================");
         System.out.println("FACADE");
         System.out.println("=========================");
+    }
 
-        Unicorn unicorn1 = new IceUnicornBuilder()
+    private Unicorn createIceUnicorn() {
+        return new IceUnicornBuilder()
                 .name("Frosty")
                 .color("Blue")
-                .powerLevel(20)
+                .powerLevel(ICE_UNICORN_POWER_LEVEL)
                 .build();
+    }
 
-        Unicorn unicorn2 = new LightningUnicornBuilder()
+    private Unicorn createLightningUnicorn() {
+        return new LightningUnicornBuilder()
                 .name("Thunder")
                 .color("Yellow")
-                .powerLevel(35)
+                .powerLevel(LIGHTNING_UNICORN_POWER_LEVEL)
                 .build();
+    }
 
-        // =========================
+    private void runRentalDemo(UnicornRentalFacade rentalFacade, Unicorn unicorn) {
         System.out.println("Zastosowanie 1: Unicorn rental process");
-        UnicornRentalFacade rentalFacade = new UnicornRentalFacade();
+        String firstRentalId = rentalFacade.rentUnicorn(unicorn, "CUSTOMER-1");
+        System.out.println("First rental attempt: " + firstRentalId);
+        String secondRentalId = rentalFacade.rentUnicorn(unicorn, "CUSTOMER-2");
+        System.out.println("Second rental attempt (should fail if already rented): " + secondRentalId);
+    }
 
-        String rentalId1 = rentalFacade.rentUnicorn(unicorn1, "CUSTOMER-1");
-        System.out.println("First rental attempt: " + rentalId1);
-
-        String rentalId2 = rentalFacade.rentUnicorn(unicorn1, "CUSTOMER-2");
-        System.out.println("Second rental attempt (should fail if already rented): " + rentalId2);
-
-        // =========================
+    private void runReturnDemo(UnicornRentalFacade rentalFacade, Unicorn unicorn) {
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 2: Unicorn return process");
         UnicornReturnFacade returnFacade = new UnicornReturnFacade();
-
-        String returnResult = returnFacade.returnUnicorn(unicorn1);
+        String returnResult = returnFacade.returnUnicorn(unicorn);
         System.out.println("Return result: " + returnResult);
+        String thirdRentalId = rentalFacade.rentUnicorn(unicorn, "CUSTOMER-3");
+        System.out.println("Third rental attempt after return (should succeed): " + thirdRentalId);
+    }
 
-        String rentalId3 = rentalFacade.rentUnicorn(unicorn1, "CUSTOMER-3");
-        System.out.println("Third rental attempt after return (should succeed): " + rentalId3);
-
-        // =========================
+    private void runBookingDemo(Unicorn unicorn) {
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 3: Customer booking (offer preparation)");
         CustomerBookingFacade bookingFacade = new CustomerBookingFacade();
-        bookingFacade.prepareOffer("CUSTOMER-1", unicorn2);
-
+        bookingFacade.prepareOffer("CUSTOMER-1", unicorn);
     }
 }

@@ -21,7 +21,7 @@ public class FatRentalFacade implements UnicornRentalOperations {
 
     @Override
     public List<Unicorn> getAvailableUnicorns() {
-        return unicornRepository.getAllUnicorn();
+        return unicornRepository.getAllUnicorns();
     }
 
     @Override
@@ -35,4 +35,3 @@ public class FatRentalFacade implements UnicornRentalOperations {
     }
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 1
-

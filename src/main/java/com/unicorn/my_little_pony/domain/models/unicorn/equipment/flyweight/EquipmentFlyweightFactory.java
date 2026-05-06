@@ -10,45 +10,18 @@ public class EquipmentFlyweightFactory {
     private static final Map<String, EquipmentFlyweight> equipmentMap = new HashMap<>();
 
     public static EquipmentFlyweight getEquipmentPackage(EquipmentPackageConfig config) {
-
-        String key = config.toKey();
-
-        if (!equipmentMap.containsKey(key)) {
-            switch (config.getPackageType()) {
-                case BASIC:
-                    equipmentMap.put(
-                            key,
-                            new BasicEquipmentPackage(
-                                    config.getPackageName(),
-                                    config.getSaddleType(),
-                                    config.getHarnessType(),
-                                    config.getDecorationStyle(),
-                                    config.getSafetyLevel()
-                            )
-                    );
-                    break;
-                case PREMIUM:
-                    equipmentMap.put(
-                            key,
-                            new PremiumEquipmentPackage(
-                                    config.getPackageName(),
-                                    config.getSaddleType(),
-                                    config.getHarnessType(),
-                                    config.getDecorationStyle(),
-                                    config.getSafetyLevel()
-                            )
-                    );
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown equipment package type: " + config.getPackageType());
-            }
-        }
-
-        return equipmentMap.get(key);
+        return equipmentMap.computeIfAbsent(config.toKey(), key -> createPackage(config));
     }
 
     public static int getFlyweightCount() {
         return equipmentMap.size();
+    }
+
+    private static EquipmentFlyweight createPackage(EquipmentPackageConfig config) {
+        return switch (config.getPackageType()) {
+            case BASIC -> new BasicEquipmentPackage(config);
+            case PREMIUM -> new PremiumEquipmentPackage(config);
+        };
     }
 }
 // Koniec, Tydzień 4, Wzorzec Flyweight, Zastosowanie 2

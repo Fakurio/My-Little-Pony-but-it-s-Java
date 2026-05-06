@@ -6,8 +6,8 @@ import com.unicorn.my_little_pony.domain.models.unicorn.builders.IceUnicornBuild
 // Konkretna klasa jednorożca implementująca umiejętność specjalną
 public class IceUnicorn extends Unicorn {
 
-    public IceUnicorn(String id, String name, String color, int powerLevel) {
-        super(id, name, color, powerLevel);
+    public IceUnicorn(UnicornIdentity unicornIdentity, int powerLevel) {
+        super(unicornIdentity, powerLevel);
     }
 
     @Override

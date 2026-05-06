@@ -6,7 +6,7 @@ import java.util.List;
 
 // Tydzień 4, Wzorzec Proxy, Zastosowanie 3
 // Wspólny interfejs dla proxy pamięci podręcznej oraz klasy ładującej historie wypożyczeń
-public interface RentingHistoryLoader {
-    List<Rental> fetchRentingHistory(String unicornId);
+public interface RentalHistoryLoader {
+    List<Rental> fetchRentalHistory(String unicornId);
 }
 // Koniec, Tydzień 4, Wzorzec Proxy
