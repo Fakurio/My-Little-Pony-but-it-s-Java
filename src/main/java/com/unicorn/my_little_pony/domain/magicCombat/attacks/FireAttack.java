@@ -1,8 +1,8 @@
-package com.unicorn.my_little_pony.domain.magicCombat.attacks;
+package com.unicorn.my_little_pony.domain.magiccombat.attacks;
 
 //Tydzień 8, DI, Zastosowanie 3
 //Implementacja modułu niskopoziomowego zgodna z wymaganiami modułu wysokopoziomowego
-public class FireAttack implements MagicAttack{
+public class FireAttack implements MagicAttack {
 
     @Override
     public void execute() {

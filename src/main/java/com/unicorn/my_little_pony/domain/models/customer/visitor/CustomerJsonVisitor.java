@@ -9,10 +9,9 @@ public class CustomerJsonVisitor implements CustomerReportVisitor {
         StringBuilder sb = new StringBuilder("{\n");
 
         for (int i = 0; i < report.getSize(); i++) {
-            String[] row = report.getData()[i];
-            sb.append("\t{ \"name\": \"").append(row[0])
-                    .append("\", \"rank\": \"").append(row[1])
-                    .append("\", \"rentals\": ").append(row[2])
+            sb.append("\t{ \"name\": \"").append(report.getCustomerName(i))
+                    .append("\", \"rank\": \"").append(report.getCustomerRank(i))
+                    .append("\", \"rentals\": ").append(report.getRentalCount(i))
                     .append(" }\n");
         }
 

@@ -15,6 +15,10 @@ import java.util.Objects;
 //Tydzień 8, DI, Zastosowanie 2
 //Implementacja modułu niskopoziomowego zgodna z wymaganiami modułu wysokopoziomowego
 public class UnicornFileRepository implements UnicornRepository {
+    private static final int UNICORN_NAME_INDEX = 0;
+    private static final int UNICORN_COLOR_INDEX = 1;
+    private static final int POWER_LEVEL_INDEX = 2;
+
     private final List<Unicorn> unicorns;
 
     public UnicornFileRepository() {
@@ -26,7 +30,7 @@ public class UnicornFileRepository implements UnicornRepository {
         try (BufferedReader bufferedReader = createReader()) {
             readUnicorns(bufferedReader, loadedUnicorns);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new IllegalStateException("Could not load unicorns from file", e);
         }
         return loadedUnicorns;
     }
@@ -46,9 +50,9 @@ public class UnicornFileRepository implements UnicornRepository {
 
     private Unicorn parseUnicorn(String line) {
         String[] attributes = line.split(";");
-        String unicornName = attributes[0].trim();
-        String unicornColor = attributes[1].trim();
-        int powerLevel = Integer.parseInt(attributes[2].trim());
+        String unicornName = attributes[UNICORN_NAME_INDEX].trim();
+        String unicornColor = attributes[UNICORN_COLOR_INDEX].trim();
+        int powerLevel = Integer.parseInt(attributes[POWER_LEVEL_INDEX].trim());
         UnicornIdentity unicornIdentity = new UnicornIdentity(
                 IdGenerator.getInstance().nextUnicornId(),
                 unicornName,

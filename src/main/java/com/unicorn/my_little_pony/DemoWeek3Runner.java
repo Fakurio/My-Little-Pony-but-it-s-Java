@@ -1,11 +1,11 @@
 package com.unicorn.my_little_pony;
 
-import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.BasicUnicornRental;
-import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.GlitterDecorator;
-import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.WingPolishDecorator;
-import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.RainbowManeDecorator;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornaddons.BasicUnicornRental;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornaddons.GlitterDecorator;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornaddons.WingPolishDecorator;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornaddons.RainbowManeDecorator;
 
-import com.unicorn.my_little_pony.domain.models.unicorn.unicornAddOns.UnicornRental;
+import com.unicorn.my_little_pony.domain.models.unicorn.unicornaddons.UnicornRental;
 import com.unicorn.my_little_pony.domain.models.insurance.*;
 import com.unicorn.my_little_pony.domain.models.notification.channels.FacebookChannel;
 import com.unicorn.my_little_pony.domain.models.notification.channels.InstagramChannel;

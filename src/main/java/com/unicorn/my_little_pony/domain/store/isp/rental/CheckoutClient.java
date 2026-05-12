@@ -10,9 +10,8 @@ public class CheckoutClient {
     }
 
     public void checkout(double amount) {
-        boolean success = rentalPayment.processPayment(amount);
-        System.out.println("[ISP] Platnosc " + (success ? "zaakceptowana" : "odrzucona"));
+        rentalPayment.processPayment(amount);
+        System.out.println("[ISP] Platnosc zaakceptowana");
     }
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 1
-

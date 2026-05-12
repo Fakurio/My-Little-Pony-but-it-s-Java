@@ -1,8 +1,8 @@
 package com.unicorn.my_little_pony;
 
-import com.unicorn.my_little_pony.domain.magicCombat.UnicornBattleSystem;
-import com.unicorn.my_little_pony.domain.magicCombat.attacks.FireAttack;
-import com.unicorn.my_little_pony.domain.magicCombat.attacks.WaterAttack;
+import com.unicorn.my_little_pony.domain.magiccombat.UnicornBattleSystem;
+import com.unicorn.my_little_pony.domain.magiccombat.attacks.FireAttack;
+import com.unicorn.my_little_pony.domain.magiccombat.attacks.WaterAttack;
 import com.unicorn.my_little_pony.domain.models.service.composite.BasicService;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceBundle;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceComponent;

@@ -1,5 +1,7 @@
 package com.unicorn.my_little_pony.domain.models.unicorn.states;
 
+import com.unicorn.my_little_pony.domain.exceptions.InvalidStateTransitionException;
+
 //Tydzień 6, Wzorzec State, Zastosowanie 1
 //Konkretny stan jednorożca
 public class AvailableState implements UnicornState {
@@ -12,7 +14,7 @@ public class AvailableState implements UnicornState {
 
     @Override
     public void returnUnicorn(UnicornContext context) {
-        System.out.println("Błąd: Jednorożec jest już w stajni, nie można go zwrócić.");
+        throw new InvalidStateTransitionException("Unicorn is already in the stable and cannot be returned.");
     }
 
     @Override

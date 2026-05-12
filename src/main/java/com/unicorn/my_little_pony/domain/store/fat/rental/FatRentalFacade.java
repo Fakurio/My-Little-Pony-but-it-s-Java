@@ -25,8 +25,8 @@ public class FatRentalFacade implements UnicornRentalOperations {
     }
 
     @Override
-    public boolean processPayment(double amount) {
-        return paymentProvider.process(amount);
+    public void processPayment(double amount) {
+        paymentProvider.process(amount);
     }
 
     @Override

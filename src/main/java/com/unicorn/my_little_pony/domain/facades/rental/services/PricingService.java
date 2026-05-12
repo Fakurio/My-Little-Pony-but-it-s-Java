@@ -14,24 +14,23 @@ import java.util.List;
 
 public class PricingService {
 
-    private List<PricingRule> rules;
+    private final List<PricingRule> rules;
 
     public PricingService(List<PricingRule> rules) {
         this.rules = rules;
     }
 
     public double calculatePrice(String unicornId) {
-
-        PricingConfig config = PricingConfig.getInstance();
-        double basePrice = config.getBasePricePerHour();
+        PricingConfig pricingConfig = PricingConfig.getInstance();
+        double price = pricingConfig.getBasePricePerHour();
 
         for (PricingRule rule : rules) {
             if (rule.applies(unicornId)) {
-                basePrice = rule.apply(basePrice, config);
+                price = rule.apply(price, pricingConfig);
             }
         }
 
-        return basePrice;
+        return price;
     }
 }
 //Koniec Tydzień 4, Wzorzec Facade

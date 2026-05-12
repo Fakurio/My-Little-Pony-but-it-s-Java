@@ -23,7 +23,7 @@ import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.UnicornVariant
 import com.unicorn.my_little_pony.domain.models.unicorn.proxies.CachingRentalHistoryProxy;
 import com.unicorn.my_little_pony.domain.models.unicorn.proxies.ProtectedUnicornProxy;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
-import com.unicorn.my_little_pony.domain.models.unicorn.types.IUnicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornContract;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
 import com.unicorn.my_little_pony.integration.payment.external.PaymentAdapter;
 import com.unicorn.my_little_pony.integration.payment.external.PaymentLoggingProxy;
@@ -66,10 +66,10 @@ public class DemoWeek4Runner implements CommandLineRunner {
                 new CustomerContact("celly@gmail.com", "111111111"),
                 true
         );
-        IUnicorn blaze = new FireUnicorn(new UnicornIdentity("1", "Blaze", "Red"), 100);
+        UnicornContract blaze = new FireUnicorn(new UnicornIdentity("1", "Blaze", "Red"), 100);
 
         System.out.println("Non VIP user try to use unicorn special ability...");
-        IUnicorn standardProxy = new ProtectedUnicornProxy(standard, blaze);
+        UnicornContract standardProxy = new ProtectedUnicornProxy(standard, blaze);
         try {
             standardProxy.useSpecialAbility();
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class DemoWeek4Runner implements CommandLineRunner {
         }
 
         System.out.println("VIP user try to use unicorn special ability...");
-        IUnicorn vipProxy = new ProtectedUnicornProxy(vip, blaze);
+        UnicornContract vipProxy = new ProtectedUnicornProxy(vip, blaze);
         try {
             vipProxy.useSpecialAbility();
         } catch (Exception e) {
@@ -170,10 +170,10 @@ public class DemoWeek4Runner implements CommandLineRunner {
                 .available(false)
                 .build();
 
-        System.out.println(u1.getInfo());
-        System.out.println(u2.getInfo());
-        System.out.println(u3.getInfo());
-        System.out.println(u4.getInfo());
+        System.out.println(u1.getDescription());
+        System.out.println(u2.getDescription());
+        System.out.println(u3.getDescription());
+        System.out.println(u4.getDescription());
 
         System.out.println("Flyweights created: " + UnicornVariantFactory.getFlyweightCount());
 
@@ -233,9 +233,9 @@ public class DemoWeek4Runner implements CommandLineRunner {
                 .currentlyAssigned(true)
                 .build();
 
-        System.out.println(a1.getInfo());
-        System.out.println(a2.getInfo());
-        System.out.println(a3.getInfo());
+        System.out.println(a1.getDescription());
+        System.out.println(a2.getDescription());
+        System.out.println(a3.getDescription());
 
         System.out.println("Equipment flyweights created: "
                 + EquipmentFlyweightFactory.getFlyweightCount());
@@ -297,9 +297,9 @@ public class DemoWeek4Runner implements CommandLineRunner {
                 .participantCount(1)
                 .build();
 
-        System.out.println(p1.getInfo());
-        System.out.println(p2.getInfo());
-        System.out.println(p3.getInfo());
+        System.out.println(p1.getDescription());
+        System.out.println(p2.getDescription());
+        System.out.println(p3.getDescription());
 
         System.out.println("Ride route flyweights created: "
                 + RideRouteFlyweightFactory.getFlyweightCount());

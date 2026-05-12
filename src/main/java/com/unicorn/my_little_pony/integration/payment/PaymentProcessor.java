@@ -13,8 +13,8 @@ public class PaymentProcessor {
         this.provider = provider;
     }
 
-    public boolean pay(double amount) {
-        return this.provider.process(amount);
+    public void pay(double amount) {
+        this.provider.process(amount);
     }
 }
 //Koniec, Tydzień 8, DI

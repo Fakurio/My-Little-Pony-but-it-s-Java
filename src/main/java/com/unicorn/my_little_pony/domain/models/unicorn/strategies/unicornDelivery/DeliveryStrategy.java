@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery;
+package com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicorndelivery;
 
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;

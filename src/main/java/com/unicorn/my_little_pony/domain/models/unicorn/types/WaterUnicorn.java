@@ -30,7 +30,7 @@ public class WaterUnicorn extends Unicorn implements UnicornElement {
                 this.getColor()
         );
 
-        cloned.setStatus(this.getStatus());
+        copyMutableStateTo(cloned);
         return (WaterUnicorn) cloned;
     }
     //Tydzien 6, wzorzec visitor

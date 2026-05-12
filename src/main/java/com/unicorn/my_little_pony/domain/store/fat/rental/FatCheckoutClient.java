@@ -11,9 +11,8 @@ public class FatCheckoutClient {
     }
 
     public void checkout(double amount) {
-        boolean success = operations.processPayment(amount);
-        System.out.println("[FAT] Platnosc " + (success ? "zaakceptowana" : "odrzucona"));
+        operations.processPayment(amount);
+        System.out.println("[FAT] Platnosc zaakceptowana");
     }
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 1
-

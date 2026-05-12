@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.rentedUnicorn.states;
+package com.unicorn.my_little_pony.domain.models.rentedunicorn.states;
 
 //Tydzień 6, Wzorzec State, Zastosowanie 3
 //Konkretny stan energii jednorożca

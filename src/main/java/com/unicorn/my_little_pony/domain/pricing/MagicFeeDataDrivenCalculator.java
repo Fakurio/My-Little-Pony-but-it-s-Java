@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //Tydzień 7, OCP przez sterowanie danymi
-public class MagicFeeDDCalculator {
+public class MagicFeeDataDrivenCalculator {
     private static final double FIRE_MULTIPLIER = 1.20;
     private static final double ICE_MULTIPLIER = 1.60;
     private static final double WATER_MULTIPLIER = 1.40;
@@ -13,7 +13,7 @@ public class MagicFeeDDCalculator {
 
     private final Map<String, Double> multipliers = new HashMap<>();
 
-    public MagicFeeDDCalculator() {
+    public MagicFeeDataDrivenCalculator() {
         multipliers.put("Fire", FIRE_MULTIPLIER);
         multipliers.put("Ice", ICE_MULTIPLIER);
         multipliers.put("Water", WATER_MULTIPLIER);

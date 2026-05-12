@@ -30,7 +30,7 @@ public class FireUnicorn extends Unicorn implements UnicornElement {
                 this.getColor()
         );
 
-        cloned.setStatus(this.getStatus());
+        copyMutableStateTo(cloned);
         return (FireUnicorn) cloned;
     }
     //Tydzien 6, wzorzec visitor

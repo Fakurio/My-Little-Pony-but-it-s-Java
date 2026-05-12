@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.pricing.strategies.magicFee;
+package com.unicorn.my_little_pony.domain.pricing.strategies.magicfee;
 
 public class FireMagicFee implements MagicFeeStrategy{
     private static final double FIRE_MAGIC_MULTIPLIER = 1.20;

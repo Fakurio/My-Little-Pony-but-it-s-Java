@@ -18,7 +18,7 @@ import lombok.Setter;
 // Klasa jednorożca która posiada powerLevel, który będzie wykorzystywany przez iterator do kategoryzowania jednorożców
 @Getter
 @Setter
-public abstract class Unicorn implements Cloneable, IUnicorn {
+public abstract class Unicorn implements Cloneable, UnicornContract {
     private static final int STRONG_POWER_THRESHOLD = 60;
     private static final int LEGENDARY_POWER_THRESHOLD = 100;
 
@@ -82,6 +82,14 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     //Tydzień 2, Wzorzec Prototype, Zastosowanie 3
     // Metoda abstrakcyjna do klonowania obiektow
     public abstract Unicorn clone();
+
+    protected void copyMutableStateTo(Unicorn clonedUnicorn) {
+        clonedUnicorn.setStatus(this.getStatus());
+        clonedUnicorn.setPrice(this.getPrice());
+        clonedUnicorn.setRating(this.getRating());
+        clonedUnicorn.setUnicornState(this.getUnicornState());
+        clonedUnicorn.setEquipment(this.getEquipment());
+    }
     // Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 3
 
     //Tydzień 5, Wzorzec Memento, Zastosowanie 1

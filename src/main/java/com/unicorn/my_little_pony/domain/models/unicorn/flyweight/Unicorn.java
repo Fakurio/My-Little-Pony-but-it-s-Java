@@ -24,7 +24,7 @@ public class Unicorn {
         return new Builder();
     }
 
-    public String getInfo() {
+    public String getDescription() {
         return "Unicorn{id='" + id +
                 "', name='" + name +
                 "', type=" + unicornVariant.describe() +

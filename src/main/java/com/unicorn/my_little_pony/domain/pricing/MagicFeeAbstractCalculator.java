@@ -1,6 +1,6 @@
 package com.unicorn.my_little_pony.domain.pricing;
 
-import com.unicorn.my_little_pony.domain.pricing.strategies.magicFee.MagicFeeStrategy;
+import com.unicorn.my_little_pony.domain.pricing.strategies.magicfee.MagicFeeStrategy;
 
 //Tydzień 7, OCP przez abstrakcje
 // Klasa jest zamknięta na modyfikację -> nie wymaga ingerencji kiedy dodamy nową opłatę magiczną

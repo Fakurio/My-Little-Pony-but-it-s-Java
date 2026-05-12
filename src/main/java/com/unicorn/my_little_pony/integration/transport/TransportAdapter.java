@@ -1,5 +1,6 @@
 package com.unicorn.my_little_pony.integration.transport;
 
+import com.unicorn.my_little_pony.domain.exceptions.TransportUnavailableException;
 import com.unicorn.my_little_pony.integration.inventory.StoreAvailabilityAdapter;
 import com.unicorn.my_little_pony.integration.inventory.UnicornAvailabilityService;
 
@@ -12,15 +13,23 @@ public class TransportAdapter implements UnicornTransportService {
 
     @Override
     public void scheduleTransport(String unicornId, String unicornName, String destination) {
-        // Sprawdzamy czy jednorożec jest dostępny przed zamówieniem transportu
+        ensureUnicornIsAvailable(unicornId);
+        bookExternalTransport(unicornId, unicornName, destination);
+    }
+
+    private void ensureUnicornIsAvailable(String unicornId) {
         if (!availabilityService.isAvailable(unicornId)) {
-            System.out.println("Transport Adapter: Cannot schedule transport - unicorn with ID " 
-                + unicornId + " is not available!");
-            return;
+            throw new TransportUnavailableException(unicornId);
         }
+    }
+
+    private void bookExternalTransport(String unicornId, String unicornName, String destination) {
         System.out.println("[Adapter] Transport: Unicorn " + unicornId + " is available, scheduling transport...");
-        String animalDescription = "UNICORN: " + unicornName + " (ID: " + unicornId + ")";
-        externalTransportSystem.bookRide(animalDescription, destination);
+        externalTransportSystem.bookRide(formatAnimalDescription(unicornId, unicornName), destination);
+    }
+
+    private String formatAnimalDescription(String unicornId, String unicornName) {
+        return "UNICORN: " + unicornName + " (ID: " + unicornId + ")";
     }
 }
 //Koniec, Tydzień 3, Wzorzec Adapter 2

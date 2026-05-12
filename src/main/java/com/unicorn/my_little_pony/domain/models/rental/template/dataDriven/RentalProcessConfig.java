@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.rental.template.dataDriven;
+package com.unicorn.my_little_pony.domain.models.rental.template.datadriven;
 
 import java.util.ArrayList;
 import java.util.Collections;

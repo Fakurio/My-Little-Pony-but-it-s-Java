@@ -29,7 +29,7 @@ public class RidePlan {
         return routeFlyweight;
     }
 
-    public String getInfo() {
+    public String getDescription() {
         return "RidePlan{" +
                 "rideId='" + rideId + '\'' +
                 ", unicornId='" + unicornId + '\'' +

@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.rental.template.dataDriven;
+package com.unicorn.my_little_pony.domain.models.rental.template.datadriven;
 
 // Tydzień 7, Zasada otwarte-zamknięte, Zastosowanie 2 (przez sterowanie danymi)
 // Klasa reprezentująca pojedynczy krok procesu wypożyczenia.

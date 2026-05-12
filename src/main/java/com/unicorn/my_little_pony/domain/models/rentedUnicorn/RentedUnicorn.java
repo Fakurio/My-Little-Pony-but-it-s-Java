@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.rentedUnicorn;
+package com.unicorn.my_little_pony.domain.models.rentedunicorn;
 
 import lombok.Getter;
 import lombok.Setter;

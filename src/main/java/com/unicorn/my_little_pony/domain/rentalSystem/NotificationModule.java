@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.rentalSystem;
+package com.unicorn.my_little_pony.domain.rentalsystem;
 
 // Tydzień 5, Wzorzec Mediator, Zastosowanie 1
 // Klasa reprezentująca moduł systemu odpowiedzialny za obsługę powiadomień

@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.unicorn.careTemplate;
+package com.unicorn.my_little_pony.domain.models.unicorn.caretemplate;
 
 // Tydzień 6, Wzorzec Template, Zastosowanie 3
 // Implementacja procesu przygotowania królewskiego jednorożca, definiująca luksusowe metody pielęgnacji i dekoracji, które odzwierciedlają jego majestatyczny status

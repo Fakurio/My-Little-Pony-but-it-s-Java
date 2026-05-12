@@ -1,5 +1,6 @@
 package com.unicorn.my_little_pony.domain.models.rental.states;
 
+import com.unicorn.my_little_pony.domain.exceptions.InvalidStateTransitionException;
 import com.unicorn.my_little_pony.domain.models.rental.RentalOrder;
 
 //Tydzień 6, Wzorzec State, Zastosowanie 2
@@ -14,7 +15,7 @@ public class DraftState implements OrderState {
 
     @Override
     public void pay(RentalOrderContext context) {
-        System.out.println("Najpierw musisz złożyć zamówienie.");
+        throw new InvalidStateTransitionException("Submit the order before paying.");
     }
 
     @Override

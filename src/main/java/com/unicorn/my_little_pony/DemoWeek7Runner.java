@@ -14,25 +14,25 @@ import com.unicorn.my_little_pony.domain.models.rental.template.ExpressUnicornRe
 import com.unicorn.my_little_pony.domain.models.rental.template.PremiumUnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.StandardUnicornRentalProcess;
 import com.unicorn.my_little_pony.domain.models.rental.template.UnicornRentalProcess;
-import com.unicorn.my_little_pony.domain.models.rental.template.dataDriven.RentalStep;
+import com.unicorn.my_little_pony.domain.models.rental.template.datadriven.RentalStep;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceBundle;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceComponent;
-import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.DeliveryManager;
-import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicornDelivery.TeleportationDeliveryStrategy;
+import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicorndelivery.DeliveryManager;
+import com.unicorn.my_little_pony.domain.models.unicorn.strategies.unicorndelivery.TeleportationDeliveryStrategy;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.LightningUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
 import com.unicorn.my_little_pony.domain.pricing.MagicFeeAbstractCalculator;
-import com.unicorn.my_little_pony.domain.pricing.MagicFeeDDCalculator;
-import com.unicorn.my_little_pony.domain.pricing.strategies.magicFee.FireMagicFee;
-import com.unicorn.my_little_pony.domain.pricing.strategies.magicFee.WaterMagicFee;
+import com.unicorn.my_little_pony.domain.pricing.MagicFeeDataDrivenCalculator;
+import com.unicorn.my_little_pony.domain.pricing.strategies.magicfee.FireMagicFee;
+import com.unicorn.my_little_pony.domain.pricing.strategies.magicfee.WaterMagicFee;
 import com.unicorn.my_little_pony.enums.RentalStatus;
 import com.unicorn.my_little_pony.util.IdGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import com.unicorn.my_little_pony.domain.models.rental.template.dataDriven.DataDrivenUnicornRentalProcess;
-import com.unicorn.my_little_pony.domain.models.rental.template.dataDriven.RentalProcessConfig;
+import com.unicorn.my_little_pony.domain.models.rental.template.datadriven.DataDrivenUnicornRentalProcess;
+import com.unicorn.my_little_pony.domain.models.rental.template.datadriven.RentalProcessConfig;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -191,7 +191,7 @@ public class DemoWeek7Runner implements CommandLineRunner {
         System.out.println("-------------------------");
 
         System.out.println("Obliczanie opłaty magicznej - przez sterowanie danymi");
-        MagicFeeDDCalculator ddCalculator = new MagicFeeDDCalculator();
+        MagicFeeDataDrivenCalculator ddCalculator = new MagicFeeDataDrivenCalculator();
         System.out.println("Opłata bazowa: " + basePrice);
         System.out.println("Opłata za ognistą magie: " + ddCalculator.calculate("Fire", basePrice));
         System.out.println("Opłata za wodną magie: " + ddCalculator.calculate("Water", basePrice));

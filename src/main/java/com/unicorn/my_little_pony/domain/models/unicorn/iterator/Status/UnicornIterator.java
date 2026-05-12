@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status;
+package com.unicorn.my_little_pony.domain.models.unicorn.iterator.status;
 
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 

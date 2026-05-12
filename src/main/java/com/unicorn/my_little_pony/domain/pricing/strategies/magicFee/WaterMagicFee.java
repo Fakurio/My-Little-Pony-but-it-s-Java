@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.pricing.strategies.magicFee;
+package com.unicorn.my_little_pony.domain.pricing.strategies.magicfee;
 
 public class WaterMagicFee implements MagicFeeStrategy{
     private static final double WATER_MAGIC_MULTIPLIER = 1.40;

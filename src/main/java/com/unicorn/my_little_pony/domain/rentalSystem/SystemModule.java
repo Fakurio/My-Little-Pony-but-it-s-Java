@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.rentalSystem;
+package com.unicorn.my_little_pony.domain.rentalsystem;
 
 // Tydzień 5, Wzorzec Mediator, Zastosowanie 1
 // interfejs reprezentujący moduł systemu, który będzie komunikował się za pośrednictwem Mediatora

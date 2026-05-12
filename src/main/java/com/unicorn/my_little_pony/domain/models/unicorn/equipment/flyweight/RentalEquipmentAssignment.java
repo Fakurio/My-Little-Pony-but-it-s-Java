@@ -27,7 +27,7 @@ public class RentalEquipmentAssignment {
         return equipmentFlyweight;
     }
 
-    public String getInfo() {
+    public String getDescription() {
         return "RentalEquipmentAssignment{" +
                 "assignmentId='" + assignmentId + '\'' +
                 ", rentalId='" + rentalId + '\'' +
