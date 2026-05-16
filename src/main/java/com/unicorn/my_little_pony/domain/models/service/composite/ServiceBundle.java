@@ -37,5 +37,11 @@ public class ServiceBundle implements ServiceComponent {
     public String getDescription() {
         return ServiceDescriptionBuilder.build(name, items);
     }
+
+    //Tydzień 10, Użycie interfejsu funkcyjnego do obliczania ceny
+    public double getDiscountedPrice(PriceCalculator calculator) {
+        return calculator.calculate(getPrice());
+    }
+    //Koniec, Tydzień 10
 }
 //Koniec, Tydzień 3, Wzorzec Composite, Zastosowanie 1

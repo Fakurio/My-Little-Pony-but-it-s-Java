@@ -424,3 +424,19 @@ Refactor projektu zgodnie z zasadami czystego kodu
 
 ## 📅 Tydzień 10
 ---
+## Functional Interfaces & Lambdas
+
+### Filtrowanie (UnicornManager)
+Dodano możliwość dynamicznego filtrowania listy dostępnych jednorożców.
+* **Interfejs funkcyjny:** `domain.store.UnicornFilter`
+* **Zastosowanie:** Metoda `filterUnicorns` w klasie `UnicornManager` pozwala na przekazanie dowolnego warunku (np. poziomu mocy) w postaci wyrażenia lambda.
+
+### Zniżki i modyfikacja cen (ServiceBundle)
+Zastąpiono statyczne pobieranie ceny możliwością przekazania logiki modyfikującej (np. aplikowanie kuponów rabatowych lub zniżek weekendowych) z wykorzystaniem lambdy.
+* **Interfejs funkcyjny:** `domain.models.service.composite.PriceCalculator`
+* **Zastosowanie:** Metoda `getDiscountedPrice` w `ServiceBundle` przyjmująca logikę modyfikacji ceny.
+
+### Iteracja po elementach kolekcji (Herd)
+Uproszczono operacje wykonywane na elementach składowych stada (wzorzec Composite). Zamiast używać zewnętrznych pętli for, wprowadzono dedykowaną metodę przyjmującą lambdę.
+* **Interfejs funkcyjny:** `domain.models.unicorn.composite.UnitAction`
+* **Zastosowanie:** Metoda `forEachUnit` w klasie `Herd`, pozwalająca na wykonanie przekazanej akcji dla każdej jednostki.

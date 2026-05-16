@@ -24,5 +24,13 @@ public class Herd implements UnicornUnit {
 
         return total;
     }
+
+    //Tydzień 10, Użycie interfejsu funkcyjnego do wykonywania akcji na jednostce
+    public void forEachUnit(UnitAction action) {
+        for (UnicornUnit unit : units) {
+            action.perform(unit);
+        }
+    }
+    //Koniec, Tydzień 10
 }
 //Koniec, Tydzień 3, Wzorzec Composite, Zastosowanie 2
