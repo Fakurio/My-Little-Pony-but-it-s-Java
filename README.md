@@ -383,3 +383,21 @@ Serwis (`UnicornManager`) operują wyłącznie na interfejsie `UnicornRepository
 Centralna mechanika (`UnicornBattleSystem`) nie weryfikuje instrukcjami warunkowymi, jakiego rodzaju czaru jednorożec używa. Zamiast tego zależy od abstrakcji `MagicEffect`. To same zaklęcia wiedzą, jak zadać obrażenia, co pozwala na dodawanie nieskończonej liczby nowych ataków bez modyfikacji silnika walki.
 * **Moduł wysokopoziomowy:** `domain.magicCombat.UnicornBattleSystem`
 * **Moduły niskopoziomowe:** `domain.magicCombat.attacks`
+
+## Interface Segregation
+### Opieka nad jednorożcami
+Wzorzec Interface Segregation został użyty do rozdzielenia interfejsu opieki nad jednorożcami na mniejsze, bardziej wyspecjalizowane interfejsy. Dzięki temu różne role w stajni (np. opiekun, weterynarz, sprzątacz) mogą implementować tylko te metody, które są istotne dla ich zakresu obowiązków, zamiast być zmuszonymi do implementowania dużego, ogólnego interfejsu z wieloma niepotrzebnymi metodami.
+* **Interfejsy opieki:** `domain.store.isp.unicorncare.UnicornGroomingService`, `domain.store.isp.unicorncare.UnicornHealthService`, `domain.store.isp.unicorncare.UnicornTrainingService`
+* **Klasy implementujące interfejsy:** `domain.store.isp.unicorncare.GroomingServiceImpl`, `domain.store.isp.unicorncare.HealthServiceImpl`, `domain.store.isp.unicorncare.TrainingServiceImpl`
+* **Klienci po segregacji:** `domain.store.isp.unicorncare.GroomerWorker`, `domain.store.isp.unicorncare.VeterinarianWorker`, `domain.store.isp.unicorncare.TrainerWorker`
+* **Przed segregacją:** `domain.store.fat.unicorncare.` 
+### Proces wypożyczenia
+* **Interfejsy procesów:** `domain.store.isp.rental.UnicornCatalog`, `domain.store.isp.rental.RentalPayment`, `domain.store.isp.rental.CustomNotifier`
+* **Klasy implementujące interfejsy:** `domain.store.isp.rental.RepositoryUnicornCatalog`, `domain.store.isp.rental.ProvidelRentalPayment`, `domain.store.isp.rental.ConsoleCustomerNotifier`
+* **Klienci po segregacji:** `domain.store.isp.rental.BrowsingClient`, `domain.store.isp.rental.NotificationClient`, `domain.store.isp.rental.CheckoutClient`
+* **Przed segregacją:** `domain.store.fat.unicorncare.`
+### Księgowość związana z wypożyczeniem
+* **Interfejsy opieki:** `domain.store.isp.rental_lifecycle.RentalReporting`, `domain.store.isp.rental_lifecycle.RentalLifecycle`, `domain.store.isp.rental_lifecycle.RentalFinance`
+* **Klasy implementujące interfejsy:** `domain.store.isp.rental_lifecycle.RentalReportingImpl`, `domain.store.isp.rental_lifecycle.RentalLifecycleImpl`, `domain.store.isp.rental_lifecycle.RentalFinanceImpl`
+* **Klienci po segregacji:** `domain.store.isp.RentalGeneratorWorker`, `domain.store.isp.AccountantWorker`, `domain.store.isp.RentalAgent`
+* **Przed segregacją:** `domain.store.fat.rental_lifecycle.` 

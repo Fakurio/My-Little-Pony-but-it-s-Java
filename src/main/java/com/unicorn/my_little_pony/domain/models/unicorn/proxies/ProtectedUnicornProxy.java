@@ -1,15 +1,15 @@
 package com.unicorn.my_little_pony.domain.models.unicorn.proxies;
 
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
-import com.unicorn.my_little_pony.domain.models.unicorn.types.IUnicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornContract;
 import lombok.AllArgsConstructor;
 
 // Tydzień 4, Wzorzec Proxy, Zastosowanie 1
 // Proxy ochronne dające dostęp do umiejętności specjalnej jednorożca tylko vipom
 @AllArgsConstructor
-public class ProtectedUnicornProxy implements IUnicorn {
+public class ProtectedUnicornProxy implements UnicornContract {
     private final Customer customer;
-    private final IUnicorn unicorn;
+    private final UnicornContract unicorn;
 
     @Override
     public void useSpecialAbility() throws Exception {

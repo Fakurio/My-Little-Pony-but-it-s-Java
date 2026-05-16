@@ -10,8 +10,8 @@ import com.unicorn.my_little_pony.util.IdGenerator;
 // Konkretna klasa jednorożca implementująca umiejętność specjalną
 public class WaterUnicorn extends Unicorn implements UnicornElement {
 
-    public WaterUnicorn(String id, String name, String color, int powerLevel) {
-        super(id, name, color, powerLevel);
+    public WaterUnicorn(UnicornIdentity unicornIdentity, int powerLevel) {
+        super(unicornIdentity, powerLevel);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class WaterUnicorn extends Unicorn implements UnicornElement {
                 this.getColor()
         );
 
-        cloned.setStatus(this.getStatus());
+        copyMutableStateTo(cloned);
         return (WaterUnicorn) cloned;
     }
     //Tydzien 6, wzorzec visitor

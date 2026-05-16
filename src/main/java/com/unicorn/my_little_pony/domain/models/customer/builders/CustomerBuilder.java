@@ -1,19 +1,30 @@
 package com.unicorn.my_little_pony.domain.models.customer.builders;
 
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerContact;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerIdentity;
 import com.unicorn.my_little_pony.util.IdGenerator;
 
 // Tydzień 2, Wzorzec Builder, Zastosowanie 1
 // Builder dla obiektów Customer.
 public class CustomerBuilder {
 
+    private String id;
     private String name;
     private String email;
     private String phone;
     private boolean isVip = false;
 
-    private String generateId() {
+    private String resolveId() {
+        if (id != null) {
+            return id;
+        }
         return IdGenerator.getInstance().nextCustomerId();
+    }
+
+    public CustomerBuilder id(String id) {
+        this.id = id;
+        return this;
     }
 
     public CustomerBuilder name(String name) {
@@ -37,14 +48,9 @@ public class CustomerBuilder {
     }
 
     public Customer build() {
-        Customer customer = new Customer(
-                generateId(),
-                name,
-                email,
-                phone,
-                isVip
-        );
-        return customer;
+        CustomerIdentity customerIdentity = new CustomerIdentity(resolveId(), name);
+        CustomerContact customerContact = new CustomerContact(email, phone);
+        return new Customer(customerIdentity, customerContact, isVip);
     }
 }
 // Koniec, Tydzień 2, Wzorzec Builder, Zastosowanie 1

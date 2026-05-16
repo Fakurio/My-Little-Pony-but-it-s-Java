@@ -14,11 +14,11 @@ public class Customer implements Cloneable{
     private final String phone;
     private final boolean isVip;
 
-    public Customer(String id, String name, String email, String phone, boolean isVip) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
+    public Customer(CustomerIdentity customerIdentity, CustomerContact customerContact, boolean isVip) {
+        this.id = customerIdentity.getId();
+        this.name = customerIdentity.getName();
+        this.email = customerContact.getEmail();
+        this.phone = customerContact.getPhone();
         this.isVip = isVip;
     }
 

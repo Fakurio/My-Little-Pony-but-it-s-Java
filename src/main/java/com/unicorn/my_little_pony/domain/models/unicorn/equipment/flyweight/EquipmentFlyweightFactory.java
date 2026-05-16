@@ -9,50 +9,19 @@ public class EquipmentFlyweightFactory {
 
     private static final Map<String, EquipmentFlyweight> equipmentMap = new HashMap<>();
 
-    public static EquipmentFlyweight getEquipmentPackage(
-            String packageType,
-            String packageName,
-            String saddleType,
-            String harnessType,
-            String decorationStyle,
-            String safetyLevel) {
-
-        String key = packageType + "_" + packageName + "_" + saddleType + "_"
-                + harnessType + "_" + decorationStyle + "_" + safetyLevel;
-
-        if (!equipmentMap.containsKey(key)) {
-            if ("BASIC".equalsIgnoreCase(packageType)) {
-                equipmentMap.put(
-                        key,
-                        new BasicEquipmentPackage(
-                                packageName,
-                                saddleType,
-                                harnessType,
-                                decorationStyle,
-                                safetyLevel
-                        )
-                );
-            } else if ("PREMIUM".equalsIgnoreCase(packageType)) {
-                equipmentMap.put(
-                        key,
-                        new PremiumEquipmentPackage(
-                                packageName,
-                                saddleType,
-                                harnessType,
-                                decorationStyle,
-                                safetyLevel
-                        )
-                );
-            } else {
-                throw new IllegalArgumentException("Unknown equipment package type: " + packageType);
-            }
-        }
-
-        return equipmentMap.get(key);
+    public static EquipmentFlyweight getEquipmentPackage(EquipmentPackageConfig config) {
+        return equipmentMap.computeIfAbsent(config.toKey(), key -> createPackage(config));
     }
 
     public static int getFlyweightCount() {
         return equipmentMap.size();
+    }
+
+    private static EquipmentFlyweight createPackage(EquipmentPackageConfig config) {
+        return switch (config.getPackageType()) {
+            case BASIC -> new BasicEquipmentPackage(config);
+            case PREMIUM -> new PremiumEquipmentPackage(config);
+        };
     }
 }
 // Koniec, Tydzień 4, Wzorzec Flyweight, Zastosowanie 2

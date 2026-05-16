@@ -7,6 +7,6 @@ import java.util.List;
 //Tydzień 8, DI, Zastosowanie 2
 //Interfejs definiujący wymagania dla modułu wysokopoziomowego
 public interface UnicornRepository {
-    List<Unicorn> getAllUnicorn();
+    List<Unicorn> getAllUnicorns();
 }
 //Koniec, Tydzień 8, DI

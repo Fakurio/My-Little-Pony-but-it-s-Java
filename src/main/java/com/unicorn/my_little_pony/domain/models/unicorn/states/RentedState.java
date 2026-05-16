@@ -1,12 +1,14 @@
 package com.unicorn.my_little_pony.domain.models.unicorn.states;
 
+import com.unicorn.my_little_pony.domain.exceptions.InvalidStateTransitionException;
+
 //Tydzień 6, Wzorzec State, Zastosowanie 1
 //Konkretny stan jednorożca
 public class RentedState implements UnicornState {
 
     @Override
     public void rent(UnicornContext context) {
-        System.out.println("Błąd: Jednorożec jest aktualnie w trasie z innym klientem!");
+        throw new InvalidStateTransitionException("Unicorn is already rented by another customer.");
     }
 
     @Override
@@ -17,7 +19,7 @@ public class RentedState implements UnicornState {
 
     @Override
     public void clean(UnicornContext context) {
-        System.out.println("Błąd: Nie można czyścić jednorożca, którego tu nie ma.");
+        throw new InvalidStateTransitionException("Cannot clean a unicorn that has not returned yet.");
     }
 }
 // Koniec, Tydzień 6, Wzorzec State

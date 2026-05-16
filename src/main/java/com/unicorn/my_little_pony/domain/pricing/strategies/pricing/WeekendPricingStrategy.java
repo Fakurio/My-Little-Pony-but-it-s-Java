@@ -6,6 +6,8 @@ import com.unicorn.my_little_pony.domain.pricing.PricingConfig;
 //Konkretna strategia implementująca dany algorytm obliczania ceny
 public class WeekendPricingStrategy implements PricingStrategy {
 
+    private static final double WEEKEND_SURCHARGE_MULTIPLIER = 1.20;
+
     @Override
     public double calculatePrice(int hours, boolean isWeekend) {
         int baseRate = PricingConfig.getInstance().getBasePricePerHour();
@@ -13,7 +15,7 @@ public class WeekendPricingStrategy implements PricingStrategy {
 
         if (isWeekend) {
             System.out.println("WeekendPricingStrategy: Doliczam +20% dopłaty weekendowej");
-            total *= 1.20;
+            total *= WEEKEND_SURCHARGE_MULTIPLIER;
         }
         return total;
     }

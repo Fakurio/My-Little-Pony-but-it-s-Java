@@ -13,9 +13,8 @@ public class ProviderRentalPayment implements RentalPayment {
     }
 
     @Override
-    public boolean processPayment(double amount) {
-        return paymentProvider.process(amount);
+    public void processPayment(double amount) {
+        paymentProvider.process(amount);
     }
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 1
-

@@ -26,14 +26,14 @@ import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.AndExpressio
 import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.ColorExpression;
 import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.PowerExpression;
 import com.unicorn.my_little_pony.domain.models.unicorn.interpreter.UnicornExpression;
-import com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel.PowerLevelUnicornIterator;
-import com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel.UnicornPowerBook;
-import com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status.StableUnicornCollection;
-import com.unicorn.my_little_pony.domain.models.unicorn.iterator.Status.UnicornIterator;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.powerlevel.PowerLevelUnicornIterator;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.powerlevel.UnicornPowerBook;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.status.StableUnicornCollection;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.status.UnicornIterator;
 import com.unicorn.my_little_pony.domain.models.unicorn.memento.LoadoutManager;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.*;
 import com.unicorn.my_little_pony.domain.pricing.PricingConfig;
-import com.unicorn.my_little_pony.domain.rentalSystem.*;
+import com.unicorn.my_little_pony.domain.rentalsystem.*;
 import com.unicorn.my_little_pony.domain.rentalservices.*;
 import com.unicorn.my_little_pony.domain.store.UnicornCart;
 import com.unicorn.my_little_pony.enums.PowerLevelCategory;
@@ -71,7 +71,7 @@ public class DemoWeek5Runner implements CommandLineRunner {
         System.out.println("=========================");
         System.out.println("Zastosowanie 1: Equipment command");
 
-        Unicorn blaze = new FireUnicorn("1", "Blaze", "Red", 100);
+        Unicorn blaze = new FireUnicorn(new UnicornIdentity("1", "Blaze", "Red"), 100);
         UnicornCart cart = new UnicornCart();
 
         Equipment saddle = new RainbowSaddle();
@@ -96,7 +96,10 @@ public class DemoWeek5Runner implements CommandLineRunner {
         System.out.println("Zastosowanie 2: Maintenance command queue");
 
         UnicornRentalFacade rentalFacade = new UnicornRentalFacade();
-        Unicorn splash = new WaterUnicorn(IdGenerator.getInstance().nextUnicornId(), "Splash", "Blue", 80);
+        Unicorn splash = new WaterUnicorn(
+                new UnicornIdentity(IdGenerator.getInstance().nextUnicornId(), "Splash", "Blue"),
+                80
+        );
         rentalFacade.rentUnicorn(splash, IdGenerator.getInstance().nextCustomerId());
         MaintenanceQueue queue = new MaintenanceQueue();
 
@@ -110,7 +113,10 @@ public class DemoWeek5Runner implements CommandLineRunner {
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 3: Transaction command");
 
-        Unicorn starlight = new LightningUnicorn(IdGenerator.getInstance().nextUnicornId(), "Starlight", "White", 50);
+        Unicorn starlight = new LightningUnicorn(
+                new UnicornIdentity(IdGenerator.getInstance().nextUnicornId(), "Starlight", "White"),
+                50
+        );
         System.out.println("Unicorn status: " + starlight.getStatus());
         TransactionMacro transaction = new TransactionMacro();
 
@@ -239,10 +245,10 @@ public class DemoWeek5Runner implements CommandLineRunner {
 
         StableUnicornCollection stable = new StableUnicornCollection();
 
-        Unicorn u1 = new WaterUnicorn("1", "Watery Sparkle", "Blue", 80);
-        Unicorn u2 = new FireUnicorn("2", "Red Moonlight", "Orange", 90);
-        Unicorn u3 = new IceUnicorn("3", "Blue Aurora", "White", 100);
-        Unicorn u4 = new LightningUnicorn("4", "Comet", "Silver", 70);
+        Unicorn u1 = new WaterUnicorn(new UnicornIdentity("1", "Watery Sparkle", "Blue"), 80);
+        Unicorn u2 = new FireUnicorn(new UnicornIdentity("2", "Red Moonlight", "Orange"), 90);
+        Unicorn u3 = new IceUnicorn(new UnicornIdentity("3", "Blue Aurora", "White"), 100);
+        Unicorn u4 = new LightningUnicorn(new UnicornIdentity("4", "Comet", "Silver"), 70);
 
         u2.setStatus(UnicornStatus.RENTED);
         u3.setStatus(UnicornStatus.MAINTENANCE);
@@ -444,7 +450,7 @@ public class DemoWeek5Runner implements CommandLineRunner {
         System.out.println("=========================");
         System.out.println("Zastosowanie 1: Unicorn equipment loadout");
 
-        Unicorn blaze = new FireUnicorn("1", "Blaze", "Red", 100);
+        Unicorn blaze = new FireUnicorn(new UnicornIdentity("1", "Blaze", "Red"), 100);
         LoadoutManager loadoutManager = new LoadoutManager();
 
         System.out.println("Client prepare future battle build");

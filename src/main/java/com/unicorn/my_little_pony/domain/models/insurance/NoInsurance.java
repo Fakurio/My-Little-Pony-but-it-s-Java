@@ -4,10 +4,11 @@ package com.unicorn.my_little_pony.domain.models.insurance;
 // Konkretny komponent - brak ubezpieczenia (podstawa)
 
 public class NoInsurance implements RentalInsurance {
+    private static final double NO_INSURANCE_COST = 0.0;
 
     @Override
     public double getCost() {
-        return 0.0;
+        return NO_INSURANCE_COST;
     }
 
     @Override

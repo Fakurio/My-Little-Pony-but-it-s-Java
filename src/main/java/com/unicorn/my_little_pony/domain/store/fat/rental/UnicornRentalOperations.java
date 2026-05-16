@@ -9,7 +9,7 @@ import java.util.List;
 // Interfejs laczy niespokrewnione odpowiedzialnosci: katalog, platnosci i powiadomienia.
 public interface UnicornRentalOperations {
     List<Unicorn> getAvailableUnicorns();
-    boolean processPayment(double amount);
+    void processPayment(double amount);
     void sendNotification(String customerName, String message);
 }
 // Koniec, Tydzien 8, ISP, Zastosowanie 1

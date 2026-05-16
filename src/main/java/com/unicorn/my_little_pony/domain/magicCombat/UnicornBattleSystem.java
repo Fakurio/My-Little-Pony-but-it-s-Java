@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.magicCombat;
+package com.unicorn.my_little_pony.domain.magiccombat;
 
-import com.unicorn.my_little_pony.domain.magicCombat.attacks.MagicAttack;
+import com.unicorn.my_little_pony.domain.magiccombat.attacks.MagicAttack;
 
 //Tydzień 8, DI, Zastosowanie 3
 //Moduł wysokopoziomowy wywołuje atak magiczny poprzez interfejs nie znając rodzaju użytej magii

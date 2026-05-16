@@ -10,9 +10,11 @@ import lombok.Setter;
 @Setter
 public final class PricingConfig {
     private static final PricingConfig pricingConfig = new PricingConfig();
+    private static final int DEFAULT_BASE_PRICE_PER_HOUR = 777;
+    private static final double DEFAULT_RAINBOW_PRICE_RAISE = 1.7;
 
-    private int basePricePerHour = 777;
-    private double rainbowPriceRaise = 1.7;
+    private int basePricePerHour = DEFAULT_BASE_PRICE_PER_HOUR;
+    private double rainbowPriceRaise = DEFAULT_RAINBOW_PRICE_RAISE;
 
     private PricingConfig() {};
 

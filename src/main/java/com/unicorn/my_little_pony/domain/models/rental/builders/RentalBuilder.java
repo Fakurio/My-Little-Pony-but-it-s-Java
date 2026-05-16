@@ -3,12 +3,17 @@ package com.unicorn.my_little_pony.domain.models.rental.builders;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
 import com.unicorn.my_little_pony.util.IdGenerator;
 import com.unicorn.my_little_pony.enums.RentalStatus;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 // Tydzień 2, Wzorzec Builder, Zastosowanie 2
 //Builder dla obiektów Rental
-
+@Getter
 public class RentalBuilder {
+    private static final double DEFAULT_BASE_PRICE = 0.0;
+    private static final double DEFAULT_FINAL_PRICE = 0.0;
+
     private String id;
     private String unicornId;
     private String customerId;
@@ -22,12 +27,17 @@ public class RentalBuilder {
     public RentalBuilder() {
         this.id = IdGenerator.getInstance().nextRentalId();
         this.termsAccepted = false;
-        this.basePrice = 0;
-        this.finalPrice = 0;
+        this.basePrice = DEFAULT_BASE_PRICE;
+        this.finalPrice = DEFAULT_FINAL_PRICE;
     }
 
     public RentalBuilder unicornId(String unicornId) {
         this.unicornId = unicornId;
+        return this;
+    }
+
+    public RentalBuilder id(String id) {
+        this.id = id;
         return this;
     }
 
@@ -73,7 +83,7 @@ public class RentalBuilder {
         if (end.isBefore(start)) {
             throw new IllegalArgumentException("End date cannot be before start date");
         }
-        return new Rental(id, unicornId, customerId, start, end, basePrice, finalPrice, termsAccepted, status);
+        return new Rental(this);
     }
 }
 

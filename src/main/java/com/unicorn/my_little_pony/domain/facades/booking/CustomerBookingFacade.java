@@ -12,34 +12,52 @@ import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 
 public class CustomerBookingFacade {
 
-    private CustomerValidationService validationService = new CustomerValidationService();
-    private DiscountService discountService = new DiscountService();
-    private RentalHistoryService historyService = new RentalHistoryService();
-    private LoyaltyPointsService loyaltyService = new LoyaltyPointsService();
-    private RecommendationService recommendationService = new RecommendationService();
+    private static final double PRICE_PER_POWER_UNIT = 10.0;
+    private static final String DEFAULT_CUSTOMER_TYPE = "DEFAULT";
+
+    private final CustomerValidationService validationService = new CustomerValidationService();
+    private final DiscountService discountService = new DiscountService();
+    private final RentalHistoryService rentalHistoryService = new RentalHistoryService();
+    private final LoyaltyPointsService loyaltyPointsService = new LoyaltyPointsService();
+    private final RecommendationService recommendationService = new RecommendationService();
 
     public String prepareOffer(String customerId, Unicorn unicorn) {
-
-        validationService.validate(customerId);
-
-        historyService.checkHistory(customerId);
-
-        double basePrice = unicorn.getPowerLevel() * 10.0;
-
-        double discountedPrice = discountService.applyDiscount(basePrice);
-
-        loyaltyService.calculatePoints(customerId);
-
-        recommendationService.recommendExtras("DEFAULT");
-
-        String offerDescription = "Offer for customer " + customerId +
-                " with unicorn " + unicorn.getName() +
-                " | Base price: " + basePrice +
-                " | Discounted price: " + discountedPrice;
-
-        System.out.println("Preparing offer: " + offerDescription);
-
+        validationService.validateCustomerId(customerId);
+        collectCustomerContext(customerId, unicorn);
+        OfferPrice offerPrice = calculateOfferPrice(unicorn);
+        String offerDescription = formatOffer(customerId, unicorn, offerPrice);
+        publishOffer(offerDescription);
         return offerDescription;
+    }
+
+    private void collectCustomerContext(String customerId, Unicorn unicorn) {
+        rentalHistoryService.getRentalHistory(unicorn.getId());
+        loyaltyPointsService.calculatePoints(customerId);
+        recommendationService.recommendExtras(DEFAULT_CUSTOMER_TYPE);
+    }
+
+    private OfferPrice calculateOfferPrice(Unicorn unicorn) {
+        double basePrice = calculateBasePrice(unicorn);
+        double discountedPrice = discountService.applyDiscount(basePrice);
+        return new OfferPrice(basePrice, discountedPrice);
+    }
+
+    private double calculateBasePrice(Unicorn unicorn) {
+        return unicorn.getPowerLevel() * PRICE_PER_POWER_UNIT;
+    }
+
+    private String formatOffer(String customerId, Unicorn unicorn, OfferPrice offerPrice) {
+        return "Offer for customer " + customerId +
+                " with unicorn " + unicorn.getName() +
+                " | Base price: " + offerPrice.basePrice() +
+                " | Discounted price: " + offerPrice.discountedPrice();
+    }
+
+    private void publishOffer(String offerDescription) {
+        System.out.println("Preparing offer: " + offerDescription);
+    }
+
+    private record OfferPrice(double basePrice, double discountedPrice) {
     }
 }
 

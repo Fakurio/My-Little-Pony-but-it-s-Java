@@ -4,10 +4,11 @@ package com.unicorn.my_little_pony.domain.models.support;
 // Konkretny komponent - brak wsparcia technicznego (podstawa)
 
 public class NoSupport implements CustomerSupport {
+    private static final double NO_SUPPORT_COST = 0.0;
 
     @Override
     public double getCost() {
-        return 0.0;
+        return NO_SUPPORT_COST;
     }
 
     @Override

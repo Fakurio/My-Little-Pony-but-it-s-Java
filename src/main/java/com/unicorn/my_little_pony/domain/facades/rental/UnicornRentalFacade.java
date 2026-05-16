@@ -1,5 +1,7 @@
 package com.unicorn.my_little_pony.domain.facades.rental;
 
+import com.unicorn.my_little_pony.domain.exceptions.RentalCheckoutException;
+import com.unicorn.my_little_pony.domain.exceptions.UnicornNotAvailableException;
 import com.unicorn.my_little_pony.domain.facades.rental.services.RainbowPricingRule;
 import com.unicorn.my_little_pony.domain.facades.rental.services.UnicornAvailabilityService;
 import com.unicorn.my_little_pony.domain.facades.rental.services.PricingService;
@@ -23,22 +25,38 @@ import java.util.List;
         private final RentalCreationService rentalCreationService = new RentalCreationService();
 
         public String rentUnicorn(Unicorn unicorn, String customerId) {
-            if (!availabilityService.isAvailable(unicorn)) {
-                return "Unicorn not available";
-            }
-
-            // Tydzień 5, Wzorzec Command, Zastosowanie 3
-            // Dodanie zadania do transakcji i jego cofnięcię w przypadku błędu
-            TransactionMacro transactionMacro = new TransactionMacro();
+            ensureUnicornIsAvailable(unicorn);
+            TransactionMacro transactionMacro = createRentalTransaction();
             try {
-                transactionMacro.executeCommand(new ChangeStatusCommand(unicorn, UnicornStatus.RENTED));
-                double price = pricingService.calculatePrice(unicorn.getId());
-                return rentalCreationService.createRental(unicorn.getId(), customerId);
+                markUnicornAsRented(transactionMacro, unicorn);
+                return createRental(unicorn, customerId);
             } catch (Exception e) {
-                transactionMacro.undo();
-                return "Error during checkout: " + e.getMessage();
+                return rollbackAndThrow(transactionMacro, e);
             }
-            // Koniec, Tydzień 5, Wzorzec Command
+        }
+
+        private void ensureUnicornIsAvailable(Unicorn unicorn) {
+            if (!availabilityService.isAvailable(unicorn)) {
+                throw new UnicornNotAvailableException(unicorn.getName());
+            }
+        }
+
+        private TransactionMacro createRentalTransaction() {
+            return new TransactionMacro();
+        }
+
+        private void markUnicornAsRented(TransactionMacro transactionMacro, Unicorn unicorn) {
+            transactionMacro.executeCommand(new ChangeStatusCommand(unicorn, UnicornStatus.RENTED));
+        }
+
+        private String createRental(Unicorn unicorn, String customerId) {
+            double price = pricingService.calculatePrice(unicorn.getId());
+            return rentalCreationService.createRental(unicorn.getId(), customerId, price);
+        }
+
+        private String rollbackAndThrow(TransactionMacro transactionMacro, Exception exception) {
+            transactionMacro.undo();
+            throw new RentalCheckoutException(exception.getMessage(), exception);
         }
     }
 //Koniec Tydzień 4, Wzorzec Facade

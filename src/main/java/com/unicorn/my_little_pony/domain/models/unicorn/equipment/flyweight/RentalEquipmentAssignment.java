@@ -8,27 +8,26 @@ public class RentalEquipmentAssignment {
     private final String rentalId;
     private final EquipmentFlyweight equipmentFlyweight;
 
-    private String conditionStatus;
-    private boolean currentlyAssigned;
+    private final String conditionStatus;
+    private final boolean currentlyAssigned;
 
-    public RentalEquipmentAssignment(
-            String assignmentId,
-            String rentalId,
-            EquipmentFlyweight equipmentFlyweight,
-            String conditionStatus,
-            boolean currentlyAssigned) {
-        this.assignmentId = assignmentId;
-        this.rentalId = rentalId;
-        this.equipmentFlyweight = equipmentFlyweight;
-        this.conditionStatus = conditionStatus;
-        this.currentlyAssigned = currentlyAssigned;
+    private RentalEquipmentAssignment(Builder builder) {
+        this.assignmentId = builder.assignmentId;
+        this.rentalId = builder.rentalId;
+        this.equipmentFlyweight = builder.equipmentFlyweight;
+        this.conditionStatus = builder.conditionStatus;
+        this.currentlyAssigned = builder.currentlyAssigned;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public EquipmentFlyweight getEquipmentFlyweight() {
         return equipmentFlyweight;
     }
 
-    public String getInfo() {
+    public String getDescription() {
         return "RentalEquipmentAssignment{" +
                 "assignmentId='" + assignmentId + '\'' +
                 ", rentalId='" + rentalId + '\'' +
@@ -36,6 +35,43 @@ public class RentalEquipmentAssignment {
                 ", conditionStatus='" + conditionStatus + '\'' +
                 ", currentlyAssigned=" + currentlyAssigned +
                 '}';
+    }
+
+    public static class Builder {
+        private String assignmentId;
+        private String rentalId;
+        private EquipmentFlyweight equipmentFlyweight;
+        private String conditionStatus;
+        private boolean currentlyAssigned;
+
+        public Builder assignmentId(String assignmentId) {
+            this.assignmentId = assignmentId;
+            return this;
+        }
+
+        public Builder rentalId(String rentalId) {
+            this.rentalId = rentalId;
+            return this;
+        }
+
+        public Builder equipmentFlyweight(EquipmentFlyweight equipmentFlyweight) {
+            this.equipmentFlyweight = equipmentFlyweight;
+            return this;
+        }
+
+        public Builder conditionStatus(String conditionStatus) {
+            this.conditionStatus = conditionStatus;
+            return this;
+        }
+
+        public Builder currentlyAssigned(boolean currentlyAssigned) {
+            this.currentlyAssigned = currentlyAssigned;
+            return this;
+        }
+
+        public RentalEquipmentAssignment build() {
+            return new RentalEquipmentAssignment(this);
+        }
     }
 }
 

@@ -10,18 +10,12 @@ public class ConcreteUnicornVariant implements UnicornVariantFlyweight {
     private final String maneColor;
     private final String magicAura;
 
-    public ConcreteUnicornVariant(
-            String breed,
-            String hornStyle,
-            String wingType,
-            String maneColor,
-            String magicAura) {
-
-        this.breed = breed;
-        this.hornStyle = hornStyle;
-        this.wingType = wingType;
-        this.maneColor = maneColor;
-        this.magicAura = magicAura;
+    public ConcreteUnicornVariant(UnicornVariantConfig unicornVariantConfig) {
+        this.breed = unicornVariantConfig.getBreed();
+        this.hornStyle = unicornVariantConfig.getHornStyle();
+        this.wingType = unicornVariantConfig.getWingType();
+        this.maneColor = unicornVariantConfig.getManeColor();
+        this.magicAura = unicornVariantConfig.getMagicAura();
     }
 
     @Override

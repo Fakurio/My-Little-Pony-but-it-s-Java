@@ -20,23 +20,36 @@ public class UnicornReturnFacade {
     private final MaintenanceQueue maintenanceQueue = new MaintenanceQueue();
 
     public String returnUnicorn(Unicorn unicorn) {
+        ReturnSummary returnSummary = processReturn(unicorn);
+        queueMaintenance(unicorn);
+        return publishResult(unicorn, returnSummary);
+    }
+
+    private ReturnSummary processReturn(Unicorn unicorn) {
         boolean damaged = inspectionService.inspect();
         double fee = lateFeeService.calculateFee();
         statusService.updateStatus(unicorn);
+        return new ReturnSummary(damaged, fee);
+    }
 
-        // Tydzień 5, Wzorzec Command, Zastosowanie 2
-        // Dodanie konkretnych zadań do kolejki
+    private void queueMaintenance(Unicorn unicorn) {
         maintenanceQueue.addJob(new FeedCommand(unicorn));
         maintenanceQueue.addJob(new BrushCommand(unicorn));
-        // Koniec, Tydzień 5, Wzorzec Command
+    }
 
-        String result = "Return completed for unicorn " + unicorn.getName() +
-                ". Fee: " + fee +
-                " | Damaged: " + damaged;
-
+    private String publishResult(Unicorn unicorn, ReturnSummary returnSummary) {
+        String result = formatResult(unicorn, returnSummary);
         System.out.println(result);
-
         return result;
+    }
+
+    private String formatResult(Unicorn unicorn, ReturnSummary returnSummary) {
+        return "Return completed for unicorn " + unicorn.getName() +
+                ". Fee: " + returnSummary.fee() +
+                " | Damaged: " + returnSummary.damaged();
+    }
+
+    private record ReturnSummary(boolean damaged, double fee) {
     }
 }
 //koniec Tydzień 4, Wzorzec Facade

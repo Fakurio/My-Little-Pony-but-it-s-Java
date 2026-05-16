@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.rentalSystem;
+package com.unicorn.my_little_pony.domain.rentalsystem;
 
 import java.util.ArrayList;
 import java.util.List;

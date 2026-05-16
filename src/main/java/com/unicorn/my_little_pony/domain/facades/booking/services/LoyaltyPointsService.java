@@ -4,13 +4,11 @@ package com.unicorn.my_little_pony.domain.facades.booking.services;
 // Serwis punktów lojalnościowych.
 
 public class LoyaltyPointsService {
+    private static final int DEFAULT_LOYALTY_POINTS = 100;
 
     public int calculatePoints(String customerId) {
-
-        int points = 100;
-
+        int points = DEFAULT_LOYALTY_POINTS;
         System.out.println("Points earned: " + points);
-
         return points;
     }
 }

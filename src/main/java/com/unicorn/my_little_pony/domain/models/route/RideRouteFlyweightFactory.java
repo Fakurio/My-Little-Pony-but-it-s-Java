@@ -9,47 +9,19 @@ public class RideRouteFlyweightFactory {
 
     private static final Map<String, RideRouteFlyweight> routeMap = new HashMap<>();
 
-    public static RideRouteFlyweight getRideRoute(
-            String routeType,
-            String routeName,
-            String difficultyLevel,
-            int defaultDurationMinutes,
-            String terrainType) {
-
-        String key = routeType + "_" + routeName + "_" + difficultyLevel + "_"
-                + defaultDurationMinutes + "_" + terrainType;
-
-        if (!routeMap.containsKey(key)) {
-            if ("SHORT".equalsIgnoreCase(routeType)) {
-                routeMap.put(
-                        key,
-                        new ShortRideRoute(
-                                routeName,
-                                difficultyLevel,
-                                defaultDurationMinutes,
-                                terrainType
-                        )
-                );
-            } else if ("ADVENTURE".equalsIgnoreCase(routeType)) {
-                routeMap.put(
-                        key,
-                        new AdventureRideRoute(
-                                routeName,
-                                difficultyLevel,
-                                defaultDurationMinutes,
-                                terrainType
-                        )
-                );
-            } else {
-                throw new IllegalArgumentException("Unknown route type: " + routeType);
-            }
-        }
-
-        return routeMap.get(key);
+    public static RideRouteFlyweight getRideRoute(RideRouteConfig config) {
+        return routeMap.computeIfAbsent(config.toKey(), key -> createRoute(config));
     }
 
     public static int getFlyweightCount() {
         return routeMap.size();
+    }
+
+    private static RideRouteFlyweight createRoute(RideRouteConfig config) {
+        return switch (config.getRouteType()) {
+            case SHORT -> new ShortRideRoute(config);
+            case ADVENTURE -> new AdventureRideRoute(config);
+        };
     }
 }
 // Koniec, Tydzień 4, Wzorzec Flyweight, Zastosowanie 3

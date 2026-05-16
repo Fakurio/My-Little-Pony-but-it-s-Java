@@ -4,6 +4,7 @@ package com.unicorn.my_little_pony.domain.models.unicorn.equipment;
 // Konkretna implementacja danego ekwipunku jednorożca. Ten przypadek służy za placeholder
 // kiedy jednorożec nie ma ekwipunku
 public class NoEquipment implements Equipment {
+    private static final int NO_POWER_BONUS = 0;
 
     @Override
     public String getDescription() {
@@ -12,7 +13,7 @@ public class NoEquipment implements Equipment {
 
     @Override
     public int getPowerBonus() {
-        return 0;
+        return NO_POWER_BONUS;
     }
 }
 // Koniec, Tydzień 3, Wzorzec Bridge, Zastosowanie 3

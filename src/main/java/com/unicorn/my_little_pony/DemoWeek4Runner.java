@@ -1,22 +1,30 @@
 package com.unicorn.my_little_pony;
 
-import com.unicorn.my_little_pony.database.DatabaseRentingHistoryLoader;
-import com.unicorn.my_little_pony.database.RentingHistoryLoader;
+import com.unicorn.my_little_pony.database.DatabaseRentalHistoryLoader;
+import com.unicorn.my_little_pony.database.RentalHistoryLoader;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerContact;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerIdentity;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
 import com.unicorn.my_little_pony.domain.models.route.RidePlan;
+import com.unicorn.my_little_pony.domain.models.route.RideRouteConfig;
 import com.unicorn.my_little_pony.domain.models.route.RideRouteFlyweight;
 import com.unicorn.my_little_pony.domain.models.route.RideRouteFlyweightFactory;
+import com.unicorn.my_little_pony.domain.models.route.RideRouteType;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentFlyweight;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentFlyweightFactory;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentPackageConfig;
+import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.EquipmentPackageType;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.flyweight.RentalEquipmentAssignment;
 import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.Unicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.UnicornVariantConfig;
 import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.UnicornVariantFactory;
 import com.unicorn.my_little_pony.domain.models.unicorn.flyweight.UnicornVariantFlyweight;
-import com.unicorn.my_little_pony.domain.models.unicorn.proxies.CachingRentingHistoryProxy;
+import com.unicorn.my_little_pony.domain.models.unicorn.proxies.CachingRentalHistoryProxy;
 import com.unicorn.my_little_pony.domain.models.unicorn.proxies.ProtectedUnicornProxy;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
-import com.unicorn.my_little_pony.domain.models.unicorn.types.IUnicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornContract;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
 import com.unicorn.my_little_pony.integration.payment.external.PaymentAdapter;
 import com.unicorn.my_little_pony.integration.payment.external.PaymentLoggingProxy;
 import com.unicorn.my_little_pony.integration.payment.external.PaymentService;
@@ -48,14 +56,20 @@ public class DemoWeek4Runner implements CommandLineRunner {
         System.out.println("=========================");
         System.out.println("Zastosowanie 1: Protection proxy");
 
-        Customer standard = new Customer(IdGenerator.getInstance().nextCustomerId(),
-                "Timmy", "timmy@gmail.com", "111111111", false);
-        Customer vip = new Customer(IdGenerator.getInstance().nextCustomerId(),
-                "Princess Celestia", "celly@gmail.com", "111111111", true);
-        IUnicorn blaze = new FireUnicorn("1", "Blaze", "Red", 100);
+        Customer standard = new Customer(
+                new CustomerIdentity(IdGenerator.getInstance().nextCustomerId(), "Timmy"),
+                new CustomerContact("timmy@gmail.com", "111111111"),
+                false
+        );
+        Customer vip = new Customer(
+                new CustomerIdentity(IdGenerator.getInstance().nextCustomerId(), "Princess Celestia"),
+                new CustomerContact("celly@gmail.com", "111111111"),
+                true
+        );
+        UnicornContract blaze = new FireUnicorn(new UnicornIdentity("1", "Blaze", "Red"), 100);
 
         System.out.println("Non VIP user try to use unicorn special ability...");
-        IUnicorn standardProxy = new ProtectedUnicornProxy(standard, blaze);
+        UnicornContract standardProxy = new ProtectedUnicornProxy(standard, blaze);
         try {
             standardProxy.useSpecialAbility();
         } catch (Exception e) {
@@ -63,7 +77,7 @@ public class DemoWeek4Runner implements CommandLineRunner {
         }
 
         System.out.println("VIP user try to use unicorn special ability...");
-        IUnicorn vipProxy = new ProtectedUnicornProxy(vip, blaze);
+        UnicornContract vipProxy = new ProtectedUnicornProxy(vip, blaze);
         try {
             vipProxy.useSpecialAbility();
         } catch (Exception e) {
@@ -81,19 +95,19 @@ public class DemoWeek4Runner implements CommandLineRunner {
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 3: Caching proxy");
 
-        RentingHistoryLoader loader = new DatabaseRentingHistoryLoader();
-        CachingRentingHistoryProxy service = new CachingRentingHistoryProxy(loader);
+        RentalHistoryLoader loader = new DatabaseRentalHistoryLoader();
+        CachingRentalHistoryProxy service = new CachingRentalHistoryProxy(loader);
         String unicornId = IdGenerator.getInstance().nextUnicornId();
 
         System.out.println("First service call (without cache)");
         long start1 = System.currentTimeMillis();
-        List<Rental> history1 = service.fetchRentingHistory(unicornId);
+        List<Rental> history1 = service.fetchRentalHistory(unicornId);
         long end1 = System.currentTimeMillis();
         System.out.println("Fetched " + history1.size() + " records in " + (end1 - start1) + " ms.");
 
         System.out.println("Second service call (with cache)");
         long start2 = System.currentTimeMillis();
-        List<Rental> history2 = service.fetchRentingHistory(unicornId);
+        List<Rental> history2 = service.fetchRentalHistory(unicornId);
         long end2 = System.currentTimeMillis();
         System.out.println("Fetched " + history2.size() + " records in " + (end2 - start2) + " ms.");
     }
@@ -103,42 +117,63 @@ public class DemoWeek4Runner implements CommandLineRunner {
         System.out.println("Flyweight");
         System.out.println("=========================");
         System.out.println("Zastosowanie 1: Unicorn Flyweight");
+        UnicornVariantConfig moonlightConfig = UnicornVariantConfig.builder()
+                .breed("Moonlight")
+                .hornStyle("Spiral Horn")
+                .wingType("Silver Wings")
+                .maneColor("Pearl Mane")
+                .magicAura("Night Glow")
+                .build();
         UnicornVariantFlyweight moonlight =
-                UnicornVariantFactory.getUnicornVariant(
-                        "Moonlight",
-                        "Spiral Horn",
-                        "Silver Wings",
-                        "Pearl Mane",
-                        "Night Glow"
-                );
+                UnicornVariantFactory.getUnicornVariant(moonlightConfig);
 
         UnicornVariantFlyweight moonlightAgain =
-                UnicornVariantFactory.getUnicornVariant(
-                        "Moonlight",
-                        "Spiral Horn",
-                        "Silver Wings",
-                        "Pearl Mane",
-                        "Night Glow"
-                );
+                UnicornVariantFactory.getUnicornVariant(moonlightConfig);
 
         UnicornVariantFlyweight sparkle =
                 UnicornVariantFactory.getUnicornVariant(
-                        "Sparkle",
-                        "Crystal Horn",
-                        "Rainbow Wings",
-                        "Pink Mane",
-                        "Star Dust"
+                        UnicornVariantConfig.builder()
+                                .breed("Sparkle")
+                                .hornStyle("Crystal Horn")
+                                .wingType("Rainbow Wings")
+                                .maneColor("Pink Mane")
+                                .magicAura("Star Dust")
+                                .build()
                 );
 
-        Unicorn u1 = new Unicorn("U1", "Luna", moonlight, "Stable A", true);
-        Unicorn u2 = new Unicorn("U2", "Nova", moonlightAgain, "Stable B", true);
-        Unicorn u3 = new Unicorn("U3", "Pixie", sparkle, "Stable C", false);
-        Unicorn u4 = new Unicorn("U3", "Pluto", moonlight, "Stable A", false);
+        Unicorn u1 = Unicorn.builder()
+                .id("U1")
+                .name("Luna")
+                .unicornVariant(moonlight)
+                .stableLocation("Stable A")
+                .available(true)
+                .build();
+        Unicorn u2 = Unicorn.builder()
+                .id("U2")
+                .name("Nova")
+                .unicornVariant(moonlightAgain)
+                .stableLocation("Stable B")
+                .available(true)
+                .build();
+        Unicorn u3 = Unicorn.builder()
+                .id("U3")
+                .name("Pixie")
+                .unicornVariant(sparkle)
+                .stableLocation("Stable C")
+                .available(false)
+                .build();
+        Unicorn u4 = Unicorn.builder()
+                .id("U3")
+                .name("Pluto")
+                .unicornVariant(moonlight)
+                .stableLocation("Stable A")
+                .available(false)
+                .build();
 
-        System.out.println(u1.getInfo());
-        System.out.println(u2.getInfo());
-        System.out.println(u3.getInfo());
-        System.out.println(u4.getInfo());
+        System.out.println(u1.getDescription());
+        System.out.println(u2.getDescription());
+        System.out.println(u3.getDescription());
+        System.out.println(u4.getDescription());
 
         System.out.println("Flyweights created: " + UnicornVariantFactory.getFlyweightCount());
 
@@ -146,49 +181,61 @@ public class DemoWeek4Runner implements CommandLineRunner {
 
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 2: Equipment Flyweight");
+        EquipmentPackageConfig forestBasicSet = EquipmentPackageConfig.builder()
+                .packageType(EquipmentPackageType.BASIC)
+                .packageName("Forest Basic Set")
+                .saddleType("Standard Saddle")
+                .harnessType("Classic Harness")
+                .decorationStyle("Green Ribbons")
+                .safetyLevel("STANDARD")
+                .build();
         EquipmentFlyweight basic1 = EquipmentFlyweightFactory.getEquipmentPackage(
-                "BASIC",
-                "Forest Basic Set",
-                "Standard Saddle",
-                "Classic Harness",
-                "Green Ribbons",
-                "STANDARD"
+                forestBasicSet
         );
 
         EquipmentFlyweight basic2 = EquipmentFlyweightFactory.getEquipmentPackage(
-                "BASIC",
-                "Forest Basic Set",
-                "Standard Saddle",
-                "Classic Harness",
-                "Green Ribbons",
-                "STANDARD"
+                forestBasicSet
         );
 
         EquipmentFlyweight premium1 = EquipmentFlyweightFactory.getEquipmentPackage(
-                "PREMIUM",
-                "Royal Parade Set",
-                "Luxury Saddle",
-                "Golden Harness",
-                "Crystal Decorations",
-                "HIGH"
+                EquipmentPackageConfig.builder()
+                        .packageType(EquipmentPackageType.PREMIUM)
+                        .packageName("Royal Parade Set")
+                        .saddleType("Luxury Saddle")
+                        .harnessType("Golden Harness")
+                        .decorationStyle("Crystal Decorations")
+                        .safetyLevel("HIGH")
+                        .build()
         );
         IdGenerator gen = IdGenerator.getInstance();
 
-        RentalEquipmentAssignment a1 = new RentalEquipmentAssignment(
-                "EA-001", gen.nextRentalId(), basic1, "CLEAN", true
-        );
+        RentalEquipmentAssignment a1 = RentalEquipmentAssignment.builder()
+                .assignmentId("EA-001")
+                .rentalId(gen.nextRentalId())
+                .equipmentFlyweight(basic1)
+                .conditionStatus("CLEAN")
+                .currentlyAssigned(true)
+                .build();
 
-        RentalEquipmentAssignment a2 = new RentalEquipmentAssignment(
-                "EA-002", gen.nextRentalId(), basic2, "USED", false
-        );
+        RentalEquipmentAssignment a2 = RentalEquipmentAssignment.builder()
+                .assignmentId("EA-002")
+                .rentalId(gen.nextRentalId())
+                .equipmentFlyweight(basic2)
+                .conditionStatus("USED")
+                .currentlyAssigned(false)
+                .build();
 
-        RentalEquipmentAssignment a3 = new RentalEquipmentAssignment(
-                "EA-003", gen.nextRentalId(), premium1, "PERFECT", true
-        );
+        RentalEquipmentAssignment a3 = RentalEquipmentAssignment.builder()
+                .assignmentId("EA-003")
+                .rentalId(gen.nextRentalId())
+                .equipmentFlyweight(premium1)
+                .conditionStatus("PERFECT")
+                .currentlyAssigned(true)
+                .build();
 
-        System.out.println(a1.getInfo());
-        System.out.println(a2.getInfo());
-        System.out.println(a3.getInfo());
+        System.out.println(a1.getDescription());
+        System.out.println(a2.getDescription());
+        System.out.println(a3.getDescription());
 
         System.out.println("Equipment flyweights created: "
                 + EquipmentFlyweightFactory.getFlyweightCount());
@@ -198,45 +245,61 @@ public class DemoWeek4Runner implements CommandLineRunner {
 
         System.out.println("-------------------------");
         System.out.println("Zastosowanie 3: RideRoute");
+        RideRouteConfig moonlightGardenRoute = RideRouteConfig.builder()
+                .routeType(RideRouteType.SHORT)
+                .routeName("Moonlight Garden")
+                .difficultyLevel("EASY")
+                .defaultDurationMinutes(20)
+                .terrainType("FLAT")
+                .build();
         RideRouteFlyweight shortRoute1 = RideRouteFlyweightFactory.getRideRoute(
-                "SHORT",
-                "Moonlight Garden",
-                "EASY",
-                20,
-                "FLAT"
+                moonlightGardenRoute
         );
 
         RideRouteFlyweight shortRoute2 = RideRouteFlyweightFactory.getRideRoute(
-                "SHORT",
-                "Moonlight Garden",
-                "EASY",
-                20,
-                "FLAT"
+                moonlightGardenRoute
         );
 
         RideRouteFlyweight adventureRoute = RideRouteFlyweightFactory.getRideRoute(
-                "ADVENTURE",
-                "Crystal Mountain Trail",
-                "HARD",
-                60,
-                "MOUNTAIN"
+                RideRouteConfig.builder()
+                        .routeType(RideRouteType.ADVENTURE)
+                        .routeName("Crystal Mountain Trail")
+                        .difficultyLevel("HARD")
+                        .defaultDurationMinutes(60)
+                        .terrainType("MOUNTAIN")
+                        .build()
         );
 
-        RidePlan p1 = new RidePlan(
-                "RP-001", gen.nextUnicornId(), shortRoute1, "2026-03-20", "Sunny", 2
-        );
+        RidePlan p1 = RidePlan.builder()
+                .rideId("RP-001")
+                .unicornId(gen.nextUnicornId())
+                .routeFlyweight(shortRoute1)
+                .rideDate("2026-03-20")
+                .weather("Sunny")
+                .participantCount(2)
+                .build();
 
-        RidePlan p2 = new RidePlan(
-                "RP-002", gen.nextUnicornId(), shortRoute2, "2026-03-21", "Cloudy", 3
-        );
+        RidePlan p2 = RidePlan.builder()
+                .rideId("RP-002")
+                .unicornId(gen.nextUnicornId())
+                .routeFlyweight(shortRoute2)
+                .rideDate("2026-03-21")
+                .weather("Cloudy")
+                .participantCount(3)
+                .build();
 
-        RidePlan p3 = new RidePlan(
-                "RP-003", gen.nextUnicornId(), adventureRoute, "2026-03-22", "Windy", 1
-        );
+        RidePlan p3 = RidePlan.builder()
+                .rideId("RP-003")
+                .unicornId(gen.nextUnicornId())
+                .routeFlyweight(adventureRoute)
+                .rideDate("2026-03-22")
+                .weather("Windy")
+                .participantCount(1)
+                .build();
 
-        System.out.println(p1.getInfo());
-        System.out.println(p2.getInfo());
-        System.out.println(p3.getInfo());
+        System.out.println(p1.getDescription());
+        System.out.println(p2.getDescription());
+        System.out.println(p3.getDescription());
 
         System.out.println("Ride route flyweights created: "
                 + RideRouteFlyweightFactory.getFlyweightCount());

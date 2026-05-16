@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.rental.returnTemplate;
+package com.unicorn.my_little_pony.domain.models.rental.returntemplate;
 
 // Tydzień 6, Wzorzec Template, Zastosowanie 2
 // Szablon procesu zwrotu jednorożca, definiujący ogólny przebieg procesu zwrotu, pozostawiający szczegóły do

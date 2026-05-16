@@ -1,8 +1,8 @@
 package com.unicorn.my_little_pony;
 
-import com.unicorn.my_little_pony.domain.magicCombat.UnicornBattleSystem;
-import com.unicorn.my_little_pony.domain.magicCombat.attacks.FireAttack;
-import com.unicorn.my_little_pony.domain.magicCombat.attacks.WaterAttack;
+import com.unicorn.my_little_pony.domain.magiccombat.UnicornBattleSystem;
+import com.unicorn.my_little_pony.domain.magiccombat.attacks.FireAttack;
+import com.unicorn.my_little_pony.domain.magiccombat.attacks.WaterAttack;
 import com.unicorn.my_little_pony.domain.models.service.composite.BasicService;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceBundle;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceComponent;
@@ -51,9 +51,12 @@ import com.unicorn.my_little_pony.domain.store.isp.rental_lifecycle.RentalAgent;
 import com.unicorn.my_little_pony.domain.store.isp.rental_lifecycle.AccountantWorker;
 import com.unicorn.my_little_pony.domain.store.isp.rental_lifecycle.ReportGeneratorWorker;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerContact;
+import com.unicorn.my_little_pony.domain.models.customer.CustomerIdentity;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
 import com.unicorn.my_little_pony.util.IdGenerator;
 import com.unicorn.my_little_pony.domain.store.UnicornManager;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
 import com.unicorn.my_little_pony.integration.payment.PaymentProcessor;
 import com.unicorn.my_little_pony.integration.payment.providers.PaymentProvider;
 import com.unicorn.my_little_pony.integration.payment.providers.PaypalProvider;
@@ -66,6 +69,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DemoWeek8Runner implements CommandLineRunner {
+
+    private static final String DEMO_UNICORN_ID = "1";
+    private static final int DEMO_UNICORN_POWER = 120;
+    private static final int POWER_EXPRESSION_THRESHOLD = 100;
+    private static final double CHECKOUT_AMOUNT_PLN = 59.99;
+    private static final double DEMO_RENTAL_PAYMENT_AMOUNT_PLN = 100.0;
 
     @Override
     public void run(String... args) throws Exception {
@@ -118,10 +127,13 @@ public class DemoWeek8Runner implements CommandLineRunner {
             // =========================
             System.out.println("Przykład 3 - UnicornExpression");
 
-            Unicorn unicorn = new FireUnicorn("1", "Inferno", "Red", 120);
+            Unicorn unicorn = new FireUnicorn(
+                    new UnicornIdentity(DEMO_UNICORN_ID, "Inferno", "Red"),
+                    DEMO_UNICORN_POWER
+            );
 
             testExpression(new ColorExpression("Red"), unicorn);
-            testExpression(new PowerExpression(100), unicorn);
+            testExpression(new PowerExpression(POWER_EXPRESSION_THRESHOLD), unicorn);
             testExpression(new NameExpression("Inferno"), unicorn);
 
             System.out.println("----------------------------");
@@ -168,7 +180,7 @@ public class DemoWeek8Runner implements CommandLineRunner {
         FatBrowsingClient fatBrowsingClient = new FatBrowsingClient(fatRentalFacade);
         FatCheckoutClient fatCheckoutClient = new FatCheckoutClient(fatRentalFacade);
         fatBrowsingClient.showAvailableCount();
-        fatCheckoutClient.checkout(59.99);
+        fatCheckoutClient.checkout(CHECKOUT_AMOUNT_PLN);
         System.out.println("----------------------------");
 
         System.out.println("Po refaktoryzacji: interfejsy po segregacji");
@@ -181,7 +193,7 @@ public class DemoWeek8Runner implements CommandLineRunner {
         NotificationClient notificationClient = new NotificationClient(customerNotifier);
 
         browsingClient.showAvailableCount();
-        checkoutClient.checkout(59.99);
+        checkoutClient.checkout(CHECKOUT_AMOUNT_PLN);
         notificationClient.sendRentalReadyMessage("Twilight Sparkle");
         System.out.println("===========================\n");
 
@@ -211,8 +223,15 @@ public class DemoWeek8Runner implements CommandLineRunner {
         System.out.println("Przed refaktoryzacja: fat interfejs");
         CompleteRentalManagement fatRentalManager = new FatCompleteRentalManager();
         FatRentalAgent fatAgent = new FatRentalAgent(fatRentalManager);
-        Customer customer = new Customer("123", "Rainbow Dash", "iloveunicorns@example.com", "123-456-789", false);
-        FireUnicorn unicorn = new FireUnicorn(IdGenerator.getInstance().nextUnicornId(), "Phoenix", "golden", 95);
+        Customer customer = new Customer(
+                new CustomerIdentity("123", "Rainbow Dash"),
+                new CustomerContact("iloveunicorns@example.com", "123-456-789"),
+                false
+        );
+        FireUnicorn unicorn = new FireUnicorn(
+                new UnicornIdentity(IdGenerator.getInstance().nextUnicornId(), "Phoenix", "golden"),
+                95
+        );
         fatRentalManager.createRental("R001", unicorn, customer);
         fatAgent.processNewRental("R001");
         System.out.println("Agent zaleza od calego CompleteRentalManagement.");
@@ -229,7 +248,7 @@ public class DemoWeek8Runner implements CommandLineRunner {
         ReportGeneratorWorker reportGenerator = new ReportGeneratorWorker(rentalReporting);
 
         agent.processNewRental("R002");
-        rentalFinance.processPayment("R002", 100.0);
+        rentalFinance.processPayment("R002", DEMO_RENTAL_PAYMENT_AMOUNT_PLN);
         accountant.processRefund("R002");
         reportGenerator.generateReports("R002");
     }

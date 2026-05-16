@@ -22,20 +22,19 @@ public class Rental implements Cloneable{
     private final boolean termsAccepted;
     private RentalStatus status;
 
-    public Rental(String id, String unicornId, String customerId, LocalDateTime start, LocalDateTime end,
-                  double basePrice, double finalPrice, boolean termsAccepted, RentalStatus status) {
-        if (end.isBefore(start)) {
+    public Rental(RentalBuilder rentalBuilder) {
+        if (rentalBuilder.getEnd().isBefore(rentalBuilder.getStart())) {
             throw new IllegalArgumentException("End date cannot be before start date!");
         }
-        this.id = id;
-        this.unicornId = unicornId;
-        this.customerId = customerId;
-        this.start = start;
-        this.end = end;
-        this.basePrice = basePrice;
-        this.finalPrice = finalPrice;
-        this.termsAccepted = termsAccepted;
-        this.status = status;
+        this.id = rentalBuilder.getId();
+        this.unicornId = rentalBuilder.getUnicornId();
+        this.customerId = rentalBuilder.getCustomerId();
+        this.start = rentalBuilder.getStart();
+        this.end = rentalBuilder.getEnd();
+        this.basePrice = rentalBuilder.getBasePrice();
+        this.finalPrice = rentalBuilder.getFinalPrice();
+        this.termsAccepted = rentalBuilder.isTermsAccepted();
+        this.status = rentalBuilder.getStatus();
     }
 
     @Override

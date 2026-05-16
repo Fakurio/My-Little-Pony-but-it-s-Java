@@ -1,5 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.rentedUnicorn;
-
+package com.unicorn.my_little_pony.domain.models.rentedunicorn;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,8 +6,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class RentedUnicorn {
-    private int stamina = 100;
+    private static final int DEFAULT_STAMINA = 100;
 
-    public RentedUnicorn() {
-    }
+    private int stamina = DEFAULT_STAMINA;
+
+    public RentedUnicorn() {}
 }

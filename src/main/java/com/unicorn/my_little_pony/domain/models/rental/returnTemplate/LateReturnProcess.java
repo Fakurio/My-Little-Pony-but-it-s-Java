@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.rental.returnTemplate;
+package com.unicorn.my_little_pony.domain.models.rental.returntemplate;
 
 // Tydzień 6, Wzorzec Template, Zastosowanie 2
 // Implementacja procesu zwrotu jednorożca w przypadku spóźnionego zwrotu, definiująca konkretne kroki inspekcji i kalkulacji dodatkowych opłat

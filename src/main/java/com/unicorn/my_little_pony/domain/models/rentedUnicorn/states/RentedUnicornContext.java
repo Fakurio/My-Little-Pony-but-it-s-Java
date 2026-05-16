@@ -1,6 +1,6 @@
-package com.unicorn.my_little_pony.domain.models.rentedUnicorn.states;
+package com.unicorn.my_little_pony.domain.models.rentedunicorn.states;
 
-import com.unicorn.my_little_pony.domain.models.rentedUnicorn.RentedUnicorn;
+import com.unicorn.my_little_pony.domain.models.rentedunicorn.RentedUnicorn;
 import lombok.Getter;
 import lombok.Setter;
 

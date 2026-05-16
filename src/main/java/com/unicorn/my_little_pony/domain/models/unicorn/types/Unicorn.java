@@ -18,7 +18,10 @@ import lombok.Setter;
 // Klasa jednorożca która posiada powerLevel, który będzie wykorzystywany przez iterator do kategoryzowania jednorożców
 @Getter
 @Setter
-public abstract class Unicorn implements Cloneable, IUnicorn {
+public abstract class Unicorn implements Cloneable, UnicornContract {
+    private static final int STRONG_POWER_THRESHOLD = 60;
+    private static final int LEGENDARY_POWER_THRESHOLD = 100;
+
     private final String id;
     private final String name;
     private final String color;
@@ -32,10 +35,10 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     private Equipment equipment;
     // Koniec, Tydzień 3, Wzorzec Bridge, Zastosowanie 3
 
-    public Unicorn(String id, String name, String color, int powerLevel) {
-        this.id = id;
-        this.name = name;
-        this.color = color;
+    public Unicorn(UnicornIdentity unicornIdentity, int powerLevel) {
+        this.id = unicornIdentity.getId();
+        this.name = unicornIdentity.getName();
+        this.color = unicornIdentity.getColor();
         this.powerLevel = powerLevel;
         this.status = UnicornStatus.AVAILABLE;
         this.equipment = new NoEquipment();
@@ -54,9 +57,9 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     public PowerLevelCategory getPowerLevelCategory() {
         int totalPower = getTotalPower();
 
-        if (totalPower < 60) {
+        if (totalPower < STRONG_POWER_THRESHOLD) {
             return PowerLevelCategory.AVERAGE_PONY;
-        } else if (totalPower < 100) {
+        } else if (totalPower < LEGENDARY_POWER_THRESHOLD) {
             return PowerLevelCategory.STRONG;
         } else {
             return PowerLevelCategory.LEGENDARY;
@@ -79,6 +82,14 @@ public abstract class Unicorn implements Cloneable, IUnicorn {
     //Tydzień 2, Wzorzec Prototype, Zastosowanie 3
     // Metoda abstrakcyjna do klonowania obiektow
     public abstract Unicorn clone();
+
+    protected void copyMutableStateTo(Unicorn clonedUnicorn) {
+        clonedUnicorn.setStatus(this.getStatus());
+        clonedUnicorn.setPrice(this.getPrice());
+        clonedUnicorn.setRating(this.getRating());
+        clonedUnicorn.setUnicornState(this.getUnicornState());
+        clonedUnicorn.setEquipment(this.getEquipment());
+    }
     // Koniec, Tydzień 2, Wzorzec Prototype, Zastosowanie 3
 
     //Tydzień 5, Wzorzec Memento, Zastosowanie 1

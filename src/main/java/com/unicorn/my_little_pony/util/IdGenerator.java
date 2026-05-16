@@ -6,11 +6,13 @@ import java.util.concurrent.atomic.AtomicLong;
 // identyfikatory obiektów (Unicorn, Customer, Rental) muszą być unikalne w obrębie całej aplikacji.
 // zapewnia istnienie jednego, wspólnego źródła generowania ID, co eliminuje niespójności danych.
 public final class IdGenerator {
+    private static final int INITIAL_SEQUENCE_VALUE = 1;
+
     private static IdGenerator instance;
 
-    private final AtomicLong unicornSequence = new AtomicLong(1);
-    private final AtomicLong customerSequence = new AtomicLong(1);
-    private final AtomicLong rentalSequence = new AtomicLong(1);
+    private final AtomicLong unicornSequence = new AtomicLong(INITIAL_SEQUENCE_VALUE);
+    private final AtomicLong customerSequence = new AtomicLong(INITIAL_SEQUENCE_VALUE);
+    private final AtomicLong rentalSequence = new AtomicLong(INITIAL_SEQUENCE_VALUE);
 
     private IdGenerator() {}
 

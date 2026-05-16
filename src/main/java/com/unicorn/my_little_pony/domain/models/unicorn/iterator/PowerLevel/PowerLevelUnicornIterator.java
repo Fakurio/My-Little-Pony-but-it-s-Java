@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.unicorn.iterator.PowerLevel;
+package com.unicorn.my_little_pony.domain.models.unicorn.iterator.powerlevel;
 
 
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;

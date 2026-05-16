@@ -1,4 +1,4 @@
-package com.unicorn.my_little_pony.domain.models.rental.template.dataDriven;
+package com.unicorn.my_little_pony.domain.models.rental.template.datadriven;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -9,10 +9,9 @@ public class CustomerCsvVisitor implements CustomerReportVisitor {
         StringBuilder sb = new StringBuilder("name,rank,rentals\n");
 
         for (int i = 0; i < report.getSize(); i++) {
-            String[] row = report.getData()[i];
-            sb.append(row[0]).append(",")
-                    .append(row[1]).append(",")
-                    .append(row[2]).append("\n");
+            sb.append(report.getCustomerName(i)).append(",")
+                    .append(report.getCustomerRank(i)).append(",")
+                    .append(report.getRentalCount(i)).append("\n");
         }
 
         return sb.toString();

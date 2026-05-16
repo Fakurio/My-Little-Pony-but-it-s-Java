@@ -1,5 +1,6 @@
 package com.unicorn.my_little_pony.domain.models.rental.states;
 
+import com.unicorn.my_little_pony.domain.exceptions.InvalidStateTransitionException;
 import com.unicorn.my_little_pony.domain.models.rental.RentalOrder;
 
 //Tydzień 6, Wzorzec State, Zastosowanie 2
@@ -8,12 +9,12 @@ public class ConfirmedState implements OrderState {
 
     @Override
     public void submit(RentalOrderContext context) {
-        System.out.println("Błąd: Zamówienie zostało już dawno zatwierdzone i opłacone.");
+        throw new InvalidStateTransitionException("Order has already been confirmed and paid.");
     }
 
     @Override
     public void pay(RentalOrderContext context) {
-        System.out.println("Błąd: Płatność została już uregulowana.");
+        throw new InvalidStateTransitionException("Payment has already been completed.");
     }
 
     @Override
