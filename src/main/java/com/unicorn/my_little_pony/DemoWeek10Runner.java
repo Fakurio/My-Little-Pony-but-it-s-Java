@@ -8,6 +8,19 @@ import com.unicorn.my_little_pony.domain.store.UnicornManager;
 import com.unicorn.my_little_pony.repositories.UnicornDatabaseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import com.unicorn.my_little_pony.domain.functional.UnicornFunctionalService;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.IceUnicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.LightningUnicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
+import com.unicorn.my_little_pony.domain.models.unicorn.types.WaterUnicorn;
+import com.unicorn.my_little_pony.enums.UnicornStatus;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 
 @Component
 public class DemoWeek10Runner implements CommandLineRunner {
@@ -21,6 +34,11 @@ public class DemoWeek10Runner implements CommandLineRunner {
         System.out.println();
         demoFunctionalInterfaces();
         System.out.println();
+        demoPredicate();
+        System.out.println();
+
+        demoFunction();
+
         System.out.println("===========================================================");
     }
 
@@ -48,4 +66,131 @@ public class DemoWeek10Runner implements CommandLineRunner {
         System.out.println("Ilość dostępnych jednorożców w poszczególnych jednostkach:");
         herd.forEachUnit(unit -> System.out.println("- Jednostka: " + unit.getAvailableCount() + " jednorożców"));
     }
+
+    private void demoPredicate() {
+
+        System.out.println("=========================");
+        System.out.println("Predicate Interface");
+        System.out.println("=========================");
+
+        UnicornFunctionalService service = new UnicornFunctionalService();
+        List<Unicorn> stable = createDemoStable();
+
+        System.out.println("Przykład 1: dostępne jednorożce");
+
+        Predicate<Unicorn> availableUnicorn = unicorn ->
+                unicorn.getStatus() == UnicornStatus.AVAILABLE;
+
+        service.findMatchingUnicorns(stable, availableUnicorn)
+                .forEach(unicorn -> System.out.println(unicorn.getName()
+                        + " jest dostępny do wynajmu."));
+
+        System.out.println();
+        System.out.println("Przykład 2: reguła biznesowa wyboru jednorożców VIP");
+
+        Predicate<Unicorn> vipRentalCandidate = unicorn ->
+                unicorn.getStatus() == UnicornStatus.AVAILABLE
+                        && unicorn.getTotalPower() >= 90
+                        && unicorn.getRating() >= 4.6;
+
+        service.findMatchingUnicorns(stable, vipRentalCandidate)
+                .forEach(unicorn -> System.out.println(unicorn.getName()
+                        + " spełnia warunki wynajmu VIP."));
+
+        System.out.println();
+        System.out.println("Przykład 3: jednorożce wymagające promocji cenowej");
+
+        Predicate<Unicorn> needsPromotion = unicorn ->
+                unicorn.getStatus() == UnicornStatus.AVAILABLE
+                        && (unicorn.getRating() < 4.6 || unicorn.getPrice() > 350.0);
+
+        service.findMatchingUnicorns(stable, needsPromotion)
+                .forEach(unicorn -> System.out.println(unicorn.getName()
+                        + " może dostać promocję, żeby łatwiej znaleźć klienta."));
+
+        System.out.println("----------------------------");
+    }
+
+    private void demoFunction() {
+
+        System.out.println("=========================");
+        System.out.println("Function Interface");
+        System.out.println("=========================");
+
+        System.out.println("Przykład 1: przygotowanie kart rekomendacji dla klienta");
+
+        UnicornFunctionalService service = new UnicornFunctionalService();
+        List<Unicorn> stable = createDemoStable();
+
+        Predicate<Unicorn> customerSafeCandidate = unicorn ->
+                unicorn.getStatus() == UnicornStatus.AVAILABLE
+                        && unicorn.getPrice() <= 350.0
+                        && unicorn.getRating() >= 4.5;
+
+        Function<Unicorn, String> recommendationCard = unicorn -> String.format(
+                "%s | kolor: %s | moc: %d | ocena: %.1f | cena: %.2f PLN",
+                unicorn.getName(),
+                unicorn.getColor(),
+                unicorn.getTotalPower(),
+                unicorn.getRating(),
+                unicorn.getPrice()
+        );
+
+        service.prepareRecommendationCards(stable, customerSafeCandidate, recommendationCard)
+                .forEach(System.out::println);
+
+        System.out.println();
+        System.out.println("Przykład 2: wyliczenie ceny po rabacie");
+
+        Function<Unicorn, String> discountedPriceCard = unicorn -> {
+            double discountedPrice = unicorn.getPrice() * 0.9;
+            return String.format("%s po rabacie 10%% kosztuje %.2f PLN", unicorn.getName(), discountedPrice);
+        };
+
+        service.prepareRecommendationCards(stable, customerSafeCandidate, discountedPriceCard)
+                .forEach(System.out::println);
+
+        System.out.println();
+        System.out.println("Przykład 3: zamiana obiektu Unicorn na krótki raport dla pracownika");
+
+        Function<Unicorn, String> employeeReportLine = unicorn -> String.format(
+                "%s (%s): status=%s, moc=%d, ocena=%.1f",
+                unicorn.getId(),
+                unicorn.getName(),
+                unicorn.getStatus(),
+                unicorn.getTotalPower(),
+                unicorn.getRating()
+        );
+
+        service.prepareRecommendationCards(stable, unicorn -> true, employeeReportLine)
+                .forEach(System.out::println);
+
+        System.out.println("----------------------------");
+    }
+
+    private List<Unicorn> createDemoStable() {
+        Unicorn aurora = new FireUnicorn(new UnicornIdentity("U-101", "Aurora", "gold"), 95);
+        aurora.setPrice(320.0);
+        aurora.setRating(4.8);
+
+        Unicorn misty = new WaterUnicorn(new UnicornIdentity("U-102", "Misty", "blue"), 70);
+        misty.setPrice(240.0);
+        misty.setRating(4.7);
+
+        Unicorn storm = new LightningUnicorn(new UnicornIdentity("U-103", "Storm", "silver"), 110);
+        storm.setPrice(420.0);
+        storm.setRating(4.9);
+
+        Unicorn snowdrop = new IceUnicorn(new UnicornIdentity("U-104", "Snowdrop", "white"), 92);
+        snowdrop.setPrice(300.0);
+        snowdrop.setRating(4.4);
+
+        Unicorn ember = new FireUnicorn(new UnicornIdentity("U-105", "Ember", "red"), 105);
+        ember.setPrice(280.0);
+        ember.setRating(4.7);
+        ember.setStatus(UnicornStatus.RENTED);
+
+        return List.of(aurora, misty, storm, snowdrop, ember);
+    }
+
 }
