@@ -17,7 +17,14 @@ public class UnicornRentalServiceMediator implements ServiceMediator {
         }
         services.add(service);
     }
-
+    //Tydzien 10,
+    public List<String> getServiceNames() {
+        return services.stream()
+                .map(s -> s.getName())
+                .sorted()
+                .toList();
+    }
+    //Koniec tydzien 10, programowanie funkcyjne w strumieniowym przetwarzaniu kolekcji
     @Override
     public void sendMessage(String message, RentalService sender) {
         for (RentalService service : services) {

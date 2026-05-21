@@ -1,10 +1,19 @@
 package com.unicorn.my_little_pony;
 
+import com.unicorn.my_little_pony.domain.models.rental.Rental;
+import com.unicorn.my_little_pony.domain.models.rental.builders.RentalBuilder;
+import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalBook;
 import com.unicorn.my_little_pony.domain.models.service.composite.BasicService;
 import com.unicorn.my_little_pony.domain.models.service.composite.ServiceBundle;
 import com.unicorn.my_little_pony.domain.models.unicorn.composite.Herd;
 import com.unicorn.my_little_pony.domain.models.unicorn.composite.SingleUnicornUnit;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.status.StableUnicornCollection;
+import com.unicorn.my_little_pony.domain.rentalservices.DiscountService;
+import com.unicorn.my_little_pony.domain.rentalservices.InsuranceService;
+import com.unicorn.my_little_pony.domain.rentalservices.RentalService;
+import com.unicorn.my_little_pony.domain.rentalservices.UnicornRentalServiceMediator;
 import com.unicorn.my_little_pony.domain.store.UnicornManager;
+import com.unicorn.my_little_pony.enums.RentalStatus;
 import com.unicorn.my_little_pony.repositories.UnicornDatabaseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,6 +26,7 @@ import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.WaterUnicorn;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -36,8 +46,9 @@ public class DemoWeek10Runner implements CommandLineRunner {
         System.out.println();
         demoPredicate();
         System.out.println();
-
         demoFunction();
+        System.out.println();
+        demoStream();
 
         System.out.println("===========================================================");
     }
@@ -167,7 +178,46 @@ public class DemoWeek10Runner implements CommandLineRunner {
 
         System.out.println("----------------------------");
     }
+    private void demoStream() {
+        System.out.println("Przykład 1: dostępne jednorożce");
 
+        StableUnicornCollection collection = new StableUnicornCollection();
+
+        for (Unicorn u : createDemoStable()) {
+            collection.addUnicorn(u);
+        }
+
+        System.out.println("Aktywne jednorożce:");
+
+        List<String> names = collection.getActiveUnicornNames();
+
+        for (String name : names) {
+            System.out.println("- " + name);
+        }
+        System.out.println("----------------------------");
+
+        System.out.println("Przykład 2: liczba wypożyczeń");
+        RentalBook book = createDemoRentals();
+
+        long completed = book.countCompletedRentals();
+
+        System.out.println("Liczba zakończonych wypożyczeń: " + completed);
+
+
+        System.out.println("----------------------------");
+
+        System.out.println("Przykład 3: nazwy usług");
+        UnicornRentalServiceMediator mediator = createDemoServices();
+
+        System.out.println("Nazwy usług:");
+
+        List<String> names2 = mediator.getServiceNames();
+
+        for (String name : names2) {
+            System.out.println("- " + name);
+        }
+
+    }
     private List<Unicorn> createDemoStable() {
         Unicorn aurora = new FireUnicorn(new UnicornIdentity("U-101", "Aurora", "gold"), 95);
         aurora.setPrice(320.0);
@@ -192,5 +242,61 @@ public class DemoWeek10Runner implements CommandLineRunner {
 
         return List.of(aurora, misty, storm, snowdrop, ember);
     }
+    private RentalBook createDemoRentals() {
 
+        RentalBook book = new RentalBook();
+
+        book.addRental(new RentalBuilder()
+                .id("R-1")
+                .unicornId("U-101")
+                .customerId("C-1")
+                .start(LocalDateTime.now().minusDays(5))
+                .end(LocalDateTime.now().minusDays(3))
+                .basePrice(200)
+                .finalPrice(200)
+                .termsAccepted(true)
+                .status(RentalStatus.COMPLETED)
+                .build()
+        );
+
+        book.addRental(new RentalBuilder()
+                .id("R-2")
+                .unicornId("U-102")
+                .customerId("C-2")
+                .start(LocalDateTime.now().minusDays(2))
+                .end(LocalDateTime.now().minusDays(1))
+                .basePrice(150)
+                .finalPrice(150)
+                .termsAccepted(true)
+                .status(RentalStatus.ACTIVE)
+                .build()
+        );
+
+        book.addRental(new RentalBuilder()
+                .id("R-3")
+                .unicornId("U-103")
+                .customerId("C-3")
+                .start(LocalDateTime.now().minusDays(10))
+                .end(LocalDateTime.now().minusDays(8))
+                .basePrice(300)
+                .finalPrice(300)
+                .termsAccepted(true)
+                .status(RentalStatus.COMPLETED)
+                .build()
+        );
+
+        return book;
+    }
+    private UnicornRentalServiceMediator createDemoServices() {
+
+        UnicornRentalServiceMediator mediator = new UnicornRentalServiceMediator();
+
+        DiscountService discountService = new DiscountService(mediator);
+        InsuranceService insuranceService = new InsuranceService(mediator);
+
+        mediator.addService(discountService);
+        mediator.addService(insuranceService);
+
+        return mediator;
+    }
 }
