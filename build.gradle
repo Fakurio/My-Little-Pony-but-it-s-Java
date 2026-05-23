@@ -18,6 +18,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	ajc
 }
 
 repositories {
@@ -28,6 +29,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.aspectj:aspectjrt:1.9.21'
 	implementation 'org.aspectj:aspectjweaver:1.9.21'
+	ajc 'org.aspectj:aspectjtools:1.9.21'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
@@ -36,4 +38,23 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+compileJava {
+	doLast {
+		ant.taskdef(
+			resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+			classpath: configurations.ajc.asPath
+		)
+		ant.iajc(
+			inpath: destinationDirectory.get().asFile.absolutePath,
+			destDir: destinationDirectory.get().asFile.absolutePath,
+			classpath: classpath.asPath,
+			showWeaveInfo: "true",
+			verbose: "true",
+			Xlint: "ignore",
+			source: "21",
+			target: "21"
+		)
+	}
 }

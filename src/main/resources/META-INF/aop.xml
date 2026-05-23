@@ -1,0 +1,11 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+    <weaver options="-verbose -showWeaveInfo">
+        <include within="com.unicorn.my_little_pony..*"/>
+    </weaver>
+    <aspects>
+        <aspect name="com.unicorn.my_little_pony.aspect.vipaccess.VipAccessAspect"/>
+        <aspect name="com.unicorn.my_little_pony.aspect.audit.StateTransitionAuditAspect"/>
+        <aspect name="com.unicorn.my_little_pony.aspect.exceptiontranslation.IntegrationExceptionTranslationAspect"/>
+    </aspects>
+</aspectj>

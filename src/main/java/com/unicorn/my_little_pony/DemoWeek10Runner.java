@@ -37,20 +37,20 @@ public class DemoWeek10Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("\n");
-        System.out.println("===========================================================");
-        System.out.println("  DEMO TYDZIEŃ 10: Functional Interfaces and Lambdas ");
-        System.out.println("===========================================================");
-        System.out.println();
-        demoFunctionalInterfaces();
-        System.out.println();
-        demoPredicate();
-        System.out.println();
-        demoFunction();
-        System.out.println();
-        demoStream();
-
-        System.out.println("===========================================================");
+//        System.out.println("\n");
+//        System.out.println("===========================================================");
+//        System.out.println("  DEMO TYDZIEŃ 10: Functional Interfaces and Lambdas ");
+//        System.out.println("===========================================================");
+//        System.out.println();
+//        demoFunctionalInterfaces();
+//        System.out.println();
+//        demoPredicate();
+//        System.out.println();
+//        demoFunction();
+//        System.out.println();
+//        demoStream();
+//
+//        System.out.println("===========================================================");
     }
 
     private void demoFunctionalInterfaces() {

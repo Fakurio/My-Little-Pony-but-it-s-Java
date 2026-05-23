@@ -440,3 +440,24 @@ Zastąpiono statyczne pobieranie ceny możliwością przekazania logiki modyfiku
 Uproszczono operacje wykonywane na elementach składowych stada (wzorzec Composite). Zamiast używać zewnętrznych pętli for, wprowadzono dedykowaną metodę przyjmującą lambdę.
 * **Interfejs funkcyjny:** `domain.models.unicorn.composite.UnitAction`
 * **Zastosowanie:** Metoda `forEachUnit` w klasie `Herd`, pozwalająca na wykonanie przekazanej akcji dla każdej jednostki.
+
+## 📅 Tydzień 11
+---
+## Aspect-Oriented Programming (AOP)
+
+### Tłumaczenie Wyjątków (Exception Translation)
+Aspekt przechwytuje surowe wyjątki (np. `RuntimeException`) rzucane przez warstwę integracyjną (dostawcę płatności lub adapter transportu) i zamienia je na odpowiednie, czytelne wyjątki domenowe, bez konieczności zaśmiecania kodu blokami try-catch w miejscach wywołań.
+* **Klasa aspektu:** `aspect.exceptiontranslation.IntegrationExceptionTranslationAspect`
+* **Klienci (Pointcut):** `integration.payment.providers`, `integration.transport.TransportAdapter`
+
+### Kontrola Dostępu VIP
+Aspekt weryfikuje status aktualnego klienta przed zezwoleniem na wykonanie specjalnych akcji. Przechwytuje on wywołania metod oznaczonych specjalną adnotacją i sprawdza, czy klient (zapisany w lokalnym kontekście wątku) posiada uprawnienia VIP. Jeśli nie, rzuca wyjątek i blokuje wywołanie.
+* **Klasa aspektu:** `aspect.vipaccess.VipAccessAspect`
+* **Adnotacja punktu przecięcia:** `aspect.vipaccess.VipOnly`
+* **Kontekst:** `aspect.vipaccess.VipContext`
+
+### Audyt Przejść Stanów
+Aspekt odpowiedzialny za automatyczne logowanie pomyślnych przejść maszyny stanów jednorożca (np. wypożyczenie, zwrot, czyszczenie). Przechwytuje wykonanie metod oznaczonych odpowiednią adnotacją i generuje nowy wpis w dzienniku audytowym, zdejmując tę odpowiedzialność z klas domenowych.
+* **Klasa aspektu:** `aspect.audit.StateTransitionAuditAspect`
+* **Adnotacja punktu przecięcia:** `aspect.audit.Auditable`
+* **Dziennik audytów:** `aspect.audit.AuditLog`
