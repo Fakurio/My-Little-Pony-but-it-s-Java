@@ -20,7 +20,15 @@ public class StableUnicornCollection implements UnicornCollection {
         }
         unicorns.add(unicorn);
     }
-
+    //Tydzien 10, programowanie funkcyjne w strumieniowym przetwarzaniu kolekcji
+    public List<String> getActiveUnicornNames() {
+        return unicorns.stream()
+                .filter(u -> u.getStatus() == UnicornStatus.AVAILABLE)
+                .map(u -> u.getName())
+                .sorted()
+                .toList();
+    }
+    //Koniec tydzien 10
     @Override
     public UnicornIterator createIterator(UnicornStatus status) {
         return new StatusUnicornIterator(unicorns, status);

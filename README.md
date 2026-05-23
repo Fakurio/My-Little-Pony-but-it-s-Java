@@ -401,3 +401,42 @@ Wzorzec Interface Segregation został użyty do rozdzielenia interfejsu opieki n
 * **Klasy implementujące interfejsy:** `domain.store.isp.rental_lifecycle.RentalReportingImpl`, `domain.store.isp.rental_lifecycle.RentalLifecycleImpl`, `domain.store.isp.rental_lifecycle.RentalFinanceImpl`
 * **Klienci po segregacji:** `domain.store.isp.RentalGeneratorWorker`, `domain.store.isp.AccountantWorker`, `domain.store.isp.RentalAgent`
 * **Przed segregacją:** `domain.store.fat.rental_lifecycle.` 
+
+## 📅 Tydzień 9
+---
+
+Refactor projektu zgodnie z zasadami czystego kodu
+- używaj jasnych i zrozumiałych nazw do klas, metod i zmiennych, znaczących w całym programie to samo
+
+- stosuj długości metod w programie, żeby nie miały więcej niż 20 linii
+
+- stosuj funkcje tak by spełniały tylko jedną rolę
+
+- stosuj funkcje tak by były tylko na jednym poziomie abstrakcji, kolejno wywoływane funkcje coraz bardziej szczegółowe (top to botom)
+
+- stosuj funkcje tak, by przyjmowały maksymalnie 3 argumenty
+
+- dodawaj zwracanie wyjątków zamiast kodów błędów
+
+- eliminuj powtórzenia kodu
+
+- eliminuj magiczne liczby
+
+## 📅 Tydzień 10
+---
+## Functional Interfaces & Lambdas
+
+### Filtrowanie (UnicornManager)
+Dodano możliwość dynamicznego filtrowania listy dostępnych jednorożców.
+* **Interfejs funkcyjny:** `domain.store.UnicornFilter`
+* **Zastosowanie:** Metoda `filterUnicorns` w klasie `UnicornManager` pozwala na przekazanie dowolnego warunku (np. poziomu mocy) w postaci wyrażenia lambda.
+
+### Zniżki i modyfikacja cen (ServiceBundle)
+Zastąpiono statyczne pobieranie ceny możliwością przekazania logiki modyfikującej (np. aplikowanie kuponów rabatowych lub zniżek weekendowych) z wykorzystaniem lambdy.
+* **Interfejs funkcyjny:** `domain.models.service.composite.PriceCalculator`
+* **Zastosowanie:** Metoda `getDiscountedPrice` w `ServiceBundle` przyjmująca logikę modyfikacji ceny.
+
+### Iteracja po elementach kolekcji (Herd)
+Uproszczono operacje wykonywane na elementach składowych stada (wzorzec Composite). Zamiast używać zewnętrznych pętli for, wprowadzono dedykowaną metodę przyjmującą lambdę.
+* **Interfejs funkcyjny:** `domain.models.unicorn.composite.UnitAction`
+* **Zastosowanie:** Metoda `forEachUnit` w klasie `Herd`, pozwalająca na wykonanie przekazanej akcji dla każdej jednostki.

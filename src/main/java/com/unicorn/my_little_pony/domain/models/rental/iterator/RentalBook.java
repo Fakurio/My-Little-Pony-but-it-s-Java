@@ -24,7 +24,13 @@ public class RentalBook implements RentalCollection {
         }
         this.iteratorFactory = iteratorFactory;
     }
-
+    //Tydzien 10, programowanie funkcyjne w strumieniowym przetwarzaniu kolekcji
+    public long countCompletedRentals() {
+        return rentals.stream()
+                .filter(r -> r.getStatus() == RentalStatus.COMPLETED)
+                .count();
+    }
+    //Koniec tydzien 10
     @Override
     public void addRental(Rental rental) {
         if (rental == null) {
