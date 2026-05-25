@@ -2,6 +2,8 @@ package com.unicorn.my_little_pony;
 
 import com.unicorn.my_little_pony.aspect.audit.AuditLog;
 import com.unicorn.my_little_pony.aspect.vipaccess.VipContext;
+import com.unicorn.my_little_pony.aspect.showcase.AopShowcaseService;
+import com.unicorn.my_little_pony.aspect.showcase.CampaignRequest;
 import com.unicorn.my_little_pony.domain.exceptions.PaymentProcessingException;
 import com.unicorn.my_little_pony.domain.exceptions.TransportUnavailableException;
 import com.unicorn.my_little_pony.domain.exceptions.VipAccessRequiredException;
@@ -17,13 +19,44 @@ import com.unicorn.my_little_pony.integration.transport.TransportAdapter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class DemoWeek11Runner implements CommandLineRunner {
 
-    private final AuditLog auditLog;
+    private static final double TEST_PAYMENT_VALUE = -10;
+    private static final int TEST_POWER_LEVEL = 95;
 
-    public DemoWeek11Runner(AuditLog auditLog) {
+    private static final String SECTION_OPERATION_TIMING = "Zastosowanie 4: @Around – CampaignTimingAspect";
+    private static final String SECTION_REQUEST_VALIDATION = "Zastosowanie 5: @Before – CampaignValidationAspect";
+    private static final String SECTION_RESULT_REPORTING = "Zastosowanie 6: @AfterReturning – CampaignResultReportingAspect";
+
+    private static final String CAMPAIGN_NAME = "Summer Sparkle Tour";
+    private static final String INVALID_CAMPAIGN_NAME = "   ";
+    private static final int CAMPAIGN_AUDIENCE_SIZE = 3;
+
+    private static final String SHOWCASE_SECOND_UNICORN_ID = "U-402";
+    private static final String SHOWCASE_SECOND_UNICORN_NAME = "Starlight";
+    private static final String SHOWCASE_SECOND_UNICORN_COLOR = "fioletowy";
+    private static final int SHOWCASE_SECOND_UNICORN_POWER_LEVEL = 110;
+
+    private static final String SHOWCASE_THIRD_UNICORN_ID = "U-403";
+    private static final String SHOWCASE_THIRD_UNICORN_NAME = "Misty";
+    private static final String SHOWCASE_THIRD_UNICORN_COLOR = "niebieski";
+    private static final int SHOWCASE_THIRD_UNICORN_POWER_LEVEL = 70;
+
+    private static final int DEMO_POWER_LEVEL = 95;
+
+    private static final String VIP_UNICORN_ID = "U-201";
+    private static final String VIP_UNICORN_NAME = "Aurora";
+    private static final String VIP_UNICORN_COLOR = "złoty";
+
+    private final AuditLog auditLog;
+    private final AopShowcaseService aopShowcaseService;
+
+    public DemoWeek11Runner(AuditLog auditLog, AopShowcaseService aopShowcaseService) {
         this.auditLog = auditLog;
+        this.aopShowcaseService = aopShowcaseService;
     }
 
     @Override
@@ -33,17 +66,22 @@ public class DemoWeek11Runner implements CommandLineRunner {
         System.out.println("  DEMO TYDZIEŃ 11: Programowanie Aspektowe (AOP)         ");
         System.out.println("===========================================================");
         System.out.println();
+
         demoExceptionTranslation();
         System.out.println();
         demoVipAccess();
         System.out.println();
         demoStateTransitionAudit();
+        System.out.println();
 
-        System.out.println("===========================================================");
+        demoOperationTiming();
+        System.out.println();
+        demoRequestValidation();
+        System.out.println();
+        demoResultReporting();
+
     }
 
-    private static final double TEST_PAYMENT_VALUE = -10;
-    private static final int TEST_POWER_LEVEL = 95;
 
     private void demoExceptionTranslation() {
         System.out.println("=========================");
@@ -140,5 +178,55 @@ public class DemoWeek11Runner implements CommandLineRunner {
         auditLog.printAll();
         System.out.println("----------------------------");
     }
+
+    private void demoOperationTiming() {
+        System.out.println(SECTION_OPERATION_TIMING);
+
+        List<Unicorn> showcaseUnicorns = createShowcaseUnicorns();
+        List<String> campaignMessages = aopShowcaseService.prepareCampaignMessages(showcaseUnicorns, CAMPAIGN_NAME);
+
+        System.out.println("Przykład 1: Przygotowanie komunikatów kampanii marketingowej");
+        campaignMessages.forEach(message -> System.out.println("- " + message));
+
+        System.out.println("----------------------------");
+    }
+
+    private void demoRequestValidation() {
+        System.out.println(SECTION_REQUEST_VALIDATION);
+
+        CampaignRequest validRequest = new CampaignRequest(CAMPAIGN_NAME, CAMPAIGN_AUDIENCE_SIZE);
+        System.out.println("Przykład 1: Poprawne uruchomienie kampanii");
+        System.out.println(aopShowcaseService.launchCampaign(validRequest));
+
+        System.out.println();
+        System.out.println("Przykład 2: Nieprawidłowa nazwa kampanii");
+        try {
+            aopShowcaseService.launchCampaign(new CampaignRequest(INVALID_CAMPAIGN_NAME, CAMPAIGN_AUDIENCE_SIZE));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Złapano wyjątek walidacji: " + e.getMessage());
+        }
+
+        System.out.println("----------------------------");
+    }
+
+    private void demoResultReporting() {
+        System.out.println(SECTION_RESULT_REPORTING);
+
+        List<String> featuredUnicornNames = aopShowcaseService.buildFeaturedUnicornNames(createShowcaseUnicorns());
+
+        System.out.println("Przykład 1: Najlepiej rokujące jednorożce do kampanii");
+        featuredUnicornNames.forEach(name -> System.out.println("- " + name));
+
+        System.out.println("----------------------------");
+    }
+
+    private List<Unicorn> createShowcaseUnicorns() {
+        return List.of(
+                new FireUnicorn(new UnicornIdentity(VIP_UNICORN_ID, VIP_UNICORN_NAME, VIP_UNICORN_COLOR), DEMO_POWER_LEVEL),
+                new FireUnicorn(new UnicornIdentity(SHOWCASE_SECOND_UNICORN_ID, SHOWCASE_SECOND_UNICORN_NAME, SHOWCASE_SECOND_UNICORN_COLOR), SHOWCASE_SECOND_UNICORN_POWER_LEVEL),
+                new FireUnicorn(new UnicornIdentity(SHOWCASE_THIRD_UNICORN_ID, SHOWCASE_THIRD_UNICORN_NAME, SHOWCASE_THIRD_UNICORN_COLOR), SHOWCASE_THIRD_UNICORN_POWER_LEVEL)
+        );
+    }
+
 }
 // Koniec, Tydzień 11, Programowanie Aspektowe (AOP)
