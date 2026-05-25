@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Component
 public class StateTransitionAuditAspect {
 
-    @AfterReturning("execution(* *(..)) && @annotation(com.unicorn.my_little_pony.aspect.audit.Auditable)")
+    @AfterReturning("execution(* *(..)) && @annotation(Auditable)")
     public void auditTransition(JoinPoint jp) {
         String transitionName = jp.getSignature().getName();
 

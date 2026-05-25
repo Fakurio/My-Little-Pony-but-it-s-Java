@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class VipAccessAspect {
 
-    @Before("call(* *(..)) && @annotation(com.unicorn.my_little_pony.aspect.vipaccess.VipOnly)")
+    @Before("call(* *(..)) && @annotation(VipOnly)")
     public void checkVipAccess(JoinPoint jp) {
         Customer customer = VipContext.get();
 

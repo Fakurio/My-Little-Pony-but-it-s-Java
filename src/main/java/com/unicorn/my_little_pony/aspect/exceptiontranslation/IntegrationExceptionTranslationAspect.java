@@ -17,14 +17,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class IntegrationExceptionTranslationAspect {
 
-    @Pointcut("execution(public * com.unicorn.my_little_pony.integration.payment.providers.*.*(..))")
-    public void paymentProviderExecution() {}
-
-    @Pointcut("execution(public * com.unicorn.my_little_pony.integration.transport.TransportAdapter.*(..))")
-    public void transportAdapterExecution() {}
+    @Pointcut("execution(public * *(..)) && (@within(TranslateExceptions) || @annotation(TranslateExceptions))")
+    public void translationExecution() {}
 
     @AfterThrowing(
-            pointcut = "paymentProviderExecution() || transportAdapterExecution()",
+            pointcut = "translationExecution()",
             throwing = "ex"
     )
     public void translateException(JoinPoint jp, RuntimeException ex) {
