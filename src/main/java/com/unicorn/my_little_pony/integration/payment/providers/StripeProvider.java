@@ -1,9 +1,11 @@
 package com.unicorn.my_little_pony.integration.payment.providers;
 
 import com.unicorn.my_little_pony.domain.exceptions.PaymentProcessingException;
+import com.unicorn.my_little_pony.aspect.exceptiontranslation.TranslateExceptions;
 
 //Tydzień 8, DI, Zastosowanie 1
 //Implementacja modułu niskopoziomowego zgodna z wymaganiami modułu wysokopoziomowego
+@TranslateExceptions
 public class StripeProvider implements PaymentProvider {
     private static final double MINIMUM_PAYMENT_AMOUNT = 0.0;
 

@@ -3,10 +3,12 @@ package com.unicorn.my_little_pony.integration.transport;
 import com.unicorn.my_little_pony.domain.exceptions.TransportUnavailableException;
 import com.unicorn.my_little_pony.integration.inventory.StoreAvailabilityAdapter;
 import com.unicorn.my_little_pony.integration.inventory.UnicornAvailabilityService;
+import com.unicorn.my_little_pony.aspect.exceptiontranslation.TranslateExceptions;
 
 //Tydzień 3, Wzorzec Adapter 2 (przez kompozycję)
 //Adapter, który implementuje interfejs UnicornTransportService i korzysta z ExternalTransportSystem
 //do realizacji zamówień transportu dla jednorożców. Dodatkowo sprawdzana dostępność jednorożca przed zamówieniem transportu
+@TranslateExceptions
 public class TransportAdapter implements UnicornTransportService {
     private ExternalTransportSystem externalTransportSystem = new ExternalTransportSystem();
     private UnicornAvailabilityService availabilityService = new StoreAvailabilityAdapter();

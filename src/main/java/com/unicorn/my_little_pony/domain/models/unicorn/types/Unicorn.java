@@ -1,5 +1,6 @@
 package com.unicorn.my_little_pony.domain.models.unicorn.types;
 
+import com.unicorn.my_little_pony.aspect.vipaccess.VipOnly;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.Equipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.equipment.NoEquipment;
 import com.unicorn.my_little_pony.domain.models.unicorn.states.AvailableState;
@@ -44,7 +45,12 @@ public abstract class Unicorn implements Cloneable, UnicornContract {
         this.equipment = new NoEquipment();
     }
 
+    // Tydzień 11, Programowanie Aspektowe, Zastosowanie 2
+    // Adnotacja @VipOnly sygnalizuje aspektowi VipAccessAspect, że ta metoda
+    // wymaga statusu VIP od aktualnego klienta.
+    @VipOnly
     public abstract void useSpecialAbility();
+    // Koniec, Tydzień 11, Programowanie Aspektowe, Zastosowanie 2
 
     // Tydzień 3, Wzorzec Bridge, Zastosowanie 3
     // Wspólna logika obliczania powerLevel dla jednorożców z oddelegowaniem logiki obliczania bonusu ekwipunku
