@@ -441,6 +441,24 @@ Uproszczono operacje wykonywane na elementach składowych stada (wzorzec Composi
 * **Interfejs funkcyjny:** `domain.models.unicorn.composite.UnitAction`
 * **Zastosowanie:** Metoda `forEachUnit` w klasie `Herd`, pozwalająca na wykonanie przekazanej akcji dla każdej jednostki.
 
+## Predicate & Function 
+rogramowanie funkcyjne zostało pokazane na przykładach, w których logika biznesowa jest przekazywana jako `Predicate` lub `Function`, zamiast być wpisana na sztywno w klasach serwisowych. Dzięki temu te same metody mogą obsługiwać różne reguły filtrowania, formatowania i prezentacji danych.
+
+### Filtrowanie Jednorożców
+W demonstracji dla tygodnia 10 lista jednorożców jest filtrowana przez lambdę przekazaną do `UnicornManager`. Serwis `UnicornFunctionalService` pokazuje ten sam pomysł w bardziej ogólnej postaci: przyjmuje dowolny warunek jako `Predicate` i zwraca tylko jednorożce spełniające regułę biznesową.
+* **Interfejs funkcyjny:** `domain.store.UnicornFilter`, `java.util.function.Predicate`
+* **Zastosowanie:** `DemoWeek10Runner.demoFunctionalInterfaces()` oraz `UnicornFunctionalService.findMatchingUnicorns()`
+
+### Budowa Kart Rekomendacji
+W `UnicornFunctionalService` ta sama przefiltrowana lista może zostać zamieniona na różne formaty prezentacyjne. Metoda `prepareRecommendationCards` przyjmuje `Function<Unicorn, String>`, więc ten sam zestaw jednorożców można opisać jako kartę rekomendacji, rabatową ofertę albo krótki raport dla pracownika.
+* **Interfejs funkcyjny:** `java.util.function.Function`
+* **Zastosowanie:** `DemoWeek10Runner.demoFunction()` oraz `UnicornFunctionalService.prepareRecommendationCards()`
+
+### Iteracja Po Jednostkach Stada
+W przykładzie ze stadem jednorożców metoda `forEachUnit` przyjmuje lambdę z akcją do wykonania dla każdej jednostki. Dzięki temu sama kolekcja zarządza iteracją, a wywołujący kod skupia się tylko na tym, co ma zostać zrobione dla pojedynczej jednostki.
+* **Interfejs funkcyjny:** `domain.models.unicorn.composite.UnitAction`
+* **Zastosowanie:** `DemoWeek10Runner.demoFunctionalInterfaces()` oraz `Herd.forEachUnit()`
+
 ## 📅 Tydzień 11
 ---
 ## Aspect-Oriented Programming (AOP)
@@ -461,3 +479,21 @@ Aspekt odpowiedzialny za automatyczne logowanie pomyślnych przejść maszyny st
 * **Klasa aspektu:** `aspect.audit.StateTransitionAuditAspect`
 * **Adnotacja punktu przecięcia:** `aspect.audit.Auditable`
 * **Dziennik audytów:** `aspect.audit.AuditLog`
+
+### Walidacja Uruchomienia Kampanii
+Aspekt pilnuje poprawności danych przekazywanych do metody uruchamiającej kampanię w serwisie showcase. Odczytuje pierwszy argument typu `CampaignRequest`, sprawdza nazwę kampanii i liczebność grupy docelowej, a w razie błędu przerywa wykonanie zanim metoda biznesowa zostanie wywołana.
+* **Klasa aspektu:** `aspect.showcase.CampaignValidationAspect`
+* **Adnotacja metody:** `aspect.showcase.ValidatedCampaignRequest`
+* **Metoda demonstracyjna:** `aspect.showcase.AopShowcaseService.launchCampaign`
+
+### Pomiar Czasu Przygotowania Komunikatów
+Aspekt mierzy czas wykonania metody, która buduje listę komunikatów kampanijnych dla jednorożców. Startuje zegar przed wywołaniem, przepuszcza wykonanie metody i po zakończeniu wypisuje czas trwania w milisekundach.
+* **Klasa aspektu:** `aspect.showcase.CampaignTimingAspect`
+* **Adnotacja metody:** `aspect.showcase.TimedOperation`
+* **Metoda demonstracyjna:** `aspect.showcase.AopShowcaseService.prepareCampaignMessages`
+
+### Raportowanie Wyniku Selekcji Jednorożców
+Aspekt opisuje wynik metody, która wybiera wyróżnione jednorożce do kampanii. Po zakończeniu sprawdza, czy metoda zwróciła kolekcję, pusty wynik czy pojedynczy obiekt, a następnie wypisuje odpowiedni komunikat diagnostyczny.
+* **Klasa aspektu:** `aspect.showcase.CampaignResultReportingAspect`
+* **Adnotacja metody:** `aspect.showcase.ReportedResult`
+* **Metoda demonstracyjna:** `aspect.showcase.AopShowcaseService.buildFeaturedUnicornNames`
