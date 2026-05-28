@@ -1,5 +1,7 @@
 package com.unicorn.my_little_pony.domain.models.unicorn.iterator.status;
 
+import com.unicorn.my_little_pony.aspect.audit.emptycollection.CheckEmptyCollection;
+import com.unicorn.my_little_pony.aspect.audit.powermonitoring.MonitorPowerLevel;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 import com.unicorn.my_little_pony.enums.UnicornStatus;
 
@@ -12,7 +14,14 @@ import java.util.NoSuchElementException;
 public class StableUnicornCollection implements UnicornCollection {
 
     private final List<Unicorn> unicorns = new ArrayList<>();
-
+    //Tydzien 11, zastosowanie 9
+    @MonitorPowerLevel
+    public List<Unicorn> getAvailableUnicorns() {
+        return unicorns.stream()
+                .filter(u -> u.getStatus() == UnicornStatus.AVAILABLE)
+                .toList();
+    }
+    //Koniec tydzien 11
     @Override
     public void addUnicorn(Unicorn unicorn) {
         if (unicorn == null) {
@@ -20,6 +29,8 @@ public class StableUnicornCollection implements UnicornCollection {
         }
         unicorns.add(unicorn);
     }
+    //Tydzien 11, zastosowanie 7
+    @CheckEmptyCollection
     //Tydzien 10, programowanie funkcyjne w strumieniowym przetwarzaniu kolekcji
     public List<String> getActiveUnicornNames() {
         return unicorns.stream()
@@ -29,6 +40,7 @@ public class StableUnicornCollection implements UnicornCollection {
                 .toList();
     }
     //Koniec tydzien 10
+    //Konie tydzien 11
     @Override
     public UnicornIterator createIterator(UnicornStatus status) {
         return new StatusUnicornIterator(unicorns, status);

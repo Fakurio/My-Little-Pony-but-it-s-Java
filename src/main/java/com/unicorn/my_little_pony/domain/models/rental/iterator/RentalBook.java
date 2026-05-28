@@ -1,5 +1,7 @@
 package com.unicorn.my_little_pony.domain.models.rental.iterator;
 
+import com.unicorn.my_little_pony.aspect.audit.emptycollection.CheckEmptyCollection;
+import com.unicorn.my_little_pony.aspect.methodcounter.CountInvocations;
 import com.unicorn.my_little_pony.domain.models.rental.Rental;
 import com.unicorn.my_little_pony.enums.RentalStatus;
 
@@ -38,7 +40,14 @@ public class RentalBook implements RentalCollection {
         }
         rentals.add(rental);
     }
-
+    //Tydzien 11, Zastosowanie 8
+    @CountInvocations
+    public List<Rental> getCompletedRentals() {
+        return rentals.stream()
+                .filter(r -> r.getStatus() == RentalStatus.COMPLETED)
+                .toList();
+    }
+    //Tydzien 11, koniec
     @Override
     public RentalIterator createIterator(RentalStatus status) {
         return this.iteratorFactory.create(rentals, status);

@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface VipOnly {
-}
+} 
 // Koniec, Tydzień 11, Programowanie Aspektowe, Zastosowanie 2

@@ -10,10 +10,14 @@ import com.unicorn.my_little_pony.domain.exceptions.VipAccessRequiredException;
 import com.unicorn.my_little_pony.domain.models.customer.Customer;
 import com.unicorn.my_little_pony.domain.models.customer.CustomerContact;
 import com.unicorn.my_little_pony.domain.models.customer.CustomerIdentity;
+import com.unicorn.my_little_pony.domain.models.rental.builders.RentalBuilder;
+import com.unicorn.my_little_pony.domain.models.rental.iterator.RentalBook;
+import com.unicorn.my_little_pony.domain.models.unicorn.iterator.status.StableUnicornCollection;
 import com.unicorn.my_little_pony.domain.models.unicorn.states.UnicornContext;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.FireUnicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.Unicorn;
 import com.unicorn.my_little_pony.domain.models.unicorn.types.UnicornIdentity;
+import com.unicorn.my_little_pony.enums.RentalStatus;
 import com.unicorn.my_little_pony.integration.payment.providers.PaypalProvider;
 import com.unicorn.my_little_pony.integration.transport.TransportAdapter;
 import org.springframework.boot.CommandLineRunner;
@@ -80,6 +84,12 @@ public class DemoWeek11Runner implements CommandLineRunner {
         System.out.println();
         demoResultReporting();
 
+        System.out.println();
+        demoEmptyCollectionAspect();
+        System.out.println();
+        demoCounter();
+        System.out.println();
+        demoAvailableUnicornsAndPowerAspect();
     }
 
 
@@ -216,6 +226,95 @@ public class DemoWeek11Runner implements CommandLineRunner {
 
         System.out.println("Przykład 1: Najlepiej rokujące jednorożce do kampanii");
         featuredUnicornNames.forEach(name -> System.out.println("- " + name));
+
+        System.out.println("----------------------------");
+    }
+
+    private void demoEmptyCollectionAspect() {
+
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 7: CheckEmptyCollection");
+        System.out.println();
+
+        StableUnicornCollection stable = new StableUnicornCollection();
+
+        System.out.println("Przykład 1: brak jednorożców w stajni");
+        List<String> emptyResult = stable.getActiveUnicornNames();
+        System.out.println("Wynik: " + emptyResult);
+
+        System.out.println();
+
+        stable.addUnicorn(new FireUnicorn(
+                new UnicornIdentity("U-1", "Blaze", "red"),
+                120
+        ));
+
+        stable.addUnicorn(new FireUnicorn(
+                new UnicornIdentity("U-2", "Frost", "blue"),
+                90
+        ));
+
+        System.out.println("Przykład 2: jednorożce są w stajni");
+        List<String> result = stable.getActiveUnicornNames();
+        System.out.println("Wynik: " + result);
+
+        System.out.println("----------------------------");
+    }
+    private void demoCounter() {
+        System.out.println("Zastosowanie 8: MethodCounterAspect");
+        System.out.println();
+        RentalBook book = new RentalBook();
+
+        book.addRental(new RentalBuilder()
+                .unicornId("U1")
+                .customerId("C1")
+                .start(java.time.LocalDateTime.now())
+                .end(java.time.LocalDateTime.now().plusHours(2))
+                .status(RentalStatus.COMPLETED)
+                .build());
+
+        book.getCompletedRentals();
+        book.getCompletedRentals();
+    }
+    private void demoAvailableUnicornsAndPowerAspect() {
+
+        System.out.println("=========================");
+        System.out.println("Zastosowanie 9: MonitorPowerLevel + dostępne jednorożce");
+        System.out.println();
+
+        StableUnicornCollection stable = new StableUnicornCollection();
+
+        stable.addUnicorn(new FireUnicorn(
+                new UnicornIdentity("U-1", "Blaze", "red"),
+                120
+        ));
+
+        stable.addUnicorn(new FireUnicorn(
+                new UnicornIdentity("U-2", "Frost", "blue"),
+                90
+        ));
+
+        stable.addUnicorn(new FireUnicorn(
+                new UnicornIdentity("U-3", "Spark", "gold"),
+                150
+        ));
+
+        stable.addUnicorn(new FireUnicorn(
+                new UnicornIdentity("U-4", "Mist", "white"),
+                70
+        ));
+
+        System.out.println("Przykład 1: dostępne jednorożce (AVAILABLE)");
+
+        List<Unicorn> available = stable.getAvailableUnicorns();
+
+        if (available.isEmpty()) {
+            System.out.println("Brak dostępnych jednorożców.");
+        } else {
+            available.forEach(u ->
+                    System.out.println("- " + u.getName() + " | moc: " + u.getTotalPower())
+            );
+        }
 
         System.out.println("----------------------------");
     }

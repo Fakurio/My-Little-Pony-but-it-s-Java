@@ -14,4 +14,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TimedOperation {
 }
-// Koniec, Tydzień 11, Programowanie Aspektowe (AOP), Zastosowanie 5
+// Koniec, Tydzień 11, Pro gramowanie Aspektowe (AOP), Zastosowanie 5
